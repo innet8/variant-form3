@@ -59,7 +59,7 @@
 				<code-editor :mode="'json'" :readonly="false" v-model="tableDataOptions"></code-editor>
 				<div slot="footer" class="dialog-footer">
 					<el-button size="default" type="primary" @click="saveTableData">{{i18nt('designer.hint.confirm')}}</el-button>
-					<el-button size="default" type="" @click="dataDialogVisible = false">{{i18nt('designer.hint.cancel')}}</el-button>
+					<el-button size="default" @click="dataDialogVisible = false">{{i18nt('designer.hint.cancel')}}</el-button>
 				</div>
 			</el-dialog>
 		</div>
@@ -140,9 +140,9 @@
 						</el-table-column>
 						<el-table-column :label="i18nt('designer.setting.actionColumn')" width="100" fixed="right" align="center">
 							<template #default="scope">
-								<el-button :title="i18nt('designer.setting.addTableColumn')" size="small" type="" circle
+								<el-button :title="i18nt('designer.setting.addTableColumn')" size="small" circle
 											@click="addCol" icon="el-icon-plus"></el-button>
-								<el-button :title="i18nt('designer.setting.deleteTableColumn')" size="small" type="" circle
+								<el-button :title="i18nt('designer.setting.deleteTableColumn')" size="small" circle
 									@click="handleDelete(scope.$index, scope.row)" icon="el-icon-minus"></el-button>
 							</template>
 						</el-table-column>

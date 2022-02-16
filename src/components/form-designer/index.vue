@@ -13,7 +13,7 @@
     <el-header class="main-header">
       <div class="float-left main-title">
         <img src="../../assets/vform-logo.png" @click="openHome">
-        <span class="bold">VForm 3 Pro</span> {{i18nt('application.productTitle')}} <span class="version-span">Ver {{vFormVersion}}</span></div>
+        <span class="bold">{{vfProductName}}</span> {{vfProductTitle}} <span class="version-span">Ver {{vFormVersion}}</span></div>
       <div class="float-right external-link">
         <el-dropdown v-if="showLink('languageMenu')" @command="handleLanguageChanged">
           <span class="el-dropdown-link">{{curLangName}}<svg-icon icon-class="el-arrow-down" /></span>
@@ -72,7 +72,7 @@
   import {MOCK_CASE_URL, VARIANT_FORM_VERSION} from "@/utils/config"
   import i18n, { changeLocale } from "@/utils/i18n"
   import axios from 'axios'
-  import SvgIcon from "@/components/svg-icon/index";
+  import SvgIcon from "@/components/svg-icon/index"
 
   export default {
     name: "VFormDesigner",
@@ -113,6 +113,9 @@
             exportCodeButton: true,  //是否显示导出代码按钮
             generateSFCButton: true,  //是否显示生成SFC按钮
 
+            productName: '',  //自定义表单设计器名称，对应“VForm Pro”
+            productTitle: '',  //自定义表单设计器标题，对应“表单设计器”
+
             presetCssCode: '',  //设计器预设CSS样式代码
           }
         }
@@ -121,8 +124,11 @@
     },
     data() {
       return {
+        vfProductName: '',
+        vfProductTitle: '',
         vFormVersion: VARIANT_FORM_VERSION,
         curLangName: '',
+        curLocale: '',
 
         vsCodeFlag: false,
         caseName: '',
@@ -147,6 +153,10 @@
       }
     },
     created() {
+      this.vfProductName = (this.designerConfig && this.designerConfig.productName) || 'VForm Pro'
+      this.vfProductTitle = (this.designerConfig && this.designerConfig.productTitle) ||
+          this.i18nt('application.productTitle')
+
       this.vsCodeFlag = getQueryParam('vscode') == 1
       this.caseName = getQueryParam('case')
     },
@@ -225,14 +235,14 @@
       },
 
       initLocale() {
-        let curLocale = localStorage.getItem('v_form_locale')
+        this.curLocale = localStorage.getItem('v_form_locale')
         if (!!this.vsCodeFlag) {
-          curLocale = curLocale || 'en-US'
+          this.curLocale = this.curLocale || 'en-US'
         } else {
-          curLocale = curLocale || 'zh-CN'
+          this.curLocale = this.curLocale || 'zh-CN'
         }
-        this.curLangName = this.i18nt('application.' + curLocale)
-        this.changeLanguage(curLocale)
+        this.curLangName = this.i18nt('application.' + this.curLocale)
+        this.changeLanguage(this.curLocale)
       },
 
       loadFieldListFromServer() {
