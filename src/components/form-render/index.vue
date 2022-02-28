@@ -38,6 +38,7 @@
 
 <script>
   //import ElForm from 'element-ui/packages/form/src/form.vue'  /* 用于源码调试Element UI */
+  import { computed } from 'vue'
   import emitter from '@/utils/emitter'
   import './container-item/index'
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
@@ -73,7 +74,7 @@
       return {
         refList: this.widgetRefList,
         sfRefList: this.subFormRefList,  //收集SubForm引用
-        formConfig: this.formConfig,
+        getFormConfig: () => this.formJsonObj.formConfig,  /* 解决provide传递formConfig属性的响应式更新问题！！ */
         globalOptionData: this.optionData,
         getOptionData: () => this.optionData,  /* 该方法用于在异步更新option-data之后重新获取到最新值 */
         globalModel: {
@@ -357,7 +358,6 @@
             this.buildFormModel(newFormJsonObj.widgetList)
 
             this.formJsonObj['formConfig'] = newFormJsonObj.formConfig
-            this._provided.formConfig = newFormJsonObj.formConfig  //强制更新provide的formConfig对象
             this.formJsonObj['widgetList'] = newFormJsonObj.widgetList
 
             this.$nextTick(() => {

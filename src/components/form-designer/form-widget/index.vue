@@ -53,7 +53,7 @@
     provide() {
       return {
         refList: this.widgetRefList,
-        formConfig: this.formConfig,
+        getFormConfig: () => this.formConfig,  /* 解决provide传递formConfig属性的响应式更新问题！！ */
         globalOptionData: this.optionData,
         getOptionData: () => this.optionData,
         globalModel: {
