@@ -117,6 +117,8 @@
             productTitle: '',  //自定义表单设计器标题，对应“表单设计器”
 
             presetCssCode: '',  //设计器预设CSS样式代码
+
+            resetFormJson: false,  //是否在设计器初始化时将表单内容重置为空
           }
         }
       },
