@@ -240,6 +240,7 @@ export const basicFields = [
       clearable: true,
       showPassword: false,
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -285,6 +286,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -323,6 +325,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -369,6 +372,7 @@ export const basicFields = [
         {label: 'radio 3', value: 3},
       ],
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -408,6 +412,7 @@ export const basicFields = [
         {label: 'check 3', value: 3},
       ],
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -452,6 +457,7 @@ export const basicFields = [
         {label: 'select 3', value: 3},
       ],
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -492,6 +498,7 @@ export const basicFields = [
       editable: false,
       format: 'HH:mm:ss',  //时间格式
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -532,6 +539,7 @@ export const basicFields = [
       editable: false,
       format: 'HH:mm:ss',  //时间格式
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -573,6 +581,7 @@ export const basicFields = [
       format: 'YYYY-MM-DD',  //日期显示格式
       valueFormat: 'YYYY-MM-DD',  //日期对象格式
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -615,6 +624,7 @@ export const basicFields = [
       format: 'YYYY-MM-DD',  //日期显示格式
       valueFormat: 'YYYY-MM-DD',  //日期对象格式
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -679,6 +689,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -716,6 +727,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------
@@ -747,6 +759,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
+      requiredHint: '',
       validation: '',
       validationHint: '',
       //-------------------

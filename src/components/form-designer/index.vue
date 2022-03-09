@@ -24,11 +24,14 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
+        <!--
         <a v-if="showLink('externalLink')" href="javascript:void(0)" @click="(ev) => openUrl(ev, gitUrl)" target="_blank"><svg-icon icon-class="github" />{{i18nt('application.github')}}</a>
         <a v-if="showLink('externalLink')" href="javascript:void(0)" @click="(ev) => openUrl(ev, docUrl)" target="_blank"><svg-icon icon-class="document" />{{i18nt('application.document')}}</a>
         <a v-if="showLink('externalLink')" href="javascript:void(0)" @click="(ev) => openUrl(ev, chatUrl)" target="_blank">{{i18nt('application.qqGroup')}}</a>
         <a v-if="showLink('externalLink')" href="javascript:void(0)" @click="(ev) => openUrl(ev, subScribeUrl)" target="_blank">
           {{i18nt('application.subscription')}}<i class="el-icon-top-right"></i></a>
+        -->
+        <a href="javascript:void(0)">&nbsp;</a>
       </div>
     </el-header>
 
@@ -68,7 +71,8 @@
   import SettingPanel from './setting-panel/index'
   import VFormWidget from './form-widget/index'
   import {createDesigner} from "@/components/form-designer/designer"
-  import {addWindowResizeHandler, deepClone, getQueryParam} from "@/utils/util"
+  import {addWindowResizeHandler, deepClone, getQueryParam, getAllContainerWidgets,
+    getAllFieldWidgets} from "@/utils/util"
   import {MOCK_CASE_URL, VARIANT_FORM_VERSION} from "@/utils/config"
   import i18n, { changeLocale } from "@/utils/i18n"
   import axios from 'axios'
@@ -252,7 +256,8 @@
           return
         }
 
-        axios.get(this.fieldListApi.URL).then(res => {
+        let headers = this.fieldListApi.headers || {}
+        axios.get(this.fieldListApi.URL, {'headers': headers}).then(res => {
           let labelKey = this.fieldListApi.labelKey || 'label'
           let nameKey = this.fieldListApi.nameKey || 'name'
 
@@ -349,6 +354,22 @@
         this.$refs.toolbarRef.generateSFC()
       },
 
+      /**
+       * 获取所有字段组件
+       * @returns {*[]}
+       */
+      getFieldWidgets() {
+        return getAllFieldWidgets(this.designer.widgetList)
+      },
+
+      /**
+       * 获取所有容器组件
+       * @returns {*[]}
+       */
+      getContainerWidgets() {
+        return getAllContainerWidgets(this.designer.widgetList)
+      },
+
       //TODO: 增加更多方法！！
 
     }
@@ -416,6 +437,7 @@
   div.external-link {
     display: flex;
     align-items: center;
+    justify-content: center;
 
     a {
       font-size: 13px;
