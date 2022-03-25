@@ -116,6 +116,8 @@
             exportJsonButton: true,  //是否显示导出JSON器按钮
             exportCodeButton: true,  //是否显示导出代码按钮
             generateSFCButton: true,  //是否显示生成SFC按钮
+            toolbarMaxWidth: 420,  //设计器工具按钮栏最大宽度（单位像素）
+            toolbarMinWidth: 300,  //设计器工具按钮栏最小宽度（单位像素）
 
             productName: '',  //自定义表单设计器名称，对应“VForm Pro”
             productTitle: '',  //自定义表单设计器标题，对应“表单设计器”

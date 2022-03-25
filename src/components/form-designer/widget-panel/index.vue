@@ -91,10 +91,9 @@
 </template>
 
 <script>
-  //import Draggable from 'vuedraggable'
   import {containers as CONS, basicFields as BFS, advancedFields as AFS, customFields as CFS} from "./widgetsConfig"
   import {formTemplates} from './templatesConfig'
-  import {addWindowResizeHandler} from "@/utils/util"
+  import {addWindowResizeHandler, generateId} from "@/utils/util"
   import i18n from "@/utils/i18n"
   import axios from 'axios'
 
@@ -106,13 +105,11 @@
   import ftImg6 from '@/assets/ft-images/t6.png'
   import ftImg7 from '@/assets/ft-images/t7.png'
   import ftImg8 from '@/assets/ft-images/t8.png'
-import { generateId } from '../../../utils/util'
 
   export default {
     name: "FieldPanel",
     mixins: [i18n],
     components: {
-      //Draggable,
     },
     props: {
       designer: Object,

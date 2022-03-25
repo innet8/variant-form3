@@ -37,6 +37,7 @@ VFormRender.install = function (app) {
 
   app.use(ContainerItems)
 
+  registerIcon(app)
   app.component('svg-icon', SvgIcon)
   app.component(VFormRender.name, VFormRender)
 }
@@ -54,16 +55,19 @@ const install = (app) => {
   app.use(ContainerWidgets)
   app.use(ContainerItems)
 
+  registerIcon(app)
   app.component('draggable', Draggable)
   app.component('svg-icon', SvgIcon)
 
   components.forEach(component => {
     app.component(component.name, component)
   })
+
+  window.axios = axios
 }
 
 if (typeof window !== 'undefined' && window.Vue) { /* script方式引入时赋值axios！！ */
-  window.axios = axios
+  //window.axios = axios
 }
 
 export default {
