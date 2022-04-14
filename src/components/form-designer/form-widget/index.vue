@@ -8,7 +8,7 @@
         <div class="no-widget-hint">{{i18nt('designer.noWidgetHint')}}</div>
       </template>
 
-      <div class="form-widget-list">
+      <div class="form-widget-list" :style="{minHeight: canvasMinHeight}">
         <draggable :list="designer.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 300}"
                    tag="transition-group" :component-data="{name: 'fade'}"
                    handle=".drag-handler" @end="onDragEnd" @add="onDragAdd" @update="onDragUpdate" :move="checkMove">
@@ -49,11 +49,16 @@
         type: Object,
         default: () => {}
       },
+      globalDsv: {
+        type: Object,
+        default: () => {},
+      },
     },
     provide() {
       return {
         refList: this.widgetRefList,
         getFormConfig: () => this.formConfig,  /* 解决provide传递formConfig属性的响应式更新问题！！ */
+        getGlobalDsv: () => this.globalDsv, // 全局数据源变量
         globalOptionData: this.optionData,
         getOptionData: () => this.optionData,
         globalModel: {
@@ -92,6 +97,10 @@
       layoutType() {
         return this.designer.getLayoutType()
       },
+
+      canvasMinHeight() {
+        return (this.getDesignerConfig().logoHeader !== false) ? 'calc(100vh - 56px - 68px)' : 'calc(100vh - 56px - 68px + 48px)'
+      }
 
     },
     watch: {
@@ -158,12 +167,17 @@
         return this.formModel
       },
 
-      getWidgetRef(widgetName, showError) {
+      getWidgetRef(widgetName, showError = false) {
         let foundRef = this.widgetRefList[widgetName]
         if (!foundRef && !!showError) {
           this.$message.error(this.i18nt('designer.hint.refNotFound') + widgetName)
         }
         return foundRef
+      },
+
+      getSelectedWidgetRef() {
+        let wName = this.designer.selectedWidgetName
+        return this.getWidgetRef(wName)
       },
 
     }
@@ -205,7 +219,7 @@
       }
 
       .form-widget-list {
-        min-height: calc(100vh - 56px - 68px);
+        //min-height: calc(100vh - 56px - 68px + 48px);
         padding: 3px;
       }
     }

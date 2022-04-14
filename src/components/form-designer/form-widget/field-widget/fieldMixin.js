@@ -1,9 +1,8 @@
-import {deepClone} from "@/utils/util"
+import {deepClone, overwriteObj, runDataSourceRequest, translateOptionItems} from "@/utils/util"
 import FormValidators from '@/utils/validators'
-import eventBus from "@/utils/event-bus"
 
 export default {
-  inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData'],
+  inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData', 'getGlobalDsv'],
 
   computed: {
     formConfig() {
@@ -171,6 +170,35 @@ export default {
 
       if ((this.field.type === 'radio') || (this.field.type === 'checkbox')
           || (this.field.type === 'select') || (this.field.type === 'cascader')) {
+        /* 首先处理数据源选项加载 */
+        if (!!this.field.options.dsEnabled) {
+          this.field.options.optionItems.splice(0, this.field.options.optionItems.length) // 清空原有选项
+          //TODO：组装DSV！！！
+          let curDSName = this.field.options.dsName
+          if (!!curDSName && !!this.formConfig.dataSources) {
+            let curDS = null
+            this.formConfig.dataSources.forEach(ds => {
+              if (ds.uniqueName === curDSName) {
+                curDS = ds
+              }
+            })
+
+            if (!!curDS) {
+              let gDsv = this.getGlobalDsv()
+              let localDsv = new Object({})
+              overwriteObj(localDsv, gDsv)
+              localDsv['widgetName'] = this.field.options.name
+              runDataSourceRequest(curDS, localDsv, false, this.$message).then(res => {
+                this.loadOptions(res)
+              }).catch(err => {
+                this.$message.error(err.message)
+              })
+            }
+          }
+
+          return;
+        }
+
         /* 异步更新option-data之后globalOptionData不能获取到最新值，改用provide的getOptionData()方法 */
         const newOptionItems = this.getOptionData()
         if (!!newOptionItems && newOptionItems.hasOwnProperty(this.field.options.name)) {
@@ -523,8 +551,13 @@ export default {
      * @param options
      */
     loadOptions(options) {
+      /*
       this.field.options.optionItems = deepClone(options)
       //this.clearSelectedOptions()  //清空已选选项
+       */
+
+      this.field.options.optionItems = translateOptionItems(options, this.field.type,
+          this.field.options.labelKey, this.field.options.valueKey)
     },
 
     /**
@@ -532,7 +565,10 @@ export default {
      * @param options
      */
     reloadOptions(options) {
-      this.field.options.optionItems = deepClone(options)
+      //this.field.options.optionItems = deepClone(options)
+
+      this.field.options.optionItems = translateOptionItems(options, this.field.type,
+          this.field.options.labelKey, this.field.options.valueKey)
     },
 
     disableOption(optionValue) {
@@ -541,6 +577,14 @@ export default {
 
     enableOption(optionValue) {
       this.enableOptionOfList(this.field.options.optionItems, optionValue)
+    },
+
+    /**
+     * 返回选择项
+     * @returns {*}
+     */
+    getOptionItems() {
+      return this.field.options.optionItems
     },
 
     setUploadHeader(name, value) {

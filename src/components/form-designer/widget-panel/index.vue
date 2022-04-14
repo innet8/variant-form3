@@ -325,6 +325,7 @@
         }
 
         .container-widget-item, .field-widget-item {
+          //text-align: center; // 居中显示不太美观
           display: inline-block;
           height: 28px;
           line-height: 28px;

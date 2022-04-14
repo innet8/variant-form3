@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="elLocale">
   <div id="app">
-    <VFormDesigner />
+    <VFormDesigner :designer-config="designerConfig" />
   </div>
   </el-config-provider>
 </template>
@@ -22,6 +22,10 @@ export default {
       formJson: {"widgetList":[],"formConfig":{"modelName":"formData","refName":"vForm","rulesName":"rules","labelWidth":80,"labelPosition":"left","size":"","labelAlign":"label-left-align","cssCode":"","customClass":"","functions":"","layoutType":"PC","onFormCreated":"","onFormMounted":"","onFormDataChange":"","onFormValidate":""}},
       formData: {},
       optionData: {},
+
+      designerConfig: {
+        //logoHeader: false,
+      },
 
       elLocaleMap: {
         'zh-CN': zhCNLang,

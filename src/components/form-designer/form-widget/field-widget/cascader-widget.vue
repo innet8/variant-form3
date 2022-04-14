@@ -9,6 +9,8 @@
                    :clearable="field.options.clearable"
                    :filterable="field.options.filterable"
                    :placeholder="field.options.placeholder || i18nt('render.hint.selectPlaceholder')"
+                   :props="{ checkStrictly: field.options.checkStrictly, multiple: field.options.multiple, expandTrigger: 'hover', value: valueKey, label: labelKey, children: childrenKey }"
+                   @visible-change="hideDropDownOnClick" @expand-change="hideDropDownOnClick"
                    @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
                    @change="handleChangeEvent">
       </el-cascader>
@@ -63,6 +65,17 @@
       }
     },
     computed: {
+      labelKey() {
+        return this.field.options.labelKey || 'label'
+      },
+
+      valueKey() {
+        return this.field.options.valueKey || 'value'
+      },
+
+      childrenKey() {
+        return this.field.options.childrenKey || 'children'
+      },
 
     },
     beforeCreate() {
@@ -90,6 +103,17 @@
     },
 
     methods: {
+      /* 开启任意级节点可选后，点击radio隐藏下拉框 */
+      hideDropDownOnClick() {
+        setTimeout(() => {
+          document.querySelectorAll(".el-cascader-panel .el-radio").forEach((el) => {
+            el.onclick = () => {
+              console.log('test====', 1111)
+              this.$refs.fieldEditor.popperVisible = false // 单选框部分点击隐藏下拉框
+            }
+          })
+        }, 100)
+      },
 
     }
   }

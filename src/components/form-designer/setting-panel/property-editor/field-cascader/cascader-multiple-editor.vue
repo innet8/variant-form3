@@ -1,7 +1,6 @@
 <template>
-  <el-form-item v-if="!hasConfig('optionItems')" :label="i18nt('designer.setting.defaultValue')">
-    <el-input-number type="text" style="width: 100%" v-model="optionModel.defaultValue"
-              @change="emitDefaultValueChange"></el-input-number>
+  <el-form-item :label="i18nt('designer.setting.multiple')">
+    <el-switch v-model="optionModel.multiple"></el-switch>
   </el-form-item>
 </template>
 
@@ -10,7 +9,7 @@
   import propertyMixin from "@/components/form-designer/setting-panel/property-editor/propertyMixin"
 
   export default {
-    name: "number-defaultValue-editor",
+    name: "cascader-multiple-editor",
     mixins: [i18n, propertyMixin],
     props: {
       designer: Object,

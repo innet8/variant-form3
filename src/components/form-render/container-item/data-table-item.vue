@@ -106,8 +106,7 @@
 					address: '上海市普陀区金沙江路 1516 弄'
 				}],
 
-				//rowSelection: [],
-				selectionIndex: [],
+				selectedIndices: [],
 				pageSize: this.widget.options.pagination.pageSize,
 				currentPage: this.widget.options.pagination.currentPage,
 
@@ -166,40 +165,28 @@
 					switch(column.formatS) {
 						case 'd1':
 								return formatDate1(cellValue);
-								break;
 						case 'd2':
 								return formatDate2(cellValue);
-								break;
 						case 'd3':
 								return formatDate3(cellValue);
-								break;
 						case 'd4':
 								return formatDate4(cellValue);
-								break;
 						case 'd5':
 								return formatDate5(cellValue);
-								break;
 						case 'n1':
 								return formatNumber1(cellValue);
-								break;
 						case 'n2':
 								return formatNumber2(cellValue);
-								break;
 						case 'n3':
 								return formatNumber3(cellValue);
-								break;
 						case 'n4':
 								return formatNumber4(cellValue);
-								break;
 						case 'n5':
 								return formatNumber5(cellValue);
-								break;
 						case 'n6':
 								return formatNumber6(cellValue);
-								break;
 						case 'n7':
 								return formatNumber7(cellValue);
-								break;
 					}
 				}
 			  return cellValue;
@@ -209,20 +196,27 @@
 				return this.widget.options.tableData.lastIndexOf(row)
 			},
 
-			handleSelectionChange(val) {
-				//this.rowSelection = val
 
-				this.selectionIndex.length = 0
-				val.map((row) => {
+			findColumnAndSetHidden(columnName, hiddenFlag) {
+				this.widget.options.tableColumns.forEach(tc => {
+					if (tc.prop === columnName) {
+						tc.show = !hiddenFlag
+					}
+				})
+			},
+
+			handleSelectionChange(selection) {
+				this.selectedIndices.length = 0
+				selection.map((row) => {
 					let rowIndex = this.getRowIndex(row)
 					if (rowIndex >= 0) {
-						this.selectionIndex.push(rowIndex)
+						this.selectedIndices.push(rowIndex)
 					}
 				})
 
 				/* 必须调用mixins中的dispatch方法逐级向父组件发送消息！！ */
 				this.dispatch('VFormRender', 'dataTableSelectionChange',
-								[this, val, this.selectionIndex])
+								[this, selection, this.selectedIndices])
 			},
 
 			handleSortChange({column, prop, order}) {
@@ -255,8 +249,47 @@
 			 * 设置表格列
 			 * @param tableColumns
 			 */
-			setTableColumn(tableColumns) {
+			setTableColumns(tableColumns) {
 				this.widget.options.tableColumns = tableColumns
+				this.$nextTick(() => {
+					this.$refs.dataTable.doLayout()  //防止行列显示错位！！
+				})
+			},
+
+			/**
+			 * 设置表格列（为了兼容文档错误，setTableColumn应为setTableColumns）
+			 * @param tableColumns
+			 */
+			setTableColumn(tableColumns) {
+				this.setTableColumns(tableColumns)
+			},
+
+			/**
+			 * 动态设置表格列的隐藏或显示
+			 * @param columnNames
+			 * @param hiddenFlag
+			 */
+			setTableColumnsHidden(columnNames, hiddenFlag) {
+				if (!!columnNames) {
+					if (typeof columnNames === 'string') {
+						this.findColumnAndSetHidden(columnNames, hiddenFlag)
+					} else if (Array.isArray(columnNames)) {
+						columnNames.forEach(cn => {
+							this.findColumnAndSetHidden(cn, hiddenFlag)
+						})
+					}
+
+					this.$nextTick(() => {
+						this.$refs.dataTable.doLayout()  //防止行列显示错位！！
+					})
+				}
+			},
+
+			/**
+			 * 获取表格数据
+			 */
+			getTableData() {
+				return this.widget.options.tableData
 			},
 
 			/**
@@ -289,7 +322,6 @@
 			 */
 			getSelectedRow() {
 				return this.$refs.dataTable.selection
-				//return this.rowSelection
 			},
 
 			/**
@@ -297,7 +329,7 @@
 			 * @returns {[]}
 			 */
 			getSelectedIndex() {
-				return this.selectionIndex
+				return this.selectedIndices
 			},
 
 			//--------------------- 以上为组件支持外部调用的API方法 end ------------------//

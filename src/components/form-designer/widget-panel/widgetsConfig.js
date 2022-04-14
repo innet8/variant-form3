@@ -366,6 +366,10 @@ export const basicFields = [
       labelHidden: false,
       disabled: false,
       hidden: false,
+      dsEnabled: false, // 是否使用数据源数据
+      dsName: '', // 数据源名称
+      labelKey: 'label',
+      valueKey: 'value',
       optionItems: [
         {label: 'radio 1', value: 1},
         {label: 'radio 2', value: 2},
@@ -406,6 +410,10 @@ export const basicFields = [
       labelHidden: false,
       disabled: false,
       hidden: false,
+      dsEnabled: false, // 是否使用数据源数据
+      dsName: '', // 数据源名称
+      labelKey: 'label',
+      valueKey: 'value',
       optionItems: [
         {label: 'check 1', value: 1},
         {label: 'check 2', value: 2},
@@ -451,6 +459,10 @@ export const basicFields = [
       automaticDropdown: false,  //自动下拉
       multiple: false,
       multipleLimit: 0,
+      dsEnabled: false, // 是否使用数据源数据
+      dsName: '', // 数据源名称
+      labelKey: 'label',
+      valueKey: 'value',
       optionItems: [
         {label: 'select 1', value: 1},
         {label: 'select 2', value: 2},
@@ -997,6 +1009,13 @@ export const advancedFields = [
       hidden: false,
       clearable: true,
       filterable: false,
+      multiple: false,
+      checkStrictly: false,  //可选择任意一级选项，默认不开启
+      dsEnabled: false, // 是否使用数据源数据
+      dsName: '', // 数据源名称
+      labelKey: 'label',
+      valueKey: 'value',
+      childrenKey: 'children',
       optionItems: [
         {label: 'select 1', value: 1, children: [{label: 'child 1', value: 11}]},
         {label: 'select 2', value: 2},

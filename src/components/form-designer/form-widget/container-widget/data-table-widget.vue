@@ -57,13 +57,15 @@
 	import {formatDate1, formatDate2, formatDate3, formatDate4, formatDate5,
 					formatNumber1, formatNumber2, formatNumber3, formatNumber4,
 					formatNumber5, formatNumber6, formatNumber7} from "@/utils/format"
-  import fieldMixin from "@/components/form-designer/form-widget/field-widget/fieldMixin"
 	import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
+	import containerMixin from "@/components/form-designer/form-widget/container-widget/containerMixin"
+	import refMixinDesign from "@/components/form-designer/refMixinDesign"
 
   export default {
     name: "DataTableWidget",
     componentName: 'DataTableWidget',
-    mixins: [emitter, fieldMixin, i18n],
+    mixins: [i18n, containerMixin, refMixinDesign],
+		inject: ['refList'],
 		components: {
 		  ContainerWrapper,
 		  ...FieldComponents,
@@ -111,13 +113,13 @@
 
     },
     created() {
-
+			this.initRefList()
     },
 		mounted() {
-		  // this.handleOnMounted()
+		  //
 		},
     beforeDestroy() {
-      // this.unregisterFromRefList()
+      //
     },
 		computed: {
     	paginationLayout() {
@@ -171,46 +173,32 @@
 			},
 
 			formatterValue(row, column, cellValue) {
-				if(!!column.formatS)
-				{
-					switch(column.formatS)
-					{
+				if(!!column.formatS && !!column.show) {
+					switch(column.formatS) {
 						case 'd1':
 								return formatDate1(cellValue);
-								break;
 						case 'd2':
 								return formatDate2(cellValue);
-								break;
 						case 'd3':
 								return formatDate3(cellValue);
-								break;
 						case 'd4':
 								return formatDate4(cellValue);
-								break;
 						case 'd5':
 								return formatDate5(cellValue);
-								break;
 						case 'n1':
 								return formatNumber1(cellValue);
-								break;
 						case 'n2':
 								return formatNumber2(cellValue);
-								break;
 						case 'n3':
 								return formatNumber3(cellValue);
-								break;
 						case 'n4':
 								return formatNumber4(cellValue);
-								break;
 						case 'n5':
 								return formatNumber5(cellValue);
-								break;
 						case 'n6':
 								return formatNumber6(cellValue);
-								break;
 						case 'n7':
 								return formatNumber7(cellValue);
-								break;
 					}
 				}
 			  return cellValue;

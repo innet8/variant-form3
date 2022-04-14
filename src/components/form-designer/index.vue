@@ -10,7 +10,7 @@
 
 <template>
   <el-container class="main-container full-height">
-    <el-header class="main-header">
+    <el-header class="main-header" v-if="designerConfig.logoHeader !== false">
       <div class="float-left main-title">
         <img src="../../assets/vform-logo.png" @click="openHome">
         <span class="bold">{{vfProductName}}</span> {{vfProductTitle}} <span class="version-span">Ver {{vFormVersion}}</span></div>
@@ -42,7 +42,7 @@
 
       <el-container class="center-layout-container">
         <el-header class="toolbar-header">
-          <toolbar-panel :designer="designer" ref="toolbarRef">
+          <toolbar-panel :designer="designer" :global-dsv="globalDsv" ref="toolbarRef">
             <template v-for="(idx, slotName) in $slots" #[slotName]>
               <slot :name="slotName"></slot>
             </template>
@@ -50,7 +50,7 @@
         </el-header>
         <el-main class="form-widget-main">
           <el-scrollbar class="container-scroll-bar" :style="{height: scrollerHeight}">
-            <v-form-widget :designer="designer" :form-config="designer.formConfig">
+            <v-form-widget :designer="designer" :form-config="designer.formConfig" :global-dsv="globalDsv">
             </v-form-widget>
           </el-scrollbar>
         </el-main>
@@ -71,8 +71,10 @@
   import SettingPanel from './setting-panel/index'
   import VFormWidget from './form-widget/index'
   import {createDesigner} from "@/components/form-designer/designer"
-  import {addWindowResizeHandler, deepClone, getQueryParam, getAllContainerWidgets,
-    getAllFieldWidgets} from "@/utils/util"
+  import {
+    addWindowResizeHandler, deepClone, getQueryParam, getAllContainerWidgets,
+    getAllFieldWidgets, traverseAllWidgets
+  } from "@/utils/util"
   import {MOCK_CASE_URL, VARIANT_FORM_VERSION} from "@/utils/config"
   import i18n, { changeLocale } from "@/utils/i18n"
   import axios from 'axios'
@@ -102,6 +104,7 @@
         default: () => []
       },
 
+      /* 设计器配置参数 */
       designerConfig: {
         type: Object,
         default: () => {
@@ -110,17 +113,21 @@
             externalLink: true,  //是否显示GitHub、文档等外部链接
             formTemplates: true,  //是否显示表单模板
             eventCollapse: true,  //是否显示组件事件属性折叠面板
+            widgetNameReadonly: false,  //禁止修改组件名称
+
             clearDesignerButton: true,  //是否显示清空设计器按钮
             previewFormButton: true,  //是否显示预览表单按钮
             importJsonButton: true,  //是否显示导入JSON按钮
             exportJsonButton: true,  //是否显示导出JSON器按钮
             exportCodeButton: true,  //是否显示导出代码按钮
             generateSFCButton: true,  //是否显示生成SFC按钮
+            logoHeader: true,  //是否显示Logo头部区域（仅Pro）
+
             toolbarMaxWidth: 420,  //设计器工具按钮栏最大宽度（单位像素）
             toolbarMinWidth: 300,  //设计器工具按钮栏最小宽度（单位像素）
 
-            productName: '',  //自定义表单设计器名称，对应“VForm Pro”
-            productTitle: '',  //自定义表单设计器标题，对应“表单设计器”
+            productName: '',  //自定义表单设计器名称，对应“VForm Pro”（仅Pro）
+            productTitle: '',  //自定义表单设计器标题，对应“表单设计器”（仅Pro）
 
             presetCssCode: '',  //设计器预设CSS样式代码
 
@@ -129,11 +136,15 @@
         }
       },
 
+      /* 全局数据源变量 */
+      globalDsv: {
+        type: Object,
+        default: () => {},
+      },
+
     },
     data() {
       return {
-        vfProductName: '',
-        vfProductTitle: '',
         vFormVersion: VARIANT_FORM_VERSION,
         curLangName: '',
         curLocale: '',
@@ -160,26 +171,33 @@
         getBannedWidgets: () => this.bannedWidgets,
       }
     },
-    created() {
-      this.vfProductName = (this.designerConfig && this.designerConfig.productName) || 'VForm Pro'
-      this.vfProductTitle = (this.designerConfig && this.designerConfig.productTitle) ||
-          this.i18nt('application.productTitle')
+    computed: {
+      vfProductName() {
+        return (this.designerConfig && this.designerConfig.productName) || 'VForm Pro'
+      },
 
+      vfProductTitle() {
+        return (this.designerConfig && this.designerConfig.productTitle) ||
+            this.i18nt('application.productTitle')
+      }
+
+    },
+    created() {
       this.vsCodeFlag = getQueryParam('vscode') == 1
       this.caseName = getQueryParam('case')
     },
     mounted() {
       this.initLocale()
 
-      this.scrollerHeight = window.innerHeight - 56 - 36 + 'px'
+      let logoHeaderHeight = (this.designerConfig.logoHeader !== false) ? 48 : 0
+      this.scrollerHeight = window.innerHeight - logoHeaderHeight - 42 + 'px'
       addWindowResizeHandler(() => {
         this.$nextTick(() => {
-          this.scrollerHeight = window.innerHeight - 56 - 36 + 'px'
+          this.scrollerHeight = window.innerHeight - logoHeaderHeight - 42 + 'px'
         })
       })
 
       this.loadCase()
-
       this.loadFieldListFromServer()
     },
     methods: {
@@ -361,16 +379,42 @@
        * 获取所有字段组件
        * @returns {*[]}
        */
-      getFieldWidgets() {
-        return getAllFieldWidgets(this.designer.widgetList)
+      getFieldWidgets(widgetList = null) {
+        return !!widgetList ? getAllFieldWidgets(widgetList) : getAllFieldWidgets(this.designer.widgetList)
       },
 
       /**
        * 获取所有容器组件
        * @returns {*[]}
        */
-      getContainerWidgets() {
-        return getAllContainerWidgets(this.designer.widgetList)
+      getContainerWidgets(widgetList = null) {
+        return !!widgetList ? getAllContainerWidgets(widgetList) : getAllContainerWidgets(this.designer.widgetList)
+      },
+
+      /**
+       * 升级表单json，以补充最新的组件属性
+       * @param formJson
+       */
+      upgradeFormJson(formJson) {
+        if (!formJson.widgetList || !formJson.formConfig) {
+          this.$message.error('Invalid form json!')
+          return
+        }
+
+        traverseAllWidgets(formJson.widgetList, (w) => {
+          this.designer.upgradeWidgetConfig(w)
+        })
+        this.designer.upgradeFormConfig(formJson.formConfig)
+
+        return formJson
+      },
+
+      getWidgetRef(widgetName, showError = false) {
+        return this.$refs['formRef'].getWidgetRef(widgetName, showError)
+      },
+
+      getSelectedWidgetRef() {
+        return this.$refs['formRef'].getSelectedWidgetRef()
       },
 
       //TODO: 增加更多方法！！
@@ -380,6 +424,16 @@
 </script>
 
 <style lang="scss" scoped>
+  .el-container.main-container {
+    background: #fff;
+
+    :deep(aside) {  /* 防止aside样式被外部样式覆盖！！ */
+      margin: 0;
+      padding: 0;
+      background: inherit;
+    }
+  }
+
   .el-container.full-height {
     height: 100%;
     overflow-y: hidden;
@@ -396,6 +450,7 @@
     height: 48px !important;
     line-height: 48px !important;
     min-width: 800px;
+    //background: #f5f7fa;
   }
 
   div.main-title {

@@ -1,4 +1,5 @@
 import Clipboard from 'clipboard'
+import axios from 'axios'
 
 export function isNull(value) {
   return (value === null) || (value === undefined);
@@ -320,4 +321,98 @@ export function getQueryParam(variable) {
   }
 
   return undefined;
+}
+
+/**
+ * 转译选择项数据
+ * @param rawData
+ * @param widgetType
+ * @param labelKey
+ * @param valueKey
+ * @returns {[]}
+ */
+export function translateOptionItems(rawData, widgetType, labelKey, valueKey) {
+  if (widgetType === 'cascader') { // 级联选择不转译
+    return deepClone(rawData)
+  }
+
+  let result = []
+  if (!!rawData && (rawData.length > 0)) {
+    rawData.forEach(ri => {
+      result.push({
+        label: ri[labelKey],
+        value: ri[valueKey]
+      })
+    })
+  }
+
+  return result
+}
+
+/**
+ * 组装axios请求配置参数
+ * @param arrayObj
+ * @param DSV
+ * @returns {{}}
+ */
+export function assembleAxiosConfig(arrayObj, DSV) {
+  let result = {}
+  if (!arrayObj || (arrayObj.length <= 0)) {
+    return result
+  }
+
+  arrayObj.map(ai => {
+    if (ai.type === 'String') {
+      result[ai.name] = String(ai.value)
+    } else if (ai.type === 'Number') {
+      result[ai.name] = Number(ai.value)
+    } else if (ai.type === 'Boolean') {
+      if ((ai.value.toLowerCase() === 'false') || (ai.value === '0')) {
+        result[ai.name] = false
+      } else if ((ai.value.toLowerCase() === 'true') || (ai.value === '1')) {
+        result[ai.name] = true
+      } else {
+        result[ai.name] = null
+      }
+    } else if (ai.type === 'Variable') {
+      result[ai.name] = eval(ai.value)
+    }
+  })
+
+  return result
+}
+
+function buildRequestConfig(dataSource, DSV, isSandbox) {
+  let config = {}
+  if (dataSource.requestURLType === 'String') {
+    config.url = dataSource.requestURL
+  } else {
+    config.url = eval(dataSource.requestURL)
+  }
+  config.method = dataSource.requestMethod
+
+  config.headers = assembleAxiosConfig(dataSource.headers, DSV)
+  config.params = assembleAxiosConfig(dataSource.params, DSV)
+  config.data = assembleAxiosConfig(dataSource.data, DSV)
+
+  //let chFn = new Function('config', 'sandbox', 'form', 'widget', dataSource.configHandlerCode)
+  let chFn = new Function('config', 'isSandbox', 'DSV', dataSource.configHandlerCode)
+  return chFn.call(null, config, isSandbox, DSV)
+}
+
+export async function runDataSourceRequest(dataSource, DSV, isSandbox, $message) {
+  try {
+    let requestConfig = buildRequestConfig(dataSource, DSV, isSandbox)
+    console.log('test------', requestConfig)
+    let result = await axios.request(requestConfig)
+
+    //let dhFn = new Function('result', 'sandbox', 'form', 'widget', dataSource.dataHandlerCode)
+    let dhFn = new Function('result', 'isSandbox', 'DSV', dataSource.dataHandlerCode)
+    return dhFn.call(null, result, isSandbox, DSV)
+  } catch (err) {
+    //let ehFn = new Function('error', 'sandbox', 'form', 'widget', '$message', dataSource.dataHandlerCode)
+    let ehFn = new Function('error', 'isSandbox', '$message', 'DSV', dataSource.errorHandlerCode)
+    ehFn.call(null, err, isSandbox, $message, DSV)
+    console.error(err)
+  }
 }

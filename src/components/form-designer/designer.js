@@ -22,9 +22,10 @@ export function createDesigner(vueInstance) {
     labelAlign: 'label-left-align',
     cssCode: '',
     customClass: '',
-    functions: '',
+    functions: '',  //全局函数
     layoutType: 'PC',
     jsonVersion: 3,
+    dataSources: [],  //数据源集合
 
     onFormCreated: '',
     onFormMounted: '',
@@ -100,7 +101,8 @@ export function createDesigner(vueInstance) {
     getImportTemplate() {
       return {
         widgetList: [],
-        formConfig: deepClone(this.formConfig)
+        //formConfig: deepClone(this.formConfig)
+        formConfig: deepClone(defaultFormConfig)
       }
     },
 
@@ -133,9 +135,8 @@ export function createDesigner(vueInstance) {
       }
     },
 
-    updateSelectedWidgetNameAndRef(selectedWidget, newName, newLabel) {
+    updateSelectedWidgetNameAndLabel(selectedWidget, newName, newLabel) {
       this.selectedWidgetName = newName
-      //selectedWidget.options.name = newName  //此行多余
       if (!!newLabel && (Object.keys(selectedWidget.options).indexOf('label') > -1)) {
         selectedWidget.options.label = newLabel
       }
@@ -636,6 +637,33 @@ export function createDesigner(vueInstance) {
       }
 
       return Object.keys(originalWidget.options).indexOf(configName) > -1
+    },
+
+    upgradeWidgetConfig(oldWidget) {
+      let newWidget = null
+      if (!!oldWidget.category) {
+        newWidget = this.getContainerByType(oldWidget.type)
+      } else {
+        newWidget = this.getFieldWidgetByType(oldWidget.type)
+      }
+
+      if (!newWidget || !newWidget.options) {
+        return
+      }
+
+      Object.keys(newWidget.options).forEach(ck => {
+        if (!oldWidget.hasOwnProperty(ck)) {
+          oldWidget.options[ck] = deepClone(newWidget.options[ck])
+        }
+      })
+    },
+
+    upgradeFormConfig(oldFormConfig) {
+      Object.keys(this.formConfig).forEach(fc => {
+        if (!oldFormConfig.hasOwnProperty(fc)) {
+          oldFormConfig[fc] = deepClone(this.formConfig[fc])
+        }
+      })
     },
 
     cloneGridCol(widget, parentWidget) {

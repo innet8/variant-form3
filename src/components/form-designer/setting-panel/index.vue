@@ -1,6 +1,6 @@
 <template>
   <el-container class="panel-container">
-    <el-tabs :active-name="activeTab" style="height: 100%; overflow: hidden">
+    <el-tabs :active-name="activeTab" style="height: 100%;width: 100%;overflow: hidden">
       <el-tab-pane :label="i18nt('designer.hint.widgetSetting')" name="1">
         <el-scrollbar class="setting-scrollbar" :style="{height: scrollerHeight}">
 
@@ -61,12 +61,23 @@
             </el-form>
           </template>
 
+          <template v-if="!designer.selectedWidget">
+            <el-empty :description="i18nt('designer.hint.noSelectedWidgetHint')"></el-empty>
+          </template>
+
         </el-scrollbar>
       </el-tab-pane>
 
       <el-tab-pane v-if="!!designer" :label="i18nt('designer.hint.formSetting')" name="2">
         <el-scrollbar class="setting-scrollbar" :style="{height: scrollerHeight}">
           <form-setting :designer="designer" :form-config="formConfig"></form-setting>
+        </el-scrollbar>
+      </el-tab-pane>
+
+      <el-tab-pane :label="i18nt('designer.setting.dataSource')" name="3">
+        <el-scrollbar class="ds-setting-scrollbar" :style="{height: scrollerHeight}">
+          <data-source-setting :designer="designer" :form-config="formConfig">
+          </data-source-setting>
         </el-scrollbar>
       </el-tab-pane>
     </el-tabs>
@@ -96,6 +107,7 @@
   import CodeEditor from '@/components/code-editor/index'
   import PropertyEditors from './property-editor/index'
   import FormSetting from './form-setting'
+  import DataSourceSetting from './data-source-setting'
   import WidgetProperties from './propertyRegister'
   import {
     addWindowResizeHandler,
@@ -114,6 +126,7 @@
     components: {
       CodeEditor,
       FormSetting,
+      DataSourceSetting,
       ...PropertyEditors,
     },
     props: {
@@ -310,6 +323,13 @@
     }
   }
 
+  .ds-setting-scrollbar {
+    /*width: 284px;*/
+    :deep(.el-scrollbar__wrap) {
+      overflow-x: hidden; /* IE浏览器隐藏水平滚动条箭头！！ */
+    }
+  }
+
   .setting-collapse {
     :deep(.el-collapse-item__content) {
       padding-bottom: 6px;
@@ -358,5 +378,21 @@
       padding: 6px 15px 12px 15px;
     }
   }
+
+  :deep(.ds-setting-drawer) { /* 必须加上:deep，否则不生效 */
+    right: 320px !important;
+  }
+
+  :deep(.header-small-mb .el-drawer__header) {
+    margin-bottom: 6px;
+  }
+
+  :deep(.header-small-mb .el-drawer__body) {
+    padding: 12px;
+  }
+
+  /*:deep(.el-overlay .ds-setting-drawer) {*/
+  /*  right: 320px !important;*/
+  /*}*/
 
 </style>
