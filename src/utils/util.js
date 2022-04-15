@@ -403,7 +403,7 @@ function buildRequestConfig(dataSource, DSV, isSandbox) {
 export async function runDataSourceRequest(dataSource, DSV, isSandbox, $message) {
   try {
     let requestConfig = buildRequestConfig(dataSource, DSV, isSandbox)
-    console.log('test------', requestConfig)
+    //console.log('test------', requestConfig)
     let result = await axios.request(requestConfig)
 
     //let dhFn = new Function('result', 'sandbox', 'form', 'widget', dataSource.dataHandlerCode)
@@ -411,8 +411,8 @@ export async function runDataSourceRequest(dataSource, DSV, isSandbox, $message)
     return dhFn.call(null, result, isSandbox, DSV)
   } catch (err) {
     //let ehFn = new Function('error', 'sandbox', 'form', 'widget', '$message', dataSource.dataHandlerCode)
-    let ehFn = new Function('error', 'isSandbox', '$message', 'DSV', dataSource.errorHandlerCode)
-    ehFn.call(null, err, isSandbox, $message, DSV)
+    let ehFn = new Function('error', 'isSandbox', 'DSV', '$message', dataSource.errorHandlerCode)
+    ehFn.call(null, err, isSandbox, DSV, $message)
     console.error(err)
   }
 }

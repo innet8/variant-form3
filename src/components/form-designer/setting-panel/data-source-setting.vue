@@ -172,19 +172,19 @@
 
         <el-collapse v-model="activeNames">
           <el-collapse-item :title="i18nt('designer.setting.dsConfigHandlerTitle')" name="1" class="ch-collapse">
-            <el-alert type="info" :closable="false" title="(config, isSandbox) => {"></el-alert>
+            <el-alert type="info" :closable="false" title="(config, isSandbox, DSV) => {"></el-alert>
             <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.configHandlerCode" ref="chEditor"></code-editor>
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
           <el-collapse-item :title="i18nt('designer.setting.dsDataHandlerTitle')" name="2" class="dh-collapse">
 <!--            <el-alert type="info" :closable="false" title="(result, widget, form) => {"></el-alert>-->
-            <el-alert type="info" :closable="false" title="(result, isSandbox) => {"></el-alert>
+            <el-alert type="info" :closable="false" title="(result, isSandbox, DSV) => {"></el-alert>
             <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.dataHandlerCode" ref="dhEditor"></code-editor>
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
           <el-collapse-item :title="i18nt('designer.setting.dsErrorHandlerTitle')" name="3" class="eh-collapse">
 <!--            <el-alert type="info" :closable="false" title="(error, widget, form) => {"></el-alert>-->
-            <el-alert type="info" :closable="false" title="(error, isSandbox, $message) => {"></el-alert>
+            <el-alert type="info" :closable="false" title="(error, isSandbox, DSV, $message) => {"></el-alert>
             <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.errorHandlerCode" ref="ehEditor"></code-editor>
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
@@ -226,8 +226,7 @@
 <script>
   import i18n from "@/utils/i18n"
   import CodeEditor from "@/components/code-editor/index"
-  import axios from 'axios'
-  import {assembleAxiosConfig, deepClone, generateId, runDataSourceRequest} from "@/utils/util"
+  import {deepClone, generateId, runDataSourceRequest} from "@/utils/util"
   import { Platform } from '@element-plus/icons-vue'
 
   export default {
@@ -240,7 +239,6 @@
     props: {
       designer: Object,
       formConfig: Object,
-      //dsModel: Object,
     },
     data() {
       return {
@@ -253,10 +251,8 @@
           requestURLType: 'String',
           description: '',
           headers: [
-            //{name: '', type: 'String', value: ''},
           ],
           params: [
-            //{name: '', type: 'String', value: ''},
           ],
           data: [
           ],
@@ -296,16 +292,10 @@
     },
     methods: {
       validateValueInput(rule, value, callback) {
-        console.log('rule is: ', rule)
         let ruleField = rule.field
         let fieldType = ruleField.substring(0, ruleField.indexOf('.'))
         let fieldIdx = Number(ruleField.substring(ruleField.indexOf('.') + 1, ruleField.lastIndexOf('.')))
         let valueType = this.dsModel[fieldType][fieldIdx].type
-        // console.log('fieldType', fieldType)
-        // console.log('fieldIdx', fieldIdx)
-        // console.log('valueType', valueType)
-
-        //debugger
         if (valueType === 'Number') {
           if (isNaN(value)) {
             callback(new Error(this.i18nt('designer.setting.dsRequestNumberTypeError')))
@@ -333,9 +323,9 @@
         this.dsModel.requestURLType = 'String'
         this.dsModel.requestMethod = 'get'
         this.dsModel.description = ''
-        this.dsModel.headers = [] // this.dsModel.headers.splice(0, this.dsModel.headers.length)
-        this.dsModel.params = [] // this.dsModel.params.splice(0, this.dsModel.params.length)
-        this.dsModel.data = [] // this.dsModel.data.splice(0, this.dsModel.data.length)
+        this.dsModel.headers = []
+        this.dsModel.params = []
+        this.dsModel.data = []
         this.dsModel.configHandlerCode = '  return config'
         this.dsModel.dataHandlerCode = '  return result.data.data;'
         this.dsModel.errorHandlerCode = '  $message.error(error.message);'
@@ -431,41 +421,6 @@
       deleteRequestData(idx) {
         this.dsModel.data.splice(idx, 1)
       },
-
-      // buildRequestConfig(dataSource, DSV, isSandbox) {
-      //   let config = {}
-      //   if (dataSource.requestURLType === 'String') {
-      //     config.url = dataSource.requestURL
-      //   } else {
-      //     config.url = eval(dataSource.requestURL)
-      //   }
-      //   config.method = dataSource.requestMethod
-      //
-      //   config.headers = assembleAxiosConfig(dataSource.headers, DSV)
-      //   config.params = assembleAxiosConfig(dataSource.params, DSV)
-      //   config.data = assembleAxiosConfig(dataSource.data, DSV)
-      //
-      //   //let chFn = new Function('config', 'sandbox', 'form', 'widget', dataSource.configHandlerCode)
-      //   let chFn = new Function('config', 'isSandbox', 'DSV', dataSource.configHandlerCode)
-      //   return chFn.call(null, config, isSandbox, DSV)
-      // },
-      //
-      // async runDataSourceRequest(dataSource, DSV, isSandbox, $message) {
-      //   try {
-      //     let requestConfig = this.buildRequestConfig(dataSource, DSV, isSandbox)
-      //     console.log('test------', requestConfig)
-      //     let result = await axios.request(requestConfig)
-      //
-      //     //let dhFn = new Function('result', 'sandbox', 'form', 'widget', dataSource.dataHandlerCode)
-      //     let dhFn = new Function('result', 'isSandbox', 'DSV', dataSource.dataHandlerCode)
-      //     return dhFn.call(null, result, isSandbox, DSV)
-      //   } catch (err) {
-      //     //let ehFn = new Function('error', 'sandbox', 'form', 'widget', '$message', dataSource.dataHandlerCode)
-      //     let ehFn = new Function('error', 'isSandbox', '$message', 'DSV', dataSource.errorHandlerCode)
-      //     ehFn.call(null, err, isSandbox, $message, DSV)
-      //     console.error(err)
-      //   }
-      // },
 
       testDataSource() {
         this.showTestDataSourceDialogFlag = true

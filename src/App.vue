@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="elLocale">
   <div id="app">
-    <VFormDesigner :designer-config="designerConfig" />
+    <VFormDesigner :designer-config="designerConfig" :global-dsv="globalDsv" />
   </div>
   </el-config-provider>
 </template>
@@ -25,6 +25,11 @@ export default {
 
       designerConfig: {
         //logoHeader: false,
+      },
+
+      //全局数据源变量
+      globalDsv: {
+        testApiHost: 'http://www.test.com/api'
       },
 
       elLocaleMap: {

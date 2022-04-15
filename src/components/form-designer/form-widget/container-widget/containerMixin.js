@@ -1,13 +1,11 @@
 export default {
   inject: ['getFormConfig'],
-
   computed: {
     formConfig() {
       return this.getFormConfig()
     },
 
   },
-
   methods: {
     appendTableRow(widget) {
       this.designer.appendTableRow(widget)

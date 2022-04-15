@@ -173,7 +173,6 @@ export default {
         /* 首先处理数据源选项加载 */
         if (!!this.field.options.dsEnabled) {
           this.field.options.optionItems.splice(0, this.field.options.optionItems.length) // 清空原有选项
-          //TODO：组装DSV！！！
           let curDSName = this.field.options.dsName
           if (!!curDSName && !!this.formConfig.dataSources) {
             let curDS = null
@@ -184,7 +183,8 @@ export default {
             })
 
             if (!!curDS) {
-              let gDsv = this.getGlobalDsv()
+              let gDsv = this.getGlobalDsv() || {}
+              console.log('Global DSV is: ', gDsv)
               let localDsv = new Object({})
               overwriteObj(localDsv, gDsv)
               localDsv['widgetName'] = this.field.options.name
