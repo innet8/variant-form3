@@ -232,6 +232,7 @@
   export default {
     name: "data-source-setting",
     mixins: [i18n],
+    inject: ['getGlobalDsv'],
     components: {
       Platform,
       CodeEditor,
@@ -423,8 +424,9 @@
       },
 
       testDataSource() {
+        let globalDsv = this.getGlobalDsv() || {}
+        this.dsvJson = JSON.stringify(globalDsv, null, '  ')
         this.showTestDataSourceDialogFlag = true
-        this.dsResultJson = ''
       },
 
       async doDataSourceRequest() {

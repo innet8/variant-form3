@@ -153,6 +153,7 @@
         }
 
         this.designer.emitHistoryChange()
+        this.designer.emitEvent('field-selected', null)
       },
 
       onDragUpdate() {  /* 在VueDraggable内拖拽组件发生位置变化时会触发update，未发生组件位置变化不会触发！！ */

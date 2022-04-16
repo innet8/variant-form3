@@ -57,7 +57,7 @@
       </el-container>
 
       <el-aside>
-        <setting-panel :designer="designer" :selected-widget="designer.selectedWidget"
+        <setting-panel :designer="designer" :selected-widget="designer.selectedWidget" :global-dsv="globalDsv"
                        :form-config="designer.formConfig" @edit-event-handler="testEEH" />
       </el-aside>
     </el-container>

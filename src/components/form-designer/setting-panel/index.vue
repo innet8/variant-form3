@@ -113,7 +113,6 @@
     addWindowResizeHandler,
   } from "@/utils/util"
   import i18n from "@/utils/i18n"
-  import eventBus from "@/utils/event-bus"
   import emitter from "@/utils/emitter";
   import { propertyRegistered } from "@/components/form-designer/setting-panel/propertyRegister";
 
@@ -133,6 +132,16 @@
       designer: Object,
       selectedWidget: Object,
       formConfig: Object,
+      globalDsv: {
+        type: Object,
+        default: () => {},
+      },
+    },
+    provide() {
+      return {
+        isSubFormChildWidget: () => this.subFormChildWidgetFlag,
+        getGlobalDsv: () => this.globalDsv, // 全局数据源变量
+      }
     },
     inject: ['getDesignerConfig'],
     data() {
@@ -201,6 +210,11 @@
 
       this.designer.handleEvent('form-css-updated', (cssClassList) => {
         this.designer.setCssClassList(cssClassList)
+      })
+
+      //监听字段组件选中事件
+      this.designer.handleEvent('field-selected', (parentWidget) => {
+        this.subFormChildWidgetFlag = !!parentWidget && (parentWidget.type === 'sub-form');
       })
     },
     mounted() {
