@@ -32,6 +32,20 @@
 					</el-table-column>
 				</template>
 
+				<template v-if="!!widget.options.showButtonsColumn">
+					<el-table-column fixed="right" class-name="data-table-buttons-column"
+													 :label="widget.options.buttonsColumnTitle"
+													 :width="widget.options.buttonsColumnWidth">
+						<template #default="scope">
+							<template v-for="(ob, idx) in widget.options.operationButtons">
+								<el-button v-if="!ob.hidden" :type="ob.type" :size="ob.size" :round="ob.round" :disabled="ob.disabled"
+													 :class="['data-table-' + ob.name + '-button']">
+									{{ob.label}}</el-button>
+							</template>
+						</template>
+					</el-table-column>
+				</template>
+
 			</el-table>
 			<el-pagination v-if="widget.options.showPagination"
 									 	 :small="widget.options.smallPagination"
@@ -233,4 +247,5 @@
 	:deep(.el-collapsed__header) {
 	  padding: 10px 12px;
 	}
+
 </style>

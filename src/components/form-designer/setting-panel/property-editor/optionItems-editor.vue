@@ -15,7 +15,7 @@
     <el-switch v-model="optionModel.dsEnabled"></el-switch>
   </el-form-item>
   <el-form-item v-if="!!optionModel.dsEnabled" :label="i18nt('designer.setting.dsName')">
-    <el-select v-model="optionModel.dsName" filterable>
+    <el-select v-model="optionModel.dsName" filterable clearable>
       <el-option v-for="(item, idx) in dataSourceList" :key="idx" :title="item.description"
                  :label="item.uniqueName" :value="item.uniqueName"></el-option>
     </el-select>

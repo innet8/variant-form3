@@ -1,5 +1,4 @@
 import emitter from '@/utils/emitter'
-import eventBus from "@/utils/event-bus"
 
 export default {
   mixins: [emitter],

@@ -124,10 +124,14 @@ const EVENT_PROPERTIES = {
   'onValidate'        :            'onValidate-editor',
 
   //容器
-  'onSubFormRowAdd'   :            'onSubFormRowAdd-editor',
-  'onSubFormRowInsert':            'onSubFormRowInsert-editor',
-  'onSubFormRowDelete':            'onSubFormRowDelete-editor',
-  'onSubFormRowChange':            'onSubFormRowChange-editor',
+  'onSubFormRowAdd'           :            'onSubFormRowAdd-editor',
+  'onSubFormRowInsert'        :            'onSubFormRowInsert-editor',
+  'onSubFormRowDelete'        :            'onSubFormRowDelete-editor',
+  'onSubFormRowChange'        :            'onSubFormRowChange-editor',
+  'onPageSizeChange'          :            'onPageSizeChange-editor',
+  'onCurrentPageChange'       :            'onCurrentPageChange-editor',
+  'onSelectionChange'         :            'onSelectionChange-editor',
+  'onOperationButtonClick'    :            'onOperationButtonClick-editor',
 
 }
 

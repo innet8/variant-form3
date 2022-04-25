@@ -31,6 +31,21 @@
 					</el-table-column>
 				</template>
 
+				<template v-if="!!widget.options.showButtonsColumn">
+					<el-table-column fixed="right" class-name="data-table-buttons-column"
+													 :label="widget.options.buttonsColumnTitle"
+													 :width="widget.options.buttonsColumnWidth">
+						<template #default="scope">
+							<template v-for="(ob) in widget.options.operationButtons">
+								<el-button v-if="!ob.hidden" :type="ob.type" :size="ob.size"
+													 :round="ob.round" :disabled="ob.disabled"
+													 @click="onOperationButtonClick(ob.name, scope.$index, scope.row)"
+													 :class="['data-table-' + ob.name + '-button']">{{ob.label}}</el-button>
+							</template>
+						</template>
+					</el-table-column>
+				</template>
+
 			</el-table>
 			<el-pagination v-if="widget.options.showPagination"
 										 :small="widget.options.smallPagination"
@@ -56,6 +71,7 @@
 	import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
 	import refMixin from "@/components/form-render/refMixin"
 	import containerItemMixin from "@/components/form-render/container-item/containerItemMixin"
+	import {overwriteObj, runDataSourceRequest} from "@/utils/util"
 
   export default {
     name: "DataTableItem",
@@ -85,7 +101,7 @@
 			},
 
 		},
-		inject: ['refList', 'sfRefList', 'globalModel'],
+		inject: ['refList', 'sfRefList', 'globalModel', 'getFormConfig', 'getGlobalDsv'],
 		data() {
 			return {
 				tableData: [{
@@ -112,28 +128,36 @@
 
 			}
 		},
-		created() {
-			this.initRefList()
-		},
-		mounted() {
-			// this.handleOnMounted()
-		},
-		beforeDestroy() {
-			this.unregisterFromRefList()
-		},
 		computed: {
+			formConfig() {
+				return this.getFormConfig()
+			},
+
 			paginationLayout() {
 				return !!this.widget.options.smallPagination ? 'prev, pager, next' : 'total, sizes, prev, pager, next, jumper'
 			},
 
-		  customClass() {
-		    return !!this.widget.options.customClass ? this.widget.options.customClass.join(' ') : ''
-		  },
+			customClass() {
+				return !!this.widget.options.customClass ? this.widget.options.customClass.join(' ') : ''
+			},
 
 			widgetSize() {
 				return this.widget.options.tableSize || "default"
 			},
 
+		},
+		created() {
+			this.initRefList()
+		},
+		mounted() {
+			// this.handleOnMounted()
+
+			if (!!this.widget.options.dsEnabled) {
+				this.loadDataFromDS({})
+			}
+		},
+		beforeDestroy() {
+			this.unregisterFromRefList()
 		},
     methods: {
 			selectWidget(widget) {
@@ -142,7 +166,6 @@
 
 			renderHeader(h, { column, $index }) {//debugger
 				//console.log('column=====', column)
-
 				let colCount = 0;
 				if(this.widget.options.showIndex){
 					colCount++;
@@ -196,7 +219,6 @@
 				return this.widget.options.tableData.lastIndexOf(row)
 			},
 
-
 			findColumnAndSetHidden(columnName, hiddenFlag) {
 				this.widget.options.tableColumns.forEach(tc => {
 					if (tc.prop === columnName) {
@@ -214,9 +236,13 @@
 					}
 				})
 
-				/* 必须调用mixins中的dispatch方法逐级向父组件发送消息！！ */
-				this.dispatch('VFormRender', 'dataTableSelectionChange',
-								[this, selection, this.selectedIndices])
+				if (!!this.widget.options.onSelectionChange) {
+					let customFn = new Function('selection', 'selectedIndices', this.widget.options.onSelectionChange)
+					customFn.call(this, selection, this.selectedIndices)
+				} else {
+					/* 必须调用mixins中的dispatch方法逐级向父组件发送消息！！ */
+					this.dispatch('VFormRender', 'dataTableSelectionChange', [this, selection, this.selectedIndices])
+				}
 			},
 
 			handleSortChange({column, prop, order}) {
@@ -228,18 +254,29 @@
 
 			handlePageSizeChange(pageSize) {
 				this.pageSize = pageSize
-				this.dispatch('VFormRender', 'dataTablePageSizeChange',
-								[this, pageSize, this.currentPage])
-
-				//console.log('test====', this.currentPage)
+				if (!!this.widget.options.onPageSizeChange) {
+					let customFn = new Function('pageSize', 'currentPage', this.widget.options.onPageSizeChange)
+					customFn.call(this, pageSize, this.currentPage)
+				} else {
+					this.dispatch('VFormRender', 'dataTablePageSizeChange', [this, pageSize, this.currentPage])
+				}
 			},
 
 			handleCurrentPageChange(currentPage) {
 				this.currentPage = currentPage
-				this.dispatch('VFormRender', 'dataTablePageChange',
-								[this, this.pageSize, currentPage])
+				if (!!this.widget.options.onCurrentPageChange) {
+					let customFn = new Function('pageSize', 'currentPage', this.widget.options.onCurrentPageChange)
+					customFn.call(this, this.pageSize, currentPage)
+				} else {
+					this.dispatch('VFormRender', 'dataTablePageChange', [this, this.pageSize, currentPage])
+				}
+			},
 
-				//console.log('test====', this.pageSize)
+			onOperationButtonClick(btnName, rowIndex, row) {
+				if (!!this.widget.options.onOperationButtonClick) {
+					let customFn = new Function('buttonName', 'rowIndex', 'row', this.widget.options.onOperationButtonClick)
+					customFn.call(this, btnName, rowIndex, row)
+				}
 			},
 
 			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
@@ -298,6 +335,39 @@
 			 */
 			setTableData(tableData) {
 				this.widget.options.tableData = tableData
+			},
+
+			/**
+			 * 从数据源加载表格数据
+			 * @param localDsv 本地数据源变量DSV
+			 * @param dsName 数据源名称，不传此值，则使用dsName属性绑定的数据源
+			 */
+			loadDataFromDS(localDsv = {}, dsName = '') {
+				let curDSName = dsName || this.widget.options.dsName
+				if (!!curDSName && !!this.formConfig.dataSources) {
+					let curDS = null
+					this.formConfig.dataSources.forEach(ds => {
+						if (ds.uniqueName === curDSName) {
+							curDS = ds
+						}
+					})
+
+					if (!!curDS) {
+						let gDsv = this.getGlobalDsv() || {}
+						let newDsv = {
+							widgetName: this.widget.options.name,
+							pageSize: this.pageSize,
+							currentPage: this.currentPage
+						}
+						overwriteObj(newDsv, gDsv)
+						overwriteObj(newDsv, localDsv)
+						runDataSourceRequest(curDS, newDsv, false, this.$message).then(res => {
+							this.setTableData(res)
+						}).catch(err => {
+							this.$message.error(err.message)
+						})
+					}
+				}
 			},
 
 			/**

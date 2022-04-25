@@ -261,7 +261,6 @@
           configHandlerCode: '  return config',
           dataHandlerCode: '  return result.data.data;',
           errorHandlerCode: '  $message.error(error.message);',
-          //errorHandlerCode: '  alert(error);',
         },
         curEditDSIdx: -1,
 
@@ -341,9 +340,6 @@
       },
 
       saveDataSource() {
-        console.log('dsModel is: ', this.dsModel)
-        //debugger
-
         this.$refs['dsForm'].validate((valid, fields) => {
           if (!valid) {
             this.$message.error(this.i18nt('designer.setting.dsValidationError'))
@@ -383,7 +379,7 @@
         }).then(() => {
           this.formConfig.dataSources.splice(dsIdx, 1)
         }).catch(error => {
-          console.error(error)
+          //this.$message.error(error)
         })
       },
 

@@ -148,12 +148,43 @@ export const containers = [
         {prop:'add',label:'地址',width:'250',show:true},
         {prop:'ss',label:'秘密',width:'100',show:false},
       ],
+      showButtonsColumn: false, // 是否显示操作列
+      buttonsColumnTitle: '操作',
+      buttonsColumnWidth: 120,
+      operationButtons: [{ // 操作按钮配置
+        name: 'detail',
+        label: '详情',
+        type: 'text',
+        size: 'small',
+        round: false,
+        hidden: true,
+        disabled: false,
+      }, {
+        name: 'edit',
+        label: '编辑',
+        type: 'text',
+        size: 'small',
+        round: false,
+        hidden: false,
+        disabled: false,
+      }, {
+        name: 'delete',
+        label: '删除',
+        type: 'text',
+        size: 'small',
+        round: false,
+        hidden: false,
+        disabled: false,
+      },
+      ],
       pagination: { // 分页信息
         currentPage: 1,
         pageSizes: [10, 15, 20, 30, 50, 100, 200],
         pageSize: 20,
         total: 366,
       },
+      dsEnabled: false, //是否使用数据源数据
+      dsName: '',  //数据源名称
       tableData: [ //表格数据
         {
           date: '2016-05-02',
@@ -212,7 +243,18 @@ export const containers = [
           add: '上海市普陀区金沙江路 1518 弄',
           ss: 100,
         },
-      ]
+      ],
+
+      //onCreated: '',
+      //onMounted: '',
+      //分页大小改变事件
+      onPageSizeChange: '',
+      //当前页改变事件
+      onCurrentPageChange: '',
+      //选择项改变事件
+      onSelectionChange: '',
+      //操作按钮点击事件
+      onOperationButtonClick: '',
     }
   }
 
@@ -836,6 +878,7 @@ export const basicFields = [
       label: '',
       columnWidth: '200px',
       size: '',
+      displayStyle: 'block',
       disabled: false,
       hidden: false,
       type: '',
@@ -899,7 +942,7 @@ export const advancedFields = [
       showFileList: true,
       limit: 3,
       fileMaxSize: 5, //MB
-      fileTypes: ['jpeg', 'png'],
+      fileTypes: ['jpg', 'jpeg', 'png'],
       //headers: [],
       //-------------------
       customClass: '',  //自定义css类名

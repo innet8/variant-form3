@@ -99,7 +99,7 @@ export default {
 
     initEventHandler() {
       this.on$('setFormData', (newFormData) => {
-        console.log('formModel of globalModel----------', this.globalModel.formModel)
+        //console.log('formModel of globalModel----------', this.globalModel.formModel)
         if (!this.subFormItemFlag) {
           this.setValue(newFormData[this.field.options.name])
         }
@@ -184,7 +184,7 @@ export default {
 
             if (!!curDS) {
               let gDsv = this.getGlobalDsv() || {}
-              console.log('Global DSV is: ', gDsv)
+              //console.log('Global DSV is: ', gDsv)
               let localDsv = new Object({})
               overwriteObj(localDsv, gDsv)
               localDsv['widgetName'] = this.field.options.name
@@ -261,7 +261,11 @@ export default {
       }
 
       if (!!this.field.options.onValidate) {
-        let customFn = new Function('rule', 'value', 'callback', this.field.options.onValidate)
+        //let customFn = new Function('rule', 'value', 'callback', this.field.options.onValidate)
+        let customFn = (rule, value, callback) => {
+          let tmpFunc =  new Function('rule', 'value', 'callback', this.field.options.onValidate)
+          return tmpFunc.call(this, rule, value, callback)
+        }
         this.rules.push({
           validator: customFn,
           trigger: ['blur', 'change'],
