@@ -363,7 +363,7 @@ export default {
       operationButtonDisabled: 'Disabled',
       addOperationButton: 'Add New Button',
       deleteOperationButtonHint: 'Delete this button?',
-      operationButtonDuplicatedNameError: 'Duplicate button id.',
+      operationButtonDuplicatedNameError: 'Duplicate button name.',
 
       //data-source
       dsEnabled: 'Use Datasource',

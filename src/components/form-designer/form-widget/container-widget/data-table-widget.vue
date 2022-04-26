@@ -15,7 +15,6 @@
 				<el-table-column v-if="widget.options.showCheckBox" type="selection"
 												 :width="!widget.options.showSummary ? 42: 53" fixed="left"></el-table-column>
 
-
 				<template v-for="(item, index) in widget.options.tableColumns">
 					<el-table-column v-if="item.show !== false"
 													 :key="index"

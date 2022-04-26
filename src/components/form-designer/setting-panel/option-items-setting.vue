@@ -85,7 +85,6 @@
 </template>
 
 <script>
-  //import Draggable from 'vuedraggable'
   import CodeEditor from '@/components/code-editor/index'
   import i18n from "@/utils/i18n";
 
@@ -93,7 +92,6 @@
     name: "OptionItemsSetting",
     mixins: [i18n],
     components: {
-      //Draggable,
       CodeEditor,
     },
     props: {

@@ -174,8 +174,8 @@
 			<el-dialog :title="i18nt('designer.setting.buttonsColumnEdit')" v-model="showButtonsEditDialog"
 								 :show-close="true" custom-class="drag-dialog small-padding-dialog" append-to-body
 								 :close-on-click-modal="false" :close-on-press-escape="false"
-								 :destroy-on-close="true" width="980px">
-				<el-form label-width="110" label-position="right" :model="optionModel">
+								 :destroy-on-close="true" width="1120px">
+				<el-form label-width="110" label-position="left" :model="optionModel">
 					<el-row :gutter="8">
 						<el-col :span="12">
 							<el-form-item prop="buttonsColumnTitle" :label="i18nt('designer.setting.buttonsColumnTitle')">
@@ -205,7 +205,7 @@
 																:label="i18nt('designer.setting.operationButtonName')" :rules="nameRules">
 										<el-input v-model="btn.name" @focus="onButtonNameFocus"
 															@change="(value) => onButtonNameChange(value, bIdx)"
-															placeholder="按钮ID"></el-input>
+															:placeholder="i18nt('designer.setting.operationButtonName')"></el-input>
 									</el-form-item>
 								</el-col>
 								<el-col :span="3">
@@ -352,7 +352,6 @@
 
 				nameRules: [
 					{ required: true, trigger: ['blur', 'change'], message: this.i18nt('designer.setting.fieldValueRequired') },
-					//{ validator: this.validateNameInput, trigger: ['change'] }
 				],
       }
     },

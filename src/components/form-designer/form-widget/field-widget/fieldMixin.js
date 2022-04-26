@@ -1,4 +1,4 @@
-import {deepClone, overwriteObj, runDataSourceRequest, translateOptionItems} from "@/utils/util"
+import {deepClone, getDSByName, overwriteObj, runDataSourceRequest, translateOptionItems} from "@/utils/util"
 import FormValidators from '@/utils/validators'
 
 export default {
@@ -174,26 +174,18 @@ export default {
         if (!!this.field.options.dsEnabled) {
           this.field.options.optionItems.splice(0, this.field.options.optionItems.length) // 清空原有选项
           let curDSName = this.field.options.dsName
-          if (!!curDSName && !!this.formConfig.dataSources) {
-            let curDS = null
-            this.formConfig.dataSources.forEach(ds => {
-              if (ds.uniqueName === curDSName) {
-                curDS = ds
-              }
+          let curDS = getDSByName(this.formConfig, curDSName)
+          if (!!curDS) {
+            let gDsv = this.getGlobalDsv() || {}
+            //console.log('Global DSV is: ', gDsv)
+            let localDsv = new Object({})
+            overwriteObj(localDsv, gDsv)
+            localDsv['widgetName'] = this.field.options.name
+            runDataSourceRequest(curDS, localDsv, false, this.$message).then(res => {
+              this.loadOptions(res)
+            }).catch(err => {
+              this.$message.error(err.message)
             })
-
-            if (!!curDS) {
-              let gDsv = this.getGlobalDsv() || {}
-              //console.log('Global DSV is: ', gDsv)
-              let localDsv = new Object({})
-              overwriteObj(localDsv, gDsv)
-              localDsv['widgetName'] = this.field.options.name
-              runDataSourceRequest(curDS, localDsv, false, this.$message).then(res => {
-                this.loadOptions(res)
-              }).catch(err => {
-                this.$message.error(err.message)
-              })
-            }
           }
 
           return;

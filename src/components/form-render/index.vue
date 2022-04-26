@@ -43,9 +43,9 @@
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
   import {
     generateId, deepClone, insertCustomCssToHead, insertGlobalFunctionsToHtml, getAllContainerWidgets,
-    getAllFieldWidgets, traverseFieldWidgets} from "@/utils/util"
+    getAllFieldWidgets, traverseFieldWidgets, buildDefaultFormJson
+  } from "@/utils/util"
   import i18n, { changeLocale } from "@/utils/i18n"
-  import eventBus from "@/utils/event-bus"
 
   export default {
     name: "VFormRender",
@@ -59,7 +59,7 @@
     props: {
       formJson: { //prop传入的表单JSON配置
         type: Object,
-        required: true
+        default: () => buildDefaultFormJson()
       },
       formData: { //prop传入的表单数据
         type: Object,

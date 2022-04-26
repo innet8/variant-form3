@@ -39,7 +39,7 @@
 							<template v-for="(ob) in widget.options.operationButtons">
 								<el-button v-if="!ob.hidden" :type="ob.type" :size="ob.size"
 													 :round="ob.round" :disabled="ob.disabled"
-													 @click="onOperationButtonClick(ob.name, scope.$index, scope.row)"
+													 @click="handleOperationButtonClick(ob.name, scope.$index, scope.row)"
 													 :class="['data-table-' + ob.name + '-button']">{{ob.label}}</el-button>
 							</template>
 						</template>
@@ -55,8 +55,7 @@
 										 :layout="paginationLayout"
 										 :total="widget.options.pagination.total"
 										 @size-change="handlePageSizeChange"
-										 @current-change="handleCurrentPageChange"
-			>
+										 @current-change="handleCurrentPageChange">
 			</el-pagination>
 
 	</container-item-wrapper>
@@ -71,7 +70,7 @@
 	import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
 	import refMixin from "@/components/form-render/refMixin"
 	import containerItemMixin from "@/components/form-render/container-item/containerItemMixin"
-	import {overwriteObj, runDataSourceRequest} from "@/utils/util"
+	import {getDSByName, overwriteObj, runDataSourceRequest} from "@/utils/util"
 
   export default {
     name: "DataTableItem",
@@ -272,7 +271,7 @@
 				}
 			},
 
-			onOperationButtonClick(btnName, rowIndex, row) {
+			handleOperationButtonClick(btnName, rowIndex, row) {
 				if (!!this.widget.options.onOperationButtonClick) {
 					let customFn = new Function('buttonName', 'rowIndex', 'row', this.widget.options.onOperationButtonClick)
 					customFn.call(this, btnName, rowIndex, row)
@@ -299,6 +298,27 @@
 			 */
 			setTableColumn(tableColumns) {
 				this.setTableColumns(tableColumns)
+			},
+
+			/**
+			 * 从数据源加载表格列
+			 * @param localDsv 本地数据源变量DSV
+			 * @param dsName 数据源名称
+			 */
+			loadColumnsFromDS(localDsv = {}, dsName) {
+				let curDS = getDSByName(this.formConfig, dsName)
+				if (!!curDS) {
+					let gDsv = this.getGlobalDsv() || {}
+					let newDsv = new Object({})
+					overwriteObj(newDsv, gDsv)
+					overwriteObj(newDsv, localDsv)
+					newDsv.widgetName = this.widget.options.name
+					runDataSourceRequest(curDS, newDsv, false, this.$message).then(res => {
+						this.setTableColumns(res)
+					}).catch(err => {
+						this.$message.error(err.message)
+					})
+				}
 			},
 
 			/**
@@ -344,29 +364,20 @@
 			 */
 			loadDataFromDS(localDsv = {}, dsName = '') {
 				let curDSName = dsName || this.widget.options.dsName
-				if (!!curDSName && !!this.formConfig.dataSources) {
-					let curDS = null
-					this.formConfig.dataSources.forEach(ds => {
-						if (ds.uniqueName === curDSName) {
-							curDS = ds
-						}
+				let curDS = getDSByName(this.formConfig, curDSName)
+				if (!!curDS) {
+					let gDsv = this.getGlobalDsv() || {}
+					let newDsv = new Object({})
+					overwriteObj(newDsv, gDsv)
+					overwriteObj(newDsv, localDsv)
+					newDsv.widgetName = this.widget.options.name
+					newDsv.pageSize = this.pageSize
+					newDsv.currentPage = this.currentPage
+					runDataSourceRequest(curDS, newDsv, false, this.$message).then(res => {
+						this.setTableData(res)
+					}).catch(err => {
+						this.$message.error(err.message)
 					})
-
-					if (!!curDS) {
-						let gDsv = this.getGlobalDsv() || {}
-						let newDsv = {
-							widgetName: this.widget.options.name,
-							pageSize: this.pageSize,
-							currentPage: this.currentPage
-						}
-						overwriteObj(newDsv, gDsv)
-						overwriteObj(newDsv, localDsv)
-						runDataSourceRequest(curDS, newDsv, false, this.$message).then(res => {
-							this.setTableData(res)
-						}).catch(err => {
-							this.$message.error(err.message)
-						})
-					}
 				}
 			},
 

@@ -323,6 +323,35 @@ export function getQueryParam(variable) {
   return undefined;
 }
 
+export function getDefaultFormConfig() {
+  return {
+    modelName: 'formData',
+    refName: 'vForm',
+    rulesName: 'rules',
+    labelWidth: 80,
+    labelPosition: 'left',
+    size: '',
+    labelAlign: 'label-left-align',
+    cssCode: '',
+    customClass: '',
+    functions: '',  //全局函数
+    layoutType: 'PC',
+    jsonVersion: 3,
+    dataSources: [],  //数据源集合
+
+    onFormCreated: '',
+    onFormMounted: '',
+    onFormDataChange: '',
+  }
+}
+
+export function buildDefaultFormJson() {
+  return {
+    widgetList: [],
+    formConfig: deepClone( getDefaultFormConfig() )
+  }
+}
+
 /**
  * 转译选择项数据
  * @param rawData
@@ -415,4 +444,17 @@ export async function runDataSourceRequest(dataSource, DSV, isSandbox, $message)
     ehFn.call(null, err, isSandbox, DSV, $message)
     console.error(err)
   }
+}
+
+export function getDSByName(formConfig, dsName) {
+  let resultDS = null
+  if (!!dsName && !!formConfig.dataSources) {
+    formConfig.dataSources.forEach(ds => {
+      if (ds.uniqueName === dsName) {
+        resultDS = ds
+      }
+    })
+  }
+
+  return resultDS
 }

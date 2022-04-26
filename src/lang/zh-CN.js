@@ -331,7 +331,7 @@ export default {
       showIndex: '是否显示行号',
       showPagination: '是否显示分页',
       smallPagination: '小型分页',
-      tableColEdit: '数据列编辑',
+      tableColEdit: '表格列编辑',
       tableDataEdit: '表格数据编辑',
       showSummary: '是否合计',
       stripe: '是否斑马线',
