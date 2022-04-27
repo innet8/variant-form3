@@ -84,11 +84,12 @@
 				:close-on-click-modal="false" :close-on-press-escape="false"
 				:destroy-on-close="true" width="1120px">
 				<el-table :data="optionModel.tableColumns" style="width: 100%"
-									:cell-style="{padding:'3px 0'}" height="500" border row-key="prop" ref="singleTable" stripe>
+									:cell-style="{padding:'3px 0'}" height="500" border row-key="columnId" ref="singleTable" stripe>
 					<el-table-column type="index" width="42" fixed="left"></el-table-column>
 					<el-table-column label="" width="30">
 						<i class="iconfont icon-drag drag-option"></i>
 					</el-table-column>
+					<el-table-column label="columnId" prop="columnId" width="150" v-if="false"></el-table-column>
 					<el-table-column :label="i18nt('designer.setting.columnName')" width="150" prop="prop">
 						<template #default="scope">
 							<el-input v-model="scope.row.prop"></el-input>
@@ -114,9 +115,13 @@
 							<el-switch v-model="scope.row.sortable"></el-switch>
 						</template>
 					</el-table-column>
-					<el-table-column :label="i18nt('designer.setting.fixedColumn')" width="70" prop="fixed">
+					<el-table-column :label="i18nt('designer.setting.fixedColumn')" width="100" prop="fixed">
 						<template #default="scope">
-							<el-switch v-model="scope.row.fixed"></el-switch>
+							<el-select v-model="scope.row.fixed">
+								<el-option value="">false</el-option>
+								<el-option value="left">left</el-option>
+								<el-option value="right">right</el-option>
+							</el-select>
 						</template>
 					</el-table-column>
 					<el-table-column :label="i18nt('designer.setting.alignTypeOfColumn')" width="100" prop="align">
@@ -436,7 +441,7 @@
 			},
 
 			addCol(){
-				let newRow = {};
+				let newRow = {columnId: new Date().getTime()};
 				this.optionModel.tableColumns.push(newRow);
 				this.designer.emitHistoryChange()
 			},

@@ -21,7 +21,7 @@
 													 :prop="item.prop"
 													 :label="item.label"
 													 :sortable="item.sortable"
-													 :fixed="item.fixed"
+													 :fixed="!item.fixed ? false : item.fixed"
 													 :align="item.align ? item.align:'center'"
 													 :formatter="formatterValue"
 													 :format="item.format"
@@ -32,7 +32,7 @@
 				</template>
 
 				<template v-if="!!widget.options.showButtonsColumn">
-					<el-table-column fixed="right" class-name="data-table-buttons-column"
+					<el-table-column fixed="right" class-name="data-table-buttons-column" :align="'center'"
 													 :label="widget.options.buttonsColumnTitle"
 													 :width="widget.options.buttonsColumnWidth">
 						<template #default="scope">
@@ -150,14 +150,6 @@
 			widgetSize() {
 				return this.widget.options.tableSize || "default"
 			},
-
-		//   selected() {
-		//     return !!this.designer && this.widget.id === this.designer.selectedId
-		//   },
-
-		//   customClass() {
-		//     return !!this.widget.options.customClass ? this.widget.options.customClass.join(' ') : ''
-		//   },
 
 		},
     methods: {

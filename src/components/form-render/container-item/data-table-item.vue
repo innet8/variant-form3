@@ -21,7 +21,7 @@
 													 :prop="item.prop"
 													 :label="item.label"
 													 :sortable="item.sortable"
-													 :fixed="item.fixed"
+													 :fixed="!item.fixed ? false : item.fixed"
 													 :align="item.align ? item.align:'center'"
 													 :formatter="formatterValue"
 													 :format="item.format"
@@ -32,7 +32,7 @@
 				</template>
 
 				<template v-if="!!widget.options.showButtonsColumn">
-					<el-table-column fixed="right" class-name="data-table-buttons-column"
+					<el-table-column fixed="right" class-name="data-table-buttons-column" :align="'center'"
 													 :label="widget.options.buttonsColumnTitle"
 													 :width="widget.options.buttonsColumnWidth">
 						<template #default="scope">
@@ -253,6 +253,10 @@
 
 			handlePageSizeChange(pageSize) {
 				this.pageSize = pageSize
+				if (!!this.widget.options.dsEnabled && !!this.widget.options.dsName) {
+					this.loadDataFromDS()
+				}
+
 				if (!!this.widget.options.onPageSizeChange) {
 					let customFn = new Function('pageSize', 'currentPage', this.widget.options.onPageSizeChange)
 					customFn.call(this, pageSize, this.currentPage)
@@ -263,6 +267,10 @@
 
 			handleCurrentPageChange(currentPage) {
 				this.currentPage = currentPage
+				if (!!this.widget.options.dsEnabled && !!this.widget.options.dsName) {
+					this.loadDataFromDS()
+				}
+
 				if (!!this.widget.options.onCurrentPageChange) {
 					let customFn = new Function('pageSize', 'currentPage', this.widget.options.onCurrentPageChange)
 					customFn.call(this, this.pageSize, currentPage)
