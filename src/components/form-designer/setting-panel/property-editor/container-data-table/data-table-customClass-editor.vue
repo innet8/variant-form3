@@ -82,7 +82,7 @@
 			<el-dialog :title="i18nt('designer.setting.tableColEdit')" v-model="dialogVisible"
 				:show-close="true" custom-class="drag-dialog small-padding-dialog"
 				:close-on-click-modal="false" :close-on-press-escape="false"
-				:destroy-on-close="true" width="1120px">
+				:destroy-on-close="true" width="1180px">
 				<el-table :data="optionModel.tableColumns" style="width: 100%"
 									:cell-style="{padding:'3px 0'}" height="500" border row-key="columnId" ref="singleTable" stripe>
 					<el-table-column type="index" width="42" fixed="left"></el-table-column>

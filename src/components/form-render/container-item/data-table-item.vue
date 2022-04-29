@@ -2,7 +2,7 @@
 
 	<container-item-wrapper v-show="!widget.options.hidden" :widget="widget">
 
-			<el-table ref="dataTable" :data="widget.options.tableData"
+			<el-table ref="dataTable" :data="widget.options.tableData" :class="[customClass]"
 								:height="widget.options.tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
 								:size="widgetSize" :stripe="widget.options.stripe"
@@ -137,7 +137,7 @@
 			},
 
 			customClass() {
-				return !!this.widget.options.customClass ? this.widget.options.customClass.join(' ') : ''
+				return this.widget.options.customClass || ''
 			},
 
 			widgetSize() {

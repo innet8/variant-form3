@@ -2,16 +2,16 @@
 
 	<container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
 		:index-of-parent-list="indexOfParentList">
-		<div :key="widget.id" class="collapse-container"
+		<div :key="widget.id" class="collapse-container data-table-container"
 			:class="{'selected': selected}" @click.stop="selectWidget(widget)">
 
-			<el-table :data="widget.options.tableData"
+			<el-table :data="widget.options.tableData" :class="[customClass]"
 								:height="widget.options.tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
 								:size="widgetSize" @click.native.stop="selectWidget(widget)" :stripe="widget.options.stripe"
 								:cell-style="{padding: widget.options.rowSpacing + 'px 0'}">
 
-				<el-table-column v-if="widget.options.showIndex"	type="index" width="50" fixed="left"></el-table-column>
+				<el-table-column v-if="widget.options.showIndex" type="index" width="50" fixed="left"></el-table-column>
 				<el-table-column v-if="widget.options.showCheckBox" type="selection"
 												 :width="!widget.options.showSummary ? 42: 53" fixed="left"></el-table-column>
 
@@ -233,6 +233,13 @@
 
 	.collapse-container.selected {
 	  outline: 2px solid $--color-primary !important;
+	}
+
+	.data-table-container {
+		:deep(.el-scrollbar__view)  {
+			overflow-x: auto !important;  /* el-table默认显示水平滚动条！！ */
+			height: 100%;  /* 水平滚动条固定在表格底部显示！！ */
+		}
 	}
 
 	:deep(.el-collapsed__header) {
