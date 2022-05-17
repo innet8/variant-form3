@@ -15,7 +15,7 @@
         <img src="../../assets/vform-logo.png" @click="openHome">
         <span class="bold">{{vfProductName}}</span> {{vfProductTitle}} <span class="version-span">Ver {{vFormVersion}}</span></div>
       <div class="float-right external-link">
-        <el-dropdown v-if="showLink('languageMenu')" @command="handleLanguageChanged">
+        <el-dropdown v-if="showLink('languageMenu')" :hide-timeout="2000" @command="handleLanguageChanged">
           <span class="el-dropdown-link">{{curLangName}}<svg-icon icon-class="el-arrow-down" /></span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -130,6 +130,7 @@
             productTitle: '',  //自定义表单设计器标题，对应“表单设计器”（仅Pro）
 
             presetCssCode: '',  //设计器预设CSS样式代码
+            languageName: 'zh-CN',  //界面语言，默认显示中文
 
             resetFormJson: false,  //是否在设计器初始化时将表单内容重置为空
           }

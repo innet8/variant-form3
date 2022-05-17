@@ -489,6 +489,7 @@
 			},
 
 			addOperationButton() {
+				this.optionModel.operationButtons = this.optionModel.operationButtons || []
 				this.optionModel.operationButtons.push({
 					name: 'btn' + generateId(),
 					label: 'new btn',

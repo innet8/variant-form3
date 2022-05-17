@@ -150,6 +150,11 @@
         return this.rowIdData
       },
 
+      getWidgetRefOfSubForm(widgetName, rowIndex) {
+        let realWidgetName = widgetName + '@row' + this.rowIdData[rowIndex]
+        return this.getWidgetRef(realWidgetName)
+      },
+
       initFieldSchemaData() {  //初始化fieldSchemaData！！！
         if (this.widget.type !== 'sub-form') {
           return
@@ -310,6 +315,7 @@
 
     :deep(.el-row.header-row) {
       padding-bottom: 0;
+      background: #DCDFE6;
     }
 
     :deep(.el-row.sub-form-row) {
@@ -325,6 +331,7 @@
   div.action-header-column {
     display: inline-block;
     width: 120px;
+    border: 1px solid #e1e2e3;
 
     .action-label {
       margin-right: 12px;
@@ -341,6 +348,7 @@
     //overflow: hidden;
     //white-space: nowrap;  //文字超出长度不自动换行
     //text-overflow: ellipsis;  //文字超出长度显示省略号
+    border: 1px solid #e1e2e3;
 
     span.custom-label i {
       margin: 0 3px;
@@ -368,6 +376,7 @@
   div.sub-form-action-column {
     display: inline-block;
     width: 120px;
+    border: 1px solid #e1e2e3;
 
     :deep(.el-form-item) {
       margin-bottom: 0;
@@ -391,6 +400,7 @@
   div.sub-form-table-column {
     display: inline-block;
     //width: 200px;
+    border: 1px solid #e1e2e3;
 
     :deep(.el-form-item) {
       margin-left: 4px;
