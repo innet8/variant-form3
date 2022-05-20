@@ -2,16 +2,20 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-time-picker ref="fieldEditor" v-model="fieldModel"
-                    :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '']"
-                    :disabled="field.options.disabled" :readonly="field.options.readonly"
-                    :size="widgetSize"
-                    :clearable="field.options.clearable" :editable="field.options.editable"
-                    :format="field.options.format" value-format="HH:mm:ss"
-                    :placeholder="field.options.placeholder || i18nt('render.hint.timePlaceholder')"
-                    @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
-                    @change="handleChangeEvent">
-    </el-time-picker>
+    <div :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '', isReadMode ? 'readonly-mode-time' : '']">
+      <el-time-picker ref="fieldEditor" v-model="fieldModel"
+                      :disabled="field.options.disabled" :readonly="field.options.readonly"
+                      :size="widgetSize"
+                      :clearable="field.options.clearable" :editable="field.options.editable"
+                      :format="field.options.format" value-format="HH:mm:ss"
+                      :placeholder="field.options.placeholder || i18nt('render.hint.timePlaceholder')"
+                      @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
+                      @change="handleChangeEvent">
+      </el-time-picker>
+      <template v-if="isReadMode">
+        <span class="readonly-mode-field">{{fieldModel}}</span>
+      </template>
+    </div>
   </form-item-wrapper>
 </template>
 
@@ -96,8 +100,18 @@
 <style lang="scss" scoped>
   @import "../../../../styles/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
 
-  .full-width-input {
-    width: 100% !important;
+  .auto-full-width {
+    width: 100%;
+
+    :deep(.el-date-editor) {
+      width: 100% !important;
+    }
+  }
+
+  .readonly-mode-time {
+    :deep(.el-date-editor) {
+      display: none;
+    }
   }
 
 </style>

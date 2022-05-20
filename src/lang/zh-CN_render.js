@@ -5,6 +5,8 @@ export default {
       prompt: '提示',
       confirm: '确定',
       cancel: '取消',
+      defaultActiveText: '是',
+      defaultInactiveText: '否',
 
       selectPlaceholder: '请选择',
       timePlaceholder: '选择时间',

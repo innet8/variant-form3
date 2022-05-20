@@ -2,7 +2,7 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <div class="full-width-input">
+    <div class="full-width-input" :class="{'readonly-mode-cascader' : isReadMode}">
       <el-cascader ref="fieldEditor" :options="field.options.optionItems" v-model="fieldModel"
                    :disabled="field.options.disabled"
                    :size="widgetSize"
@@ -14,6 +14,9 @@
                    @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
                    @change="handleChangeEvent">
       </el-cascader>
+      <template v-if="isReadMode">
+        <span class="readonly-mode-field">{{contentForReadMode}}</span>
+      </template>
     </div>
   </form-item-wrapper>
 </template>
@@ -77,6 +80,20 @@
         return this.field.options.childrenKey || 'children'
       },
 
+      contentForReadMode() {
+        if (!!this.field.options.multiple) {
+          //console.log('test======', this.$refs.fieldEditor.presentTags)
+          const curTags = this.$refs.fieldEditor.presentTags
+          if (!curTags || (curTags.length <= 0)) {
+            return '--'
+          } else {
+            return curTags.map(tagItem => tagItem.text).join(', ')
+          }
+        } else {
+          return this.$refs.fieldEditor.presentText || '--'
+        }
+      },
+
     },
     beforeCreate() {
       /* 这里不能访问方法和属性！！ */
@@ -128,6 +145,10 @@
     :deep(.el-cascader) {
       width: 100% !important;
     }
+  }
+
+  .readonly-mode-cascader :deep(.el-cascader) {
+    display: none;
   }
 
 </style>

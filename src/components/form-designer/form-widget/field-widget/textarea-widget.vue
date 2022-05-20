@@ -2,7 +2,7 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-input type="textarea" ref="fieldEditor" v-model="fieldModel"
+    <el-input type="textarea" ref="fieldEditor" v-model="fieldModel" v-show="!isReadMode"
               :disabled="field.options.disabled" :readonly="field.options.readonly"
               :size="widgetSize"
               :placeholder="field.options.placeholder" :rows="field.options.rows"
@@ -11,6 +11,9 @@
               @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent" @input="handleInputCustomEvent"
               @change="handleChangeEvent">
     </el-input>
+    <template v-if="isReadMode">
+      <div v-html="fieldModel" class="readonly-mode-field"></div>
+    </template>
   </form-item-wrapper>
 </template>
 
@@ -95,4 +98,9 @@
 <style lang="scss" scoped>
   @import "../../../../styles/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
 
+  .readonly-mode-field {
+    display: inline-block;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
 </style>

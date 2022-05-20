@@ -2,18 +2,24 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-date-picker ref="fieldEditor" :type="field.options.type" v-model="fieldModel"
-                    :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '']"
-                    :readonly="field.options.readonly" :disabled="field.options.disabled"
-                    :size="widgetSize"
-                    :clearable="field.options.clearable" :editable="field.options.editable"
-                    :format="field.options.format" :value-format="field.options.valueFormat"
-                    :placeholder="field.options.placeholder || i18nt('render.hint.datePlaceholder')"
-                    @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
-                    @change="handleChangeEvent">
-    </el-date-picker>
+    <div :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '', isReadMode ? 'readonly-mode-date' : '']">
+      <el-date-picker ref="fieldEditor" :type="field.options.type" v-model="fieldModel"
+                      :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '']"
+                      :readonly="field.options.readonly" :disabled="field.options.disabled"
+                      :size="widgetSize"
+                      :clearable="field.options.clearable" :editable="field.options.editable"
+                      :format="field.options.format" :value-format="field.options.valueFormat"
+                      :placeholder="field.options.placeholder || i18nt('render.hint.datePlaceholder')"
+                      @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
+                      @change="handleChangeEvent">
+      </el-date-picker>
+      <template v-if="isReadMode">
+        <span class="readonly-mode-field">{{fieldModel}}</span>
+      </template>
+    </div>
   </form-item-wrapper>
 </template>
+
 
 <script>
   import FormItemWrapper from './form-item-wrapper'
@@ -96,8 +102,18 @@
 <style lang="scss" scoped>
   @import "../../../../styles/global.scss"; /* form-item-wrapper已引入，还需要重复引入吗？ */
 
-  .full-width-input {
-    width: 100% !important;
+  .auto-full-width {
+    width: 100%;
+
+    :deep(.el-date-editor) {
+      width: 100% !important;
+    }
+  }
+
+  .readonly-mode-date {
+    :deep(.el-date-editor) {
+      display: none;
+    }
   }
 
 </style>

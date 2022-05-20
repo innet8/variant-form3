@@ -2,8 +2,12 @@ import {deepClone, getDSByName, overwriteObj, runDataSourceRequest, translateOpt
 import FormValidators from '@/utils/validators'
 
 export default {
-  inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData', 'getGlobalDsv'],
-
+  inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData', 'getGlobalDsv', 'getReadMode'],
+  data() {
+    return {
+      fieldReadonlyFlag: false
+    }
+  },
   computed: {
     formConfig() {
       return this.getFormConfig()
@@ -28,9 +32,43 @@ export default {
       }
     },
 
+    isReadMode() {
+      //return this.getReadMode() || this.fieldReadonlyFlag
+      return !!this.getReadMode() ? true : this.fieldReadonlyFlag
+    },
+
+    optionLabel() {
+      if (this.fieldModel === null) {
+        return '--'
+      } else {
+        let resultContent = '--'
+        this.field.options.optionItems.forEach(oItem => {
+          if ((oItem.value === this.fieldModel) || (this.findInArray(this.fieldModel, oItem.value)) !== -1) {
+            resultContent = resultContent === '--' ? oItem.label : resultContent + ' ' + oItem.label
+          }
+        })
+
+        return resultContent
+      }
+    },
+
   },
 
   methods: {
+    findInArray(arrayObject, element) {
+      if (!Array.isArray(arrayObject)) {
+        return -1
+      }
+
+      let foundIdx = -1
+      arrayObject.forEach((aItem, aIdx) => {
+        if (aItem === element) {
+          foundIdx = aIdx
+        }
+      })
+
+      return foundIdx
+    },
 
     //--------------------- 组件内部方法 begin ------------------//
     getPropName() {
@@ -595,6 +633,14 @@ export default {
 
     setToolbar(customToolbar) {
       this.customToolbar = customToolbar
+    },
+
+    /**
+     * 设置或取消设置字段只读查看模式
+     * @param readonlyFlag
+     */
+    setReadMode(readonlyFlag = true) {
+      this.fieldReadonlyFlag = readonlyFlag
     },
 
     //--------------------- 以上为组件支持外部调用的API方法 end ------------------//

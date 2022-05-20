@@ -63,6 +63,7 @@
         getGlobalDsv: () => this.globalDsv, // 全局数据源变量
         globalOptionData: this.optionData,
         getOptionData: () => this.optionData,
+        getReadMode: () => false,
         globalModel: {
           formModel: this.formModel,
         }

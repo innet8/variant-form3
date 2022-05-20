@@ -2,13 +2,16 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-switch ref="fieldEditor" v-model="fieldModel"
+    <el-switch ref="fieldEditor" v-model="fieldModel" :class="[isReadMode ? 'readonly-mode-switch' : '']"
                :disabled="field.options.disabled"
                :active-text="field.options.activeText" :inactive-text="field.options.inactiveText"
                :active-color="field.options.activeColor" :inactive-color="field.options.inactiveColor"
                :width="field.options.switchWidth"
                @change="handleChangeEvent">
     </el-switch>
+    <template v-if="isReadMode">
+      <span class="readonly-mode-field">{{contentForReadMode}}</span>
+    </template>
   </form-item-wrapper>
 </template>
 
@@ -59,6 +62,13 @@
       }
     },
     computed: {
+      contentForReadMode() {
+        if (!!this.fieldModel) {
+          return this.field.options.activeText ||  this.i18nt('render.hint.defaultActiveText')
+        }
+
+        return this.field.options.inactiveText || this.i18nt('render.hint.defaultInactiveText')
+      },
 
     },
     beforeCreate() {
@@ -95,6 +105,10 @@
 
   .full-width-input {
     width: 100% !important;
+  }
+
+  .readonly-mode-switch {
+    display: none;
   }
 
 </style>

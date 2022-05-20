@@ -9,7 +9,7 @@
 -->
 
 <template>
-  <el-form :label-position="labelPosition" :size="size" :class="[customClass]" class="render-form"
+  <el-form :label-position="labelPosition" :size="size" :class="[customClass, readModeFlag ? 'readonly-mode-form' : '']" class="render-form"
            :label-width="labelWidth" :validate-on-rule-change="false"
            :model="formDataModel" ref="renderForm"
            @submit.prevent>
@@ -98,6 +98,7 @@
           formModel: this.formDataModel,
         },
         previewState: this.previewState,
+        getReadMode: () => this.readModeFlag,
       }
     },
     data() {
@@ -113,6 +114,7 @@
         formId: null,  //表单唯一Id，用于区分页面上的多个v-form-render组件！！
 
         externalComponents:  {},  //外部组件实例集合
+        readModeFlag: false,  //是否只读查看模式
       }
     },
     computed: {
@@ -165,9 +167,11 @@
       this.handleOnMounted()
     },
     methods: {
-      initFormObject() {
+      initFormObject(insertHtmlCodeFlag = true) {
         this.formId = 'vfRender' + generateId()
-        this.insertCustomStyleAndScriptNode()
+        if (!!insertHtmlCodeFlag) {
+          this.insertCustomStyleAndScriptNode()
+        }
         this.addFieldChangeEventHandler()
         this.addFieldValidateEventHandler()
         this.registerFormToRefList()
@@ -386,6 +390,10 @@
         changeLocale(langName)
       },
 
+      getLanguageName() {
+        return localStorage.getItem('v_form_locale') || 'zh-CN'
+      },
+
       getNativeForm() { //获取原生form引用
         return this.$refs['renderForm']
       },
@@ -431,8 +439,9 @@
             this.formJsonObj['formConfig'] = newFormJsonObj.formConfig
             this.formJsonObj['widgetList'] = newFormJsonObj.widgetList
 
+            this.insertCustomStyleAndScriptNode()  /* 必须先插入表单全局函数，否则VForm内部引用全局函数会报错！！！ */
             this.$nextTick(() => {
-              this.initFormObject()
+              this.initFormObject(false)
               this.handleOnMounted()
             })
           } else {
@@ -671,6 +680,14 @@
       getEC(componentName) {
         return this.externalComponents[componentName]
       },
+
+      /**
+       * 设置或取消设置表单为只读查看模式
+       * @param readonlyFlag
+       */
+      setReadMode(readonlyFlag = true) {
+        this.readModeFlag = readonlyFlag
+      }
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//
 

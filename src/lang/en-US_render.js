@@ -5,6 +5,8 @@ export default {
       prompt: 'Prompt',
       confirm: 'OK',
       cancel: 'Cancel',
+      defaultActiveText: 'True',
+      defaultInactiveText: 'False',
 
       selectPlaceholder: 'Pick some item',
       timePlaceholder: 'Select time',

@@ -97,6 +97,7 @@ export default {
       resetForm: 'Reset',
       disableForm: 'Disable',
       enableForm: 'Enable',
+      switchReadMode: 'Read Mode',
       exportFormData: 'Form Data',
       copyFormData: 'Copy',
       saveFormData: 'Save As File',

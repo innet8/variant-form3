@@ -2,7 +2,7 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-input ref="fieldEditor" v-model="fieldModel"
+    <el-input ref="fieldEditor" v-model="fieldModel" v-show="!isReadMode"
               :disabled="field.options.disabled" :readonly="field.options.readonly"
               :size="widgetSize" class="hide-spin-button"
               :type="inputType"
@@ -19,6 +19,9 @@
                    @click="emitAppendButtonClick"><svg-icon :icon-class="field.options.buttonIcon" /></el-button>
       </template>
     </el-input>
+    <template v-if="isReadMode">
+      <span class="readonly-mode-field">{{fieldModel}}</span>
+    </template>
   </form-item-wrapper>
 </template>
 

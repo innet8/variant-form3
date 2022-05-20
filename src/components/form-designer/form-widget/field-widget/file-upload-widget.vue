@@ -3,12 +3,12 @@
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
     <!-- el-upload增加:name="field.options.name"后，会导致又拍云上传失败！故删除之！！ -->
-    <el-upload ref="fieldEditor" :disabled="field.options.disabled"
+    <el-upload ref="fieldEditor" :disabled="field.options.disabled || isReadMode"
                :style="styleVariables" class="dynamicPseudoAfter"
                :action="field.options.uploadURL" :headers="uploadHeaders" :data="uploadData"
                :with-credentials="field.options.withCredentials"
                :multiple="field.options.multipleSelect" :file-list="fileList"
-               :show-file-list="field.options.showFileList" :class="{'hideUploadDiv': uploadBtnHidden}"
+               :show-file-list="field.options.showFileList" :class="{'hideUploadDiv': uploadBtnHidden || isReadMode}"
                :limit="field.options.limit" :on-exceed="handleFileExceed" :before-upload="beforeFileUpload"
                :on-success="handleFileUpload" :on-error="handelUploadError" :on-remove="handleFileRemove">
       <template #tip>
@@ -25,7 +25,8 @@
             <span class="el-icon-download file-action" title="i18nt('render.hint.downloadFile')">
               <svg-icon icon-class="el-download" />
             </span></a>
-          <span class="file-action" title="i18nt('render.hint.removeFile')" v-if="!field.options.disabled"
+          <span class="file-action" title="i18nt('render.hint.removeFile')"
+                v-if="!field.options.disabled && !isReadMode"
             @click="removeUploadFile(file.name)"><svg-icon icon-class="el-delete" /></span>
         </div>
       </template>

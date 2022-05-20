@@ -10,11 +10,11 @@
     </vue-editor>
     -->
 
-    <div>
+    <div :class="{'readonly-mode-rich-editor': isReadMode}">
       <quill-editor
               v-model:value="fieldModel"
               :options="editorOption"
-              :disabled="field.options.disabled"
+              :disabled="field.options.disabled || isReadMode"
               @blur="handleRichEditorBlurEvent"
               @focus="handleRichEditorFocusEvent"
               @change="handleRichEditorChangeEvent"
@@ -141,6 +141,17 @@
 
   .full-width-input {
     width: 100% !important;
+  }
+
+  .readonly-mode-rich-editor {
+    :deep(.ql-toolbar) {
+      display: none;
+    }
+
+    :deep(.ql-container) {
+      //border-top: 1px solid #cccccc !important;
+      border: 0;
+    }
   }
 
 </style>

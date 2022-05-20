@@ -2,7 +2,7 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-checkbox-group ref="fieldEditor" v-model="fieldModel"
+    <el-checkbox-group ref="fieldEditor" v-model="fieldModel" v-show="!isReadMode"
                        :disabled="field.options.disabled" :size="widgetSize"
                        @change="handleChangeEvent">
       <template v-if="!!field.options.buttonStyle">
@@ -16,6 +16,9 @@
                      :style="{display: field.options.displayStyle}">{{item.label}}</el-checkbox>
       </template>
     </el-checkbox-group>
+    <template v-if="isReadMode">
+      <span class="readonly-mode-field">{{optionLabel}}</span>
+    </template>
   </form-item-wrapper>
 </template>
 

@@ -2,7 +2,7 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-input-number ref="fieldEditor" v-model="fieldModel" class="full-width-input"
+    <el-input-number ref="fieldEditor" v-model="fieldModel" v-show="!isReadMode" class="full-width-input"
                      :disabled="field.options.disabled"
                      :size="widgetSize" :controls-position="field.options.controlsPosition"
                      :placeholder="field.options.placeholder"
@@ -11,6 +11,9 @@
                      @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
                      @change="handleChangeEvent">
     </el-input-number>
+    <template v-if="isReadMode">
+      <span class="readonly-mode-field">{{fieldModel}}</span>
+    </template>
   </form-item-wrapper>
 </template>
 

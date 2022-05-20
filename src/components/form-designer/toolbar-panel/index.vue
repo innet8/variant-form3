@@ -63,6 +63,7 @@
             <el-button type="primary" @click="resetForm">{{i18nt('designer.hint.resetForm')}}</el-button>
             <el-button type="primary" @click="setFormDisabled">{{i18nt('designer.hint.disableForm')}}</el-button>
             <el-button type="primary" @click="setFormEnabled">{{i18nt('designer.hint.enableForm')}}</el-button>
+            <el-button type="primary" plain @click="switchReadMode">{{i18nt('designer.hint.switchReadMode')}}</el-button>
             <el-button @click="showPreviewDialogFlag = false">{{i18nt('designer.hint.closePreview')}}</el-button>
             <el-button v-if="false" @click="testSetFormJson">setFormJson</el-button>
           </div>
@@ -228,6 +229,7 @@
         showNodeTreeDrawerFlag: false,
 
         nodeTreeData: [],
+        formReadonlyFlag: false,
 
         importTemplate: '',
         jsonContent: '',
@@ -617,6 +619,11 @@
 
       setFormEnabled() {
         this.$refs['preForm'].enableForm()
+      },
+
+      switchReadMode() {
+        this.formReadonlyFlag = !this.formReadonlyFlag
+        this.$refs['preForm'].setReadMode(this.formReadonlyFlag)
       },
 
       testSetFormJson() {
