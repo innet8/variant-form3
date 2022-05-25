@@ -687,6 +687,14 @@
        */
       setReadMode(readonlyFlag = true) {
         this.readModeFlag = readonlyFlag
+      },
+
+      /**
+       * 获取表单当前是否只读查看模式
+       * @returns {boolean}
+       */
+      getReadMode() {
+        return this.readModeFlag
       }
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//
