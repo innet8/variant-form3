@@ -382,9 +382,10 @@ export function translateOptionItems(rawData, widgetType, labelKey, valueKey) {
  * 组装axios请求配置参数
  * @param arrayObj
  * @param DSV
+ * @param VFR
  * @returns {{}}
  */
-export function assembleAxiosConfig(arrayObj, DSV) {
+export function assembleAxiosConfig(arrayObj, DSV, VFR) {
   let result = {}
   if (!arrayObj || (arrayObj.length <= 0)) {
     return result
@@ -411,7 +412,7 @@ export function assembleAxiosConfig(arrayObj, DSV) {
   return result
 }
 
-function buildRequestConfig(dataSource, DSV, isSandbox) {
+function buildRequestConfig(dataSource, DSV, VFR, isSandbox) {
   let config = {}
   if (dataSource.requestURLType === 'String') {
     config.url = dataSource.requestURL
@@ -420,28 +421,25 @@ function buildRequestConfig(dataSource, DSV, isSandbox) {
   }
   config.method = dataSource.requestMethod
 
-  config.headers = assembleAxiosConfig(dataSource.headers, DSV)
-  config.params = assembleAxiosConfig(dataSource.params, DSV)
-  config.data = assembleAxiosConfig(dataSource.data, DSV)
+  config.headers = assembleAxiosConfig(dataSource.headers, DSV, VFR)
+  config.params = assembleAxiosConfig(dataSource.params, DSV, VFR)
+  config.data = assembleAxiosConfig(dataSource.data, DSV, VFR)
 
-  //let chFn = new Function('config', 'sandbox', 'form', 'widget', dataSource.configHandlerCode)
-  let chFn = new Function('config', 'isSandbox', 'DSV', dataSource.configHandlerCode)
-  return chFn.call(null, config, isSandbox, DSV)
+  let chFn = new Function('config', 'isSandbox', 'DSV', 'VFR', dataSource.configHandlerCode)
+  return chFn.call(null, config, isSandbox, DSV, VFR)
 }
 
-export async function runDataSourceRequest(dataSource, DSV, isSandbox, $message) {
+export async function runDataSourceRequest(dataSource, DSV, VFR, isSandbox, $message) {
   try {
-    let requestConfig = buildRequestConfig(dataSource, DSV, isSandbox)
+    let requestConfig = buildRequestConfig(dataSource, DSV, VFR, isSandbox)
     //console.log('test------', requestConfig)
     let result = await axios.request(requestConfig)
 
-    //let dhFn = new Function('result', 'sandbox', 'form', 'widget', dataSource.dataHandlerCode)
-    let dhFn = new Function('result', 'isSandbox', 'DSV', dataSource.dataHandlerCode)
-    return dhFn.call(null, result, isSandbox, DSV)
+    let dhFn = new Function('result', 'isSandbox', 'DSV', 'VFR', dataSource.dataHandlerCode)
+    return dhFn.call(null, result, isSandbox, DSV, VFR)
   } catch (err) {
-    //let ehFn = new Function('error', 'sandbox', 'form', 'widget', '$message', dataSource.dataHandlerCode)
-    let ehFn = new Function('error', 'isSandbox', 'DSV', '$message', dataSource.errorHandlerCode)
-    ehFn.call(null, err, isSandbox, DSV, $message)
+    let ehFn = new Function('error', 'isSandbox', 'DSV', '$message', 'VFR', dataSource.errorHandlerCode)
+    ehFn.call(null, err, isSandbox, DSV, $message, VFR)
     console.error(err)
   }
 }

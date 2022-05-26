@@ -219,7 +219,7 @@ export default {
             let localDsv = new Object({})
             overwriteObj(localDsv, gDsv)
             localDsv['widgetName'] = this.field.options.name
-            runDataSourceRequest(curDS, localDsv, false, this.$message).then(res => {
+            runDataSourceRequest(curDS, localDsv, this.getFormRef(), false, this.$message).then(res => {
               this.loadOptions(res)
             }).catch(err => {
               this.$message.error(err.message)

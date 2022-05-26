@@ -321,7 +321,7 @@
 					overwriteObj(newDsv, gDsv)
 					overwriteObj(newDsv, localDsv)
 					newDsv.widgetName = this.widget.options.name
-					runDataSourceRequest(curDS, newDsv, false, this.$message).then(res => {
+					runDataSourceRequest(curDS, newDsv, this.getFormRef(), false, this.$message).then(res => {
 						this.setTableColumns(res)
 					}).catch(err => {
 						this.$message.error(err.message)
@@ -381,7 +381,7 @@
 					newDsv.widgetName = this.widget.options.name
 					newDsv.pageSize = this.pageSize
 					newDsv.currentPage = this.currentPage
-					runDataSourceRequest(curDS, newDsv, false, this.$message).then(res => {
+					runDataSourceRequest(curDS, newDsv, this.getFormRef(), false, this.$message).then(res => {
 						this.setTableData(res)
 					}).catch(err => {
 						this.$message.error(err.message)

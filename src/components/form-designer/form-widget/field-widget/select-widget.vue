@@ -84,9 +84,9 @@
     created() {
       /* 注意：子组件mounted在父组件created之后、父组件mounted之前触发，故子组件mounted需要用到的prop
          需要在父组件created中初始化！！ */
+      this.registerToRefList()
       this.initOptionItems()
       this.initFieldModel()
-      this.registerToRefList()
       this.initEventHandler()
       this.buildFieldRules()
 

@@ -172,19 +172,17 @@
 
         <el-collapse v-model="activeNames">
           <el-collapse-item :title="i18nt('designer.setting.dsConfigHandlerTitle')" name="1" class="ch-collapse">
-            <el-alert type="info" :closable="false" title="(config, isSandbox, DSV) => {"></el-alert>
+            <el-alert type="info" :closable="false" title="(config, isSandbox, DSV, VFR) => {"></el-alert>
             <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.configHandlerCode" ref="chEditor"></code-editor>
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
           <el-collapse-item :title="i18nt('designer.setting.dsDataHandlerTitle')" name="2" class="dh-collapse">
-<!--            <el-alert type="info" :closable="false" title="(result, widget, form) => {"></el-alert>-->
-            <el-alert type="info" :closable="false" title="(result, isSandbox, DSV) => {"></el-alert>
+            <el-alert type="info" :closable="false" title="(result, isSandbox, DSV, VFR) => {"></el-alert>
             <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.dataHandlerCode" ref="dhEditor"></code-editor>
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
           <el-collapse-item :title="i18nt('designer.setting.dsErrorHandlerTitle')" name="3" class="eh-collapse">
-<!--            <el-alert type="info" :closable="false" title="(error, widget, form) => {"></el-alert>-->
-            <el-alert type="info" :closable="false" title="(error, isSandbox, DSV, $message) => {"></el-alert>
+            <el-alert type="info" :closable="false" title="(error, isSandbox, DSV, $message, VFR) => {"></el-alert>
             <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.errorHandlerCode" ref="ehEditor"></code-editor>
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
@@ -427,7 +425,7 @@
 
       async doDataSourceRequest() {
         let dsvObj = JSON.parse(this.dsvJson)
-        let dsResult = await runDataSourceRequest(this.dsModel, dsvObj, true, this.$message)
+        let dsResult = await runDataSourceRequest(this.dsModel, dsvObj, null, true, this.$message)
         this.$refs.dsResultEditor.setValue( JSON.stringify(dsResult, null, '  ') )
       },
 
