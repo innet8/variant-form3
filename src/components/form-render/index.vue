@@ -695,7 +695,15 @@
        */
       getReadMode() {
         return this.readModeFlag
-      }
+      },
+
+      /**
+       * 获取globalDsv对象
+       * @returns {*}
+       */
+      getGlobalDsv() {
+        return this.globalDsv
+      },
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//
 

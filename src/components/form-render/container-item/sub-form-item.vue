@@ -11,7 +11,7 @@
             {{i18nt('render.hint.subFormAddAction')}}<svg-icon icon-class="el-plus" /></el-button>
         </div>
         <template v-for="(subWidget) in widget.widgetList" :key="subWidget.id + 'thc'">
-          <div class="field-header-column"
+          <div v-if="!subWidget.options.hidden" class="field-header-column"
                :class="[getLabelAlign(widget, subWidget), !!subWidget.options.required ? 'is-required' : '']"
                :style="{width: subWidget.options.columnWidth}">
             <span v-if="!!subWidget.options.labelIconClass" class="custom-label">
@@ -46,7 +46,7 @@
           </div>
         </div>
         <template v-for="(subWidget, swIdx) in widget.widgetList" :key="subWidget.id + 'tc' + subFormRowId">
-          <div class="sub-form-table-column hide-label" :style="{width: subWidget.options.columnWidth}">
+          <div v-if="!subWidget.options.hidden" class="sub-form-table-column hide-label" :style="{width: subWidget.options.columnWidth}">
             <component :is="subWidget.type + '-widget'" :field="fieldSchemaData[sfrIdx][swIdx]"
                           :key="fieldSchemaData[sfrIdx][swIdx].id" :parent-list="widget.widgetList"
                           :index-of-parent-list="swIdx" :parent-widget="widget"
