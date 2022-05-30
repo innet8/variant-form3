@@ -593,7 +593,8 @@ export default {
        */
 
       this.field.options.optionItems = translateOptionItems(options, this.field.type,
-          this.field.options.labelKey, this.field.options.valueKey)
+          this.field.options.labelKey || 'label',
+          this.field.options.valueKey || 'value')
     },
 
     /**
@@ -604,7 +605,8 @@ export default {
       //this.field.options.optionItems = deepClone(options)
 
       this.field.options.optionItems = translateOptionItems(options, this.field.type,
-          this.field.options.labelKey, this.field.options.valueKey)
+          this.field.options.labelKey || 'label',
+          this.field.options.valueKey || 'value')
     },
 
     disableOption(optionValue) {
