@@ -418,6 +418,14 @@
         return this.$refs['formRef'].getSelectedWidgetRef()
       },
 
+      /**
+       * 添加数据源对象
+       * @param dsObj
+       */
+      addDataSource(dsObj) {
+        this.designer.formConfig.dataSources.push(dsObj)
+      },
+
       //TODO: 增加更多方法！！
 
     }

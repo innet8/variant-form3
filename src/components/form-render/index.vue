@@ -43,7 +43,7 @@
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
   import {
     generateId, deepClone, insertCustomCssToHead, insertGlobalFunctionsToHtml, getAllContainerWidgets,
-    getAllFieldWidgets, traverseFieldWidgets, buildDefaultFormJson
+    getAllFieldWidgets, traverseFieldWidgets, buildDefaultFormJson, getDSByName, runDataSourceRequest
   } from "@/utils/util"
   import i18n, { changeLocale } from "@/utils/i18n"
 
@@ -703,6 +703,16 @@
        */
       getGlobalDsv() {
         return this.globalDsv
+      },
+
+      /**
+       * 执行数据源请求
+       * @param dsName
+       * @param dsv
+       */
+      async executeDataSource(dsName, dsv) {
+        let ds = getDSByName(this.formJsonObj.formConfig, dsName)
+        return await runDataSourceRequest(ds, dsv, this, false, this.$message)
       },
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//
