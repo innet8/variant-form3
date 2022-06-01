@@ -42,8 +42,17 @@
   import './container-item/index'
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
   import {
-    generateId, deepClone, insertCustomCssToHead, insertGlobalFunctionsToHtml, getAllContainerWidgets,
-    getAllFieldWidgets, traverseFieldWidgets, buildDefaultFormJson, getDSByName, runDataSourceRequest
+    generateId,
+    deepClone,
+    insertCustomCssToHead,
+    insertGlobalFunctionsToHtml,
+    getAllContainerWidgets,
+    getAllFieldWidgets,
+    traverseFieldWidgets,
+    buildDefaultFormJson,
+    getDSByName,
+    runDataSourceRequest,
+    getFieldWidgetByName
   } from "@/utils/util"
   import i18n, { changeLocale } from "@/utils/i18n"
 
@@ -332,6 +341,11 @@
       },
 
       findWidgetOfSubFormAndSetDisabled(widgetName, disabledFlag) {
+        const widgetSchema = getFieldWidgetByName(this.formJsonObj.widgetList, widgetName)
+        if (!!widgetSchema && !!widgetSchema.options && widgetSchema.options.hasOwnProperty('disabled')) {
+          widgetSchema.options.disabled = disabledFlag
+        }
+
         this.findWidgetNameInSubForm(widgetName).forEach(wn => {
           let sw = this.getWidgetRef(wn)
           if (!!sw) {
@@ -350,6 +364,11 @@
       },
 
       findWidgetOfSubFormAndSetHidden(widgetName, hiddenFlag) {
+        const widgetSchema = getFieldWidgetByName(this.formJsonObj.widgetList, widgetName)
+        if (!!widgetSchema && !!widgetSchema.options && widgetSchema.options.hasOwnProperty('hidden')) {
+          widgetSchema.options.hidden = hiddenFlag
+        }
+
         this.findWidgetNameInSubForm(widgetName).forEach(wn => {
           let sw = this.getWidgetRef(wn)
           if (!!sw) {

@@ -66,6 +66,7 @@
             <el-button type="primary" plain @click="switchReadMode">{{i18nt('designer.hint.switchReadMode')}}</el-button>
             <el-button @click="showPreviewDialogFlag = false">{{i18nt('designer.hint.closePreview')}}</el-button>
             <el-button v-if="false" @click="testSetFormJson">setFormJson</el-button>
+            <el-button v-if="false" @click="testSubFormHide">Test SFH</el-button>
           </div>
         </template>
       </el-dialog>
@@ -631,6 +632,10 @@
         let newJson = {"widgetList":[{"key":75094,"type":"input","icon":"text-field","formItemFlag":true,"options":{"name":"input30696","label":"input","labelAlign":"","type":"text","defaultValue":"","placeholder":"","columnWidth":"200px","size":"","labelWidth":null,"labelHidden":false,"readonly":false,"disabled":false,"hidden":false,"clearable":true,"showPassword":false,"required":false,"validation":"","validationHint":"","customClass":[],"labelIconClass":null,"labelIconPosition":"rear","labelTooltip":null,"minLength":null,"maxLength":null,"showWordLimit":false,"prefixIcon":"","suffixIcon":"","appendButton":false,"appendButtonDisabled":false,"buttonIcon":"custom-search","onCreated":"","onMounted":"","onInput":"","onChange":"","onFocus":"","onBlur":"","onValidate":""},"id":"input30696"}],"formConfig":{"modelName":"formData","refName":"vForm","rulesName":"rules","labelWidth":120,"labelPosition":"left","size":"","labelAlign":"label-left-align","cssCode":"","customClass":"","functions":"","layoutType":"PC","jsonVersion":3,"onFormCreated":"","onFormMounted":"","onFormDataChange":""}}
         //let newJson = {"widgetList":[{"key":70118,"type":"input","icon":"text-field","formItemFlag":true,"options":{"name":"input37241","label":"input","labelAlign":"","type":"text","defaultValue":"","placeholder":"","columnWidth":"200px","size":"","labelWidth":null,"labelHidden":false,"readonly":false,"disabled":false,"hidden":false,"clearable":true,"showPassword":false,"required":false,"validation":"","validationHint":"","customClass":[],"labelIconClass":null,"labelIconPosition":"rear","labelTooltip":null,"minLength":null,"maxLength":null,"showWordLimit":false,"prefixIcon":"","suffixIcon":"","appendButton":false,"appendButtonDisabled":false,"buttonIcon":"custom-search","onCreated":"","onMounted":"","onInput":"","onChange":"","onFocus":"","onBlur":"","onValidate":""},"id":"input37241"}],"formConfig":{"modelName":"formData","refName":"vForm","rulesName":"rules","labelWidth":150,"labelPosition":"left","size":"","labelAlign":"label-right-align","cssCode":"","customClass":"","functions":"","layoutType":"PC","jsonVersion":3,"onFormCreated":"","onFormMounted":"","onFormDataChange":""}}
         this.$refs['preForm'].setFormJson(newJson)
+      },
+
+      testSubFormHide() {
+        this.$refs['preForm'].hideWidgets('input73220')
       },
 
       handleFormChange(fieldName, newValue, oldValue, formModel) {
