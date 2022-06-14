@@ -421,6 +421,12 @@ export function assembleAxiosConfig(arrayObj, DSV, VFR) {
     }
   })
 
+  /* 加入如下两行日志打印代码，是为了防止编译打包时DSV、VFR参数被剔除！！ begin */
+  /* DSV、VFR入参没有在本函数中直接使用到，但在eval表达式中可能被使用到，故需确保DSV、VFR参数始终存在！！ */
+  console.log('test DSV: ', DSV)
+  console.log('test VFR: ', VFR)
+  /* 加入如下两行日志打印代码，是为了防止编译打包时DSV、VFR入参会被剔除！！ end */
+
   return result
 }
 
