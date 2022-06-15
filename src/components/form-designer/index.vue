@@ -140,7 +140,7 @@
       /* 全局数据源变量 */
       globalDsv: {
         type: Object,
-        default: () => {},
+        default: () => ({})
       },
 
     },

@@ -212,7 +212,7 @@
       designer: Object,
       globalDsv: {
         type: Object,
-        default: () => {},
+        default: () => ({})
       },
     },
     inject: ['getDesignerConfig'],

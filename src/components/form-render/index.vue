@@ -72,11 +72,11 @@
       },
       formData: { //prop传入的表单数据
         type: Object,
-        default: () => {}
+        default: () => ({})
       },
       optionData: { //prop传入的选项数据
         type: Object,
-        default: () => {}
+        default: () => ({})
       },
       previewState: { //是否表单预览状态
         type: Boolean,
@@ -92,7 +92,7 @@
       },
       globalDsv: { // 全局数据源变量
         type: Object,
-        default: () => {},
+        default: () => ({})
       },
     },
     provide() {

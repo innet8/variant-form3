@@ -134,7 +134,7 @@
       formConfig: Object,
       globalDsv: {
         type: Object,
-        default: () => {},
+        default: () => ({})
       },
     },
     provide() {
