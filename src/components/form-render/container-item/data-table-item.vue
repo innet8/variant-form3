@@ -49,11 +49,11 @@
 			</el-table>
 			<el-pagination v-if="widget.options.showPagination"
 										 :small="widget.options.smallPagination"
-										 :current-page="widget.options.pagination.currentPage"
-										 :page-sizes="widget.options.pagination.pageSizes"
-										 :page-size="widget.options.pagination.pageSize"
+										 :current-page="currentPage"
+										 :page-sizes="pageSizes"
+										 :page-size="pageSize"
 										 :layout="paginationLayout"
-										 :total="widget.options.pagination.total"
+										 :total="total"
 										 @size-change="handlePageSizeChange"
 										 @current-change="handleCurrentPageChange">
 			</el-pagination>
@@ -123,7 +123,9 @@
 
 				selectedIndices: [],
 				pageSize: this.widget.options.pagination.pageSize,
+				pageSizes: this.widget.options.pagination.pageSizes,
 				currentPage: this.widget.options.pagination.currentPage,
+				total: this.widget.options.pagination.total,
 
 			}
 		},
@@ -395,12 +397,22 @@
 			 */
 			setPagination(pagination) {
 				if (pagination.currentPage !== undefined) {
+					this.currentPage = pagination.currentPage
 					this.widget.options.pagination.currentPage = pagination.currentPage
 				}
+
 				if (pagination.pageSize !== undefined) {
+					this.pageSize = pagination.pageSize
 					this.widget.options.pagination.pageSize = pagination.pageSize
 				}
+
+				if (pagination.pageSizes !== undefined) {
+					this.pageSizes = pagination.pageSizes
+					this.widget.options.pagination.pageSizes = pagination.pageSizes
+				}
+
 				if (pagination.total !== undefined) {
+					this.total = pagination.total
 					this.widget.options.pagination.total = pagination.total
 				}
 			},
