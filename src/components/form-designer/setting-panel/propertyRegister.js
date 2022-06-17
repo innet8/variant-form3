@@ -132,6 +132,12 @@ const EVENT_PROPERTIES = {
   'onCurrentPageChange'       :            'onCurrentPageChange-editor',
   'onSelectionChange'         :            'onSelectionChange-editor',
   'onOperationButtonClick'    :            'onOperationButtonClick-editor',
+  'onHeaderClick'             :            'onHeaderClick-editor',
+  'onRowClick'                :            'onRowClick-editor',
+  'onRowDoubleClick'          :            'onRowDoubleClick-editor',
+  'onCellClick'               :            'onCellClick-editor',
+  'onCellDoubleClick'         :            'onCellDoubleClick-editor',
+  'onGetRowClassName'         :            'onGetRowClassName-editor',
 
 }
 

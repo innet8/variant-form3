@@ -6,8 +6,14 @@
 								:height="widget.options.tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
 								:size="widgetSize" :stripe="widget.options.stripe"
+								:row-class-name="getRowClassName"
 								@selection-change="handleSelectionChange"
 								@sort-change="handleSortChange"
+								@header-click="handleHeaderClick"
+								@row-click="handleRowClick"
+								@row-dblclick="handleRowDoubleClick"
+								@cell-click="handleCellClick"
+								@cell-dblclick="handleCellDoubleClick"
 								:cell-style="{padding: widget.options.rowSpacing + 'px 0'}" >
 
 				<el-table-column v-if="widget.options.showIndex" type="index" width="50" fixed="left"></el-table-column>
@@ -285,6 +291,50 @@
 				if (!!this.widget.options.onOperationButtonClick) {
 					let customFn = new Function('buttonName', 'rowIndex', 'row', this.widget.options.onOperationButtonClick)
 					customFn.call(this, btnName, rowIndex, row)
+				}
+			},
+
+			getRowClassName({row, rowIndex}) {
+				if (!!this.widget.options.onGetRowClassName) {
+					let customFn = new Function('rowIndex', 'row', this.widget.options.onGetRowClassName)
+					return customFn.call(this, rowIndex, row)
+				} else {
+					return ''
+				}
+			},
+
+			handleHeaderClick(column, event) {
+				if (!!this.widget.options.onHeaderClick) {
+					let customFn = new Function('column', 'event', this.widget.options.onHeaderClick)
+					return customFn.call(this, column, event)
+				}
+			},
+
+			handleRowClick(row, column, event) {
+				if (!!this.widget.options.onRowClick) {
+					let customFn = new Function('row', 'column', 'event', this.widget.options.onRowClick)
+					return customFn.call(this, row, column, event)
+				}
+			},
+
+			handleRowDoubleClick(row, column, event) {
+				if (!!this.widget.options.onRowDoubleClick) {
+					let customFn = new Function('row', 'column', 'event', this.widget.options.onRowDoubleClick)
+					return customFn.call(this, row, column, event)
+				}
+			},
+
+			handleCellClick(row, column, cell, event) {
+				if (!!this.widget.options.onCellClick) {
+					let customFn = new Function('row', 'column', 'cell', 'event', this.widget.options.onCellClick)
+					return customFn.call(this, row, column, cell, event)
+				}
+			},
+
+			handleCellDoubleClick(row, column, cell, event) {
+				if (!!this.widget.options.onCellDoubleClick) {
+					let customFn = new Function('row', 'column', 'cell', 'event', this.widget.options.onCellDoubleClick)
+					return customFn.call(this, row, column, cell, event)
 				}
 			},
 

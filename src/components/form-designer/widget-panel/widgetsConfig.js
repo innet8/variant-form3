@@ -255,6 +255,15 @@ export const containers = [
       onSelectionChange: '',
       //操作按钮点击事件
       onOperationButtonClick: '',
+
+      onHeaderClick: '',
+      onRowClick: '',
+      onRowDoubleClick: '',
+      onCellClick: '',
+      onCellDoubleClick: '',
+
+      //获取行样式名称事件
+      onGetRowClassName: '',
     }
   }
 
