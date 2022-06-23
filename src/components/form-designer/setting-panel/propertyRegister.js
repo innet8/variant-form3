@@ -138,6 +138,7 @@ const EVENT_PROPERTIES = {
   'onCellClick'               :            'onCellClick-editor',
   'onCellDoubleClick'         :            'onCellDoubleClick-editor',
   'onGetRowClassName'         :            'onGetRowClassName-editor',
+  'onGetSpanMethod'           :            'onGetSpanMethod-editor',
 
 }
 

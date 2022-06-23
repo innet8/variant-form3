@@ -6,7 +6,10 @@
 								:height="widget.options.tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
 								:size="widgetSize" :stripe="widget.options.stripe"
+								:highlight-current-row="singleRowSelectFlag"
 								:row-class-name="getRowClassName"
+								:span-method="getSpanMethod"
+								@current-change="handleCurrentChange"
 								@selection-change="handleSelectionChange"
 								@sort-change="handleSortChange"
 								@header-click="handleHeaderClick"
@@ -32,7 +35,7 @@
 													 :formatter="formatterValue"
 													 :format="item.format"
 													 :show-overflow-tooltip="true"
-													 :width="item.width">
+													 :min-width="item.width">
 						<template #header>{{item.label}}</template>
 					</el-table-column>
 				</template>
@@ -152,6 +155,10 @@
 				return this.widget.options.tableSize || "default"
 			},
 
+			singleRowSelectFlag() {
+				return !this.widget.options.showCheckBox
+			},
+
 		},
 		created() {
 			this.initRefList()
@@ -234,6 +241,22 @@
 				})
 			},
 
+			handleCurrentChange(currentRow, oldCurrentRow) {
+				this.selectedIndices.length = 0
+				let rowIndex = this.getRowIndex(currentRow)
+				if (rowIndex >= 0) {
+					this.selectedIndices.push(rowIndex)
+				}
+
+				if (!!this.widget.options.onSelectionChange) {
+					let customFn = new Function('selection', 'selectedIndices', this.widget.options.onSelectionChange)
+					customFn.call(this, [currentRow], this.selectedIndices)
+				} else {
+					/* 必须调用mixins中的dispatch方法逐级向父组件发送消息！！ */
+					this.dispatch('VFormRender', 'dataTableSelectionChange', [this, [currentRow], this.selectedIndices])
+				}
+			},
+
 			handleSelectionChange(selection) {
 				this.selectedIndices.length = 0
 				selection.map((row) => {
@@ -300,6 +323,13 @@
 					return customFn.call(this, rowIndex, row)
 				} else {
 					return ''
+				}
+			},
+
+			getSpanMethod({row, column, rowIndex, columnIndex}) {
+				if (!!this.widget.options.onGetSpanMethod) {
+					let customFn = new Function('row', 'column', 'rowIndex', 'columnIndex', this.widget.options.onGetSpanMethod)
+					return customFn.call(this, row, column, rowIndex, columnIndex)
 				}
 			},
 

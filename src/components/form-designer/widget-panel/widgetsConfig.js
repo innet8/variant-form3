@@ -264,6 +264,8 @@ export const containers = [
 
       //获取行样式名称事件
       onGetRowClassName: '',
+      //合并行、列事件
+      onGetSpanMethod: '',
     }
   }
 

@@ -53,6 +53,7 @@
             <VFormRender ref="preForm" :form-json="formJson" :form-data="testFormData" :preview-state="true"
                          :option-data="testOptionData" :global-dsv="designerDsv"
                          @appendButtonClick="testOnAppendButtonClick" @buttonClick="testOnButtonClick"
+                         @dataTableSelectionChange="testDTSC"
                          @formChange="handleFormChange">
             </VFormRender>
           </div>
@@ -657,6 +658,12 @@
         console.log('test', button)
       },
 
+      testDTSC(dt, s1, s2) {
+        console.log('test', dt)
+        console.log('test', s1)
+        console.log('test', s2)
+      },
+
       findWidgetById(wId) {
         let foundW = null
         traverseAllWidgets(this.designer.widgetList, (w) => {
@@ -777,6 +784,8 @@
     //border-width: 10px;
     box-shadow: 0 0 1px 10px #495060;
     height: calc(100vh - 175px);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .form-render-wrapper.pad-layout {
@@ -786,6 +795,8 @@
     //border-width: 10px;
     box-shadow: 0 0 1px 10px #495060;
     height: calc(100vh - 175px);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .node-tree-drawer {
