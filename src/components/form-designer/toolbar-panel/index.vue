@@ -53,7 +53,7 @@
             <VFormRender ref="preForm" :form-json="formJson" :form-data="testFormData" :preview-state="true"
                          :option-data="testOptionData" :global-dsv="designerDsv"
                          @appendButtonClick="testOnAppendButtonClick" @buttonClick="testOnButtonClick"
-                         @dataTableSelectionChange="testDTSC"
+                         @dataTableSelectionChange="testDTSC" @myEmitTest="onMyEmitTest"
                          @formChange="handleFormChange">
             </VFormRender>
           </div>
@@ -662,6 +662,10 @@
         console.log('test', dt)
         console.log('test', s1)
         console.log('test', s2)
+      },
+
+      onMyEmitTest(aaa) {
+        console.log('test emit', aaa)
       },
 
       findWidgetById(wId) {

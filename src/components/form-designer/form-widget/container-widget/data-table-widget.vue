@@ -32,7 +32,8 @@
 				</template>
 
 				<template v-if="!!widget.options.showButtonsColumn">
-					<el-table-column fixed="right" class-name="data-table-buttons-column" :align="'center'"
+					<el-table-column :fixed="buttonsColumnFixed"
+													 class-name="data-table-buttons-column" :align="'center'"
 													 :label="widget.options.buttonsColumnTitle"
 													 :width="widget.options.buttonsColumnWidth">
 						<template #default="scope">
@@ -149,6 +150,14 @@
 
 			widgetSize() {
 				return this.widget.options.tableSize || "default"
+			},
+
+			buttonsColumnFixed() {
+    		if (this.widget.options.buttonsColumnFixed === undefined) {
+    			return 'right'
+				}
+
+				return !this.widget.options.buttonsColumnFixed ? false : this.widget.options.buttonsColumnFixed
 			},
 
 		},

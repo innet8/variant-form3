@@ -41,15 +41,17 @@
 				</template>
 
 				<template v-if="!!widget.options.showButtonsColumn">
-					<el-table-column fixed="right" class-name="data-table-buttons-column" :align="'center'"
+					<el-table-column :fixed="buttonsColumnFixed"
+													 class-name="data-table-buttons-column" :align="'center'"
 													 :label="widget.options.buttonsColumnTitle"
 													 :width="widget.options.buttonsColumnWidth">
 						<template #default="scope">
 							<template v-for="(ob) in widget.options.operationButtons">
-								<el-button v-if="!ob.hidden" :type="ob.type" :size="ob.size"
-													 :round="ob.round" :disabled="ob.disabled"
+								<el-button v-show="showOperationButton(ob, scope.$index, scope.row)"
+													 :type="ob.type" :size="ob.size" :round="ob.round"
+													 :disabled="disableOperationButton(ob, scope.$index, scope.row)"
 													 @click="handleOperationButtonClick(ob.name, scope.$index, scope.row)"
-													 :class="['data-table-' + ob.name + '-button']">{{ob.label}}</el-button>
+													 :class="['data-table-' + ob.name + '-button']">{{getOperationButtonLabel(ob, scope.$index, scope.row)}}</el-button>
 							</template>
 						</template>
 					</el-table-column>
@@ -157,6 +159,14 @@
 
 			singleRowSelectFlag() {
 				return !this.widget.options.showCheckBox
+			},
+
+			buttonsColumnFixed() {
+				if (this.widget.options.buttonsColumnFixed === undefined) {
+					return 'right'
+				}
+
+				return !this.widget.options.buttonsColumnFixed ? false : this.widget.options.buttonsColumnFixed
 			},
 
 		},
@@ -314,6 +324,36 @@
 				if (!!this.widget.options.onOperationButtonClick) {
 					let customFn = new Function('buttonName', 'rowIndex', 'row', this.widget.options.onOperationButtonClick)
 					customFn.call(this, btnName, rowIndex, row)
+				} else {
+					this.dispatch('VFormRender', 'operationButtonClick', [this, btnName, rowIndex, row])
+				}
+			},
+
+			showOperationButton(buttonConfig, rowIndex, row) {
+				if (!!this.widget.options.onHideOperationButton) {
+					let customFn = new Function('buttonConfig', 'rowIndex', 'row', this.widget.options.onHideOperationButton)
+					return !customFn.call(this, buttonConfig, rowIndex, row)
+				} else {
+					return !buttonConfig.hidden
+				}
+			},
+
+			disableOperationButton(buttonConfig, rowIndex, row) {
+				if (!!this.widget.options.onDisableOperationButton) {
+					let customFn = new Function('buttonConfig', 'rowIndex', 'row', this.widget.options.onDisableOperationButton)
+					return customFn.call(this, buttonConfig, rowIndex, row)
+				} else {
+					return buttonConfig.disabled
+				}
+			},
+
+			getOperationButtonLabel(buttonConfig, rowIndex, row) {
+				if (!!this.widget.options.onGetOperationButtonLabel) {
+					let customFn = new Function('buttonConfig', 'rowIndex', 'row', this.widget.options.onGetOperationButtonLabel)
+					//return customFn.call(this, buttonConfig, rowIndex, row) || buttonConfig.label
+					return customFn.call(this, buttonConfig, rowIndex, row)
+				} else {
+					return buttonConfig.label
 				}
 			},
 

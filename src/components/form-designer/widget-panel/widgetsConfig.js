@@ -149,6 +149,7 @@ export const containers = [
         {columnId: 13, prop:'ss',label:'秘密',width:'100',show:false},
       ],
       showButtonsColumn: false, // 是否显示操作列
+      buttonsColumnFixed: 'right',
       buttonsColumnTitle: '操作',
       buttonsColumnWidth: 120,
       operationButtons: [{ // 操作按钮配置
@@ -253,6 +254,13 @@ export const containers = [
       onCurrentPageChange: '',
       //选择项改变事件
       onSelectionChange: '',
+
+      //设置操作按钮是否隐藏回调事件（必须有返回值）
+      onHideOperationButton: '',
+      //设置操作按钮是否禁用回调事件（必须有返回值）
+      onDisableOperationButton: '',
+      //设置操作按钮文本回调事件（必须有返回值）
+      onGetOperationButtonLabel: '',
       //操作按钮点击事件
       onOperationButtonClick: '',
 

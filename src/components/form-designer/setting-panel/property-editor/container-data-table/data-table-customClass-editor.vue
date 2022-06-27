@@ -182,14 +182,23 @@
 								 :destroy-on-close="true" width="1120px">
 				<el-form label-width="110" label-position="left" :model="optionModel">
 					<el-row :gutter="8">
-						<el-col :span="12">
+						<el-col :span="11">
 							<el-form-item prop="buttonsColumnTitle" :label="i18nt('designer.setting.buttonsColumnTitle')">
 								<el-input v-model="optionModel.buttonsColumnTitle"></el-input>
 							</el-form-item>
 						</el-col>
-						<el-col :span="12">
+						<el-col :span="6">
 							<el-form-item prop="buttonsColumnWidth" :label="i18nt('designer.setting.buttonsColumnWidth')">
 								<el-input-number v-model="optionModel.buttonsColumnWidth"></el-input-number>
+							</el-form-item>
+						</el-col>
+						<el-col :span="5">
+							<el-form-item prop="buttonsColumnFixed" :label="i18nt('designer.setting.fixedColumn')">
+								<el-select v-model="optionModel.buttonsColumnFixed">
+									<el-option value="">false</el-option>
+									<el-option value="left">left</el-option>
+									<el-option value="right">right</el-option>
+								</el-select>
 							</el-form-item>
 						</el-col>
 					</el-row>
