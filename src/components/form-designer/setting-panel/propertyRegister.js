@@ -122,6 +122,7 @@ const EVENT_PROPERTIES = {
   'onUploadError'     :            'onUploadError-editor',
   'onFileRemove'      :            'onFileRemove-editor',
   'onValidate'        :            'onValidate-editor',
+  'onAppendButtonClick':           'onAppendButtonClick-editor',
 
   //容器
   'onSubFormRowAdd'           :            'onSubFormRowAdd-editor',

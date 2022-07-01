@@ -423,8 +423,17 @@ export default {
     },
 
     emitAppendButtonClick() {
-      /* 必须调用mixins中的dispatch方法逐级向父组件发送消息！！ */
-      this.dispatch('VFormRender', 'appendButtonClick', [this]);
+      if (!!this.designState) { //设计状态不触发点击事件
+        return
+      }
+
+      if (!!this.field.options.onAppendButtonClick) {
+        let customFn = new Function(this.field.options.onAppendButtonClick)
+        customFn.call(this)
+      } else {
+        /* 必须调用mixins中的dispatch方法逐级向父组件发送消息！！ */
+        this.dispatch('VFormRender', 'appendButtonClick', [this])
+      }
     },
 
     handleOnChange(val, oldVal) {  //自定义onChange事件
