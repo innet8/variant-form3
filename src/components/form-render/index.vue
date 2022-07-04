@@ -82,6 +82,10 @@
         type: Boolean,
         default: false
       },
+      disabledMode: { //表单禁止编辑模式
+        type: Boolean,
+        default: false,
+      },
       renderConfig: { //渲染配置对象
         type: Object,
         default: () => {
@@ -185,6 +189,12 @@
         this.addFieldValidateEventHandler()
         this.registerFormToRefList()
         this.handleOnCreated()
+
+        if (!!this.disabledMode) { //禁止表单编辑
+          this.$nextTick(() => {
+            this.disableForm()
+          })
+        }
       },
 
       getContainerWidgetName(widget) {
@@ -506,18 +516,19 @@
         return promise
       },
 
-      setFormData(formData) { //设置表单数据
+      setFormData(formData, emitChangeEventFlag = true) { //设置表单数据
         Object.keys(this.formDataModel).forEach(propName => {
           if (!!formData && formData.hasOwnProperty(propName)) {
             this.formDataModel[propName] = deepClone( formData[propName] )
           }
         })
 
-        // 通知SubForm组件：表单数据更新事件！！
-        this.broadcast('ContainerItem', 'setFormData', this.formDataModel)
-
-        // 通知FieldWidget组件：表单数据更新事件！！
-        this.broadcast('FieldWidget', 'setFormData', this.formDataModel)
+        if (emitChangeEventFlag) {
+          // 通知SubForm组件：表单数据更新事件！！
+          this.broadcast('ContainerItem', 'setFormData', this.formDataModel)
+          // 通知FieldWidget组件：表单数据更新事件！！
+          this.broadcast('FieldWidget', 'setFormData', this.formDataModel)
+        }
       },
 
       getFieldValue(fieldName) { //单个字段获取值
