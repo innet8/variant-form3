@@ -138,6 +138,8 @@
 				currentPage: this.widget.options.pagination.currentPage,
 				total: this.widget.options.pagination.total,
 
+				//是否跳过selectionChange事件
+				skipSelectionChangeEvent: false,
 			}
 		},
 		computed: {
@@ -252,6 +254,10 @@
 			},
 
 			handleCurrentChange(currentRow, oldCurrentRow) {
+				if (!!this.skipSelectionChangeEvent) {
+					return
+				}
+
 				this.selectedIndices.length = 0
 				let rowIndex = this.getRowIndex(currentRow)
 				if (rowIndex >= 0) {
@@ -268,6 +274,10 @@
 			},
 
 			handleSelectionChange(selection) {
+				if (!!this.skipSelectionChangeEvent) {
+					return
+				}
+
 				this.selectedIndices.length = 0
 				selection.map((row) => {
 					let rowIndex = this.getRowIndex(row)
@@ -321,11 +331,16 @@
 			},
 
 			handleOperationButtonClick(btnName, rowIndex, row) {
-				if (!!this.widget.options.onOperationButtonClick) {
-					let customFn = new Function('buttonName', 'rowIndex', 'row', this.widget.options.onOperationButtonClick)
-					customFn.call(this, btnName, rowIndex, row)
-				} else {
-					this.dispatch('VFormRender', 'operationButtonClick', [this, btnName, rowIndex, row])
+				this.skipSelectionChangeEvent = true
+				try {
+					if (!!this.widget.options.onOperationButtonClick) {
+						let customFn = new Function('buttonName', 'rowIndex', 'row', this.widget.options.onOperationButtonClick)
+						customFn.call(this, btnName, rowIndex, row)
+					} else {
+						this.dispatch('VFormRender', 'operationButtonClick', [this, btnName, rowIndex, row])
+					}
+				} finally {
+					this.skipSelectionChangeEvent = false
 				}
 			},
 

@@ -516,25 +516,35 @@
         return promise
       },
 
-      setFormData(formData, emitChangeEventFlag = true) { //设置表单数据
+      setFormData(formData) { //设置表单数据
         Object.keys(this.formDataModel).forEach(propName => {
           if (!!formData && formData.hasOwnProperty(propName)) {
             this.formDataModel[propName] = deepClone( formData[propName] )
           }
         })
 
-        if (emitChangeEventFlag) {
-          // 通知SubForm组件：表单数据更新事件！！
-          this.broadcast('ContainerItem', 'setFormData', this.formDataModel)
-          // 通知FieldWidget组件：表单数据更新事件！！
-          this.broadcast('FieldWidget', 'setFormData', this.formDataModel)
-        }
+        // 通知SubForm组件：表单数据更新事件！！
+        this.broadcast('ContainerItem', 'setFormData', this.formDataModel)
+        // 通知FieldWidget组件：表单数据更新事件！！
+        this.broadcast('FieldWidget', 'setFormData', this.formDataModel)
       },
 
       getFieldValue(fieldName) { //单个字段获取值
         let fieldRef = this.getWidgetRef(fieldName)
         if (!!fieldRef && !!fieldRef.getValue) {
-          fieldRef.getValue()
+          return fieldRef.getValue()
+        }
+
+        if (!fieldRef) { //如果是子表单字段
+          let result = []
+          this.findWidgetNameInSubForm(fieldName).forEach(wn => {
+            let sw = this.getWidgetRef(wn)
+            if (!!sw && !!sw.getValue) {
+              result.push( sw.getValue() )
+            }
+          })
+
+          return result
         }
       },
 
@@ -542,6 +552,15 @@
         let fieldRef = this.getWidgetRef(fieldName)
         if (!!fieldRef && !!fieldRef.setValue) {
           fieldRef.setValue(fieldValue)
+        }
+
+        if (!fieldRef) { //如果是子表单字段
+          this.findWidgetNameInSubForm(fieldName).forEach(wn => {
+            let sw = this.getWidgetRef(wn)
+            if (!!sw && !!sw.setValue) {
+              sw.setValue(fieldValue)
+            }
+          })
         }
       },
 

@@ -654,6 +654,38 @@ export default {
       this.fieldReadonlyFlag = readonlyFlag
     },
 
+    /**
+     * 动态增加自定义css样式
+     * @param className
+     */
+    addCssClass(className) {
+      if (!this.field.options.customClass) {
+        this.field.options.customClass = [className]
+      } else {
+        this.field.options.customClass.push(className)
+      }
+    },
+
+    /**
+     * 动态移除自定义css样式
+     * @param className
+     */
+    removeCssClass(className) {
+      if (!this.field.options.customClass) {
+        return
+      }
+
+      let foundIdx = -1
+      this.field.options.customClass.map((cc, idx) => {
+        if (cc === className) {
+          foundIdx = idx
+        }
+      })
+      if (foundIdx > -1) {
+        this.field.options.customClass.splice(foundIdx, 1)
+      }
+    },
+
     //--------------------- 以上为组件支持外部调用的API方法 end ------------------//
 
   }
