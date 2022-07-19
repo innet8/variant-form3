@@ -333,14 +333,17 @@
 
   :deep(.label-left-align) .el-form-item__label {
     text-align: left;
+    justify-content: flex-start !important;
   }
 
   :deep(.label-center-align) .el-form-item__label {
     text-align: center;
+    justify-content: center !important;
   }
 
   :deep(.label-right-align) .el-form-item__label {
     text-align: right;
+    justify-content: flex-end !important;
   }
 
 
