@@ -82,7 +82,7 @@
 			<el-dialog :title="i18nt('designer.setting.tableColEdit')" v-model="dialogVisible"
 				:show-close="true" custom-class="drag-dialog small-padding-dialog"
 				:close-on-click-modal="false" :close-on-press-escape="false"
-				:destroy-on-close="true" width="1180px">
+				:destroy-on-close="true" width="1250px">
 				<el-table :data="optionModel.tableColumns" style="width: 100%"
 									:cell-style="{padding:'3px 0'}" height="500" border row-key="columnId" ref="singleTable" stripe>
 					<el-table-column type="index" width="42" fixed="left"></el-table-column>
@@ -143,6 +143,9 @@
 					<el-table-column :label="i18nt('designer.setting.formatOfColumn')" width="200" prop="formatS">
 						<template #default="scope">
 							<el-select v-model="scope.row.formatS" clearable>
+								<el-option-group :label="i18nt('designer.setting.customRenderGroup')" key="custom-render-group">
+									<el-option value="render" label="render"></el-option>
+								</el-option-group>
 								<el-option-group
 										v-for="group in op"
 										:key="group.label"
@@ -155,6 +158,12 @@
 										</el-option>
 								</el-option-group>
 							</el-select>
+						</template>
+					</el-table-column>
+					<el-table-column :label="i18nt('designer.setting.renderFunction')" width="80" fixed="right" align="center">
+						<template #default="scope">
+							<el-button :disabled="scope.row.formatS !== 'render'" @click="showRenderDialog(scope.row)"
+												 size="small" plain round icon="el-icon-edit"></el-button>
 						</template>
 					</el-table-column>
 					<el-table-column :label="i18nt('designer.setting.actionColumn')" width="100" fixed="right" align="center">
@@ -284,6 +293,21 @@
 			</el-dialog>
 		</div>
 
+		<div v-if="showRenderDialogFlag" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
+			<el-dialog :title="i18nt('designer.setting.renderFunction')" v-model="showRenderDialogFlag"
+								 :show-close="true" custom-class="drag-dialog small-padding-dialog"
+								 :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
+				<el-alert type="info" :closable="false" title="function customRender(h, params, components) {"></el-alert>
+				<code-editor :mode="'javascript'" :readonly="false" v-model="renderJson" ref="dsResultEditor"></code-editor>
+				<el-alert type="info" :closable="false" title="}"></el-alert>
+				<div slot="footer" class="dialog-footer">
+					<el-button size="default" @click="showRenderDialogFlag = false">
+						{{i18nt('designer.hint.cancel')}}</el-button>
+					<el-button size="default" type="primary" @click="saveColumnRender">
+						{{i18nt('designer.hint.confirm')}}</el-button>
+				</div>
+			</el-dialog>
+		</div>
   </div>
 </template>
 
@@ -363,6 +387,10 @@
 						{value:'n7',label:"###,##0.00##%"},
 					]
         }],
+
+				showRenderDialogFlag: false,
+				renderJson: '',
+				currentTableColumn: null,
 
 				nameRules: [
 					{ required: true, trigger: ['blur', 'change'], message: this.i18nt('designer.setting.fieldValueRequired') },
@@ -461,6 +489,18 @@
 					 return false;
 				}
 				this.optionModel.tableColumns.splice(index,1)
+			},
+
+			showRenderDialog(tableColumn) {
+				this.currentTableColumn = tableColumn
+				this.renderJson = tableColumn.render || ''
+				this.showRenderDialogFlag = true
+			},
+
+			saveColumnRender() {
+				//this.$set(this.currentTableColumn, 'render', this.renderJson)
+				this.currentTableColumn.render = this.renderJson
+				this.showRenderDialogFlag = false
 			},
 
 			onButtonNameFocus(event) {

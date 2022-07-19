@@ -145,7 +145,7 @@ export const containers = [
         {columnId: 9, prop:'f5',label:'股票2',width:'150',show:true,align:'right',sortable:true,formatS:'n5'},
         {columnId: 10, prop:'f6',label:'存款2',width:'150',show:true,align:'right',sortable:true,formatS:'n6'},
         {columnId: 11, prop:'f7',label:'成功率',width:'140',show:true,align:'right',sortable:true,formatS:'n7'},
-        {columnId: 12, prop:'add',label:'地址',width:'250',show:true},
+        {columnId: 12, prop:'add',label:'地址',width:'250',show:true, render: ''},
         {columnId: 13, prop:'ss',label:'秘密',width:'100',show:false},
       ],
       showButtonsColumn: false, // 是否显示操作列

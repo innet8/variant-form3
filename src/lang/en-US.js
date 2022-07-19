@@ -346,6 +346,8 @@ export default {
       fixedColumn: 'Fixed',
       alignTypeOfColumn: 'Align',
       formatOfColumn: 'Format',
+      customRenderGroup: 'Custom Render',
+      renderFunction: 'Render',
       actionColumn: 'Action',
       addTableColumn: 'Add New Column',
       deleteTableColumn: 'Delete This Column',

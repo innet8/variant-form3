@@ -69,6 +69,7 @@
             <el-button @click="showPreviewDialogFlag = false">{{i18nt('designer.hint.closePreview')}}</el-button>
             <el-button v-if="false" @click="testSetFormJson">setFormJson</el-button>
             <el-button v-if="false" @click="testSubFormHide">Test SFH</el-button>
+            <el-button v-if="false" @click="testSetFormData">Test SFD</el-button>
           </div>
         </template>
       </el-dialog>
@@ -260,11 +261,12 @@
           'select62173': 2,
         },
         testOptionData: {
-          'select62173': [
-            {label: '01', value: 1},
-            {label: '22', value: 2},
-            {label: '333', value: 3},
-          ]
+          // 'select62173': [
+          //   {label: '01', value: 1},
+          //   {label: '22', value: 2},
+          //   {label: '333', value: 3},
+          // ]
+
         },
 
       }
@@ -638,6 +640,32 @@
 
       testSubFormHide() {
         this.$refs['preForm'].hideWidgets('input73220')
+      },
+
+      testSetFormData() {
+        let testFormData = {
+          "picTest01": [
+            {
+              "name": "QQ浏览器截图20200730103242.png",
+              "url": "http://image-2021.test.upcdn.net/QQ浏览器截图20200730103242.png"
+            },
+            {
+              "name": "QQ浏览器截图20201218155618.jpg",
+              "url": "http://image-2021.test.upcdn.net/QQ浏览器截图20201218155618.jpg"
+            }
+          ],
+          "fileTest01": [
+            {
+              "name": "吉林大学2019-2020《公文写作》大作业.doc",
+              "url": "http://image-2021.test.upcdn.net/吉林大学2019-2020《公文写作》大作业.doc"
+            },
+            {
+              "name": "资源包抵扣明细.xlsx",
+              "url": "http://image-2021.test.upcdn.net/资源包抵扣明细.xlsx"
+            }
+          ]
+        }
+        this.$refs['preForm'].setFormData(testFormData)
       },
 
       handleFormChange(fieldName, newValue, oldValue, formModel) {

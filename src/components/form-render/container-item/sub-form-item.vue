@@ -6,8 +6,8 @@
       <el-row class="header-row">
         <div class="action-header-column">
           <span class="action-label">{{i18nt('render.hint.subFormAction')}}</span>
-          <el-button :disabled="actionDisabled" round type="primary" size="small" class="action-button" @click="addSubFormRow"
-                     :title="i18nt('render.hint.subFormAddActionHint')">
+          <el-button v-if="!isReadMode" :disabled="actionDisabled" round type="primary" size="small"
+                     class="action-button" @click="addSubFormRow" :title="i18nt('render.hint.subFormAddActionHint')">
             {{i18nt('render.hint.subFormAddAction')}}<svg-icon icon-class="el-plus" /></el-button>
         </div>
         <template v-for="(subWidget) in widget.widgetList" :key="subWidget.id + 'thc'">
@@ -39,9 +39,9 @@
         <div class="sub-form-action-column hide-label">
           <div class="action-button-column">
             <el-button :disabled="actionDisabled" circle @click="insertSubFormRow(sfrIdx)"
-                       :title="i18nt('render.hint.insertSubFormRow')"><svg-icon icon-class="el-plus" /></el-button>
+                       v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"><svg-icon icon-class="el-plus" /></el-button>
             <el-button :disabled="actionDisabled" circle @click="deleteSubFormRow(sfrIdx)"
-                       :title="i18nt('render.hint.deleteSubFormRow')"><svg-icon icon-class="el-delete" /></el-button>
+                       v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"><svg-icon icon-class="el-delete" /></el-button>
             <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
           </div>
         </div>
@@ -83,13 +83,19 @@
     props: {
       widget: Object,
     },
-    inject: ['refList', 'sfRefList', 'globalModel'],
+    inject: ['refList', 'sfRefList', 'globalModel', 'getReadMode'],
     data() {
       return {
         rowIdData: [],
         fieldSchemaData: [],
         actionDisabled: false,
       }
+    },
+    computed: {
+      isReadMode() {
+        return this.getReadMode()
+      },
+
     },
     created() {
       this.initRefList()
@@ -269,7 +275,7 @@
           this.deleteFromRowIdData(formRowIndex)
           this.deleteFromFieldSchemaData(formRowIndex)
 
-          this.handelSubFormRowDelete(oldSubFormData, deletedDataRow)
+          this.handleSubFormRowDelete(oldSubFormData, deletedDataRow)
           this.handleSubFormRowChange(oldSubFormData)
         }).catch(() => {
           //
@@ -297,7 +303,7 @@
         }
       },
 
-      handelSubFormRowDelete(subFormData, deletedDataRow) {
+      handleSubFormRowDelete(subFormData, deletedDataRow) {
         if (!!this.widget.options.onSubFormRowDelete) {
           let customFunc = new Function('subFormData', 'deletedDataRow', this.widget.options.onSubFormRowDelete)
           customFunc.call(this, subFormData, deletedDataRow)

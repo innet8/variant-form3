@@ -201,7 +201,7 @@ export default {
       }
     },
 
-    initOptionItems(keepSelected) {
+    async initOptionItems(keepSelected) {
       if (this.designState) {
         return
       }
@@ -219,11 +219,13 @@ export default {
             let localDsv = new Object({})
             overwriteObj(localDsv, gDsv)
             localDsv['widgetName'] = this.field.options.name
-            runDataSourceRequest(curDS, localDsv, this.getFormRef(), false, this.$message).then(res => {
-              this.loadOptions(res)
-            }).catch(err => {
+            let dsResult = null
+            try {
+              dsResult = await runDataSourceRequest(curDS, localDsv, this.getFormRef(), false, this.$message)
+              this.loadOptions(dsResult)
+            } catch(err) {
               this.$message.error(err.message)
-            })
+            }
           }
 
           return;

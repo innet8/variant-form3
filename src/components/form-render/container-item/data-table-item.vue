@@ -36,7 +36,17 @@
 													 :format="item.format"
 													 :show-overflow-tooltip="true"
 													 :min-width="item.width">
-						<template #header>{{item.label}}</template>
+						<template #default="scope">
+							<template v-if="item.formatS === 'render' && !!item.render">
+								<table-column-custom-render :row="scope.row" :column="item" :renderFn="getColumnRender(scope.row, item)" />
+							</template>
+							<template v-else-if="!!item.formatS">
+								<span>{{formatterValue(scope.row, item, scope.row[item.prop])}}</span>
+							</template>
+							<template v-else>
+								<span>{{scope.row[item.prop]}}</span>
+							</template>
+						</template>
 					</el-table-column>
 				</template>
 
@@ -81,6 +91,7 @@
 	import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
 	import refMixin from "@/components/form-render/refMixin"
 	import containerItemMixin from "@/components/form-render/container-item/containerItemMixin"
+	import TableColumnCustomRender from '@/components/form-render/table-column-custom-render'
 	import {getDSByName, overwriteObj, runDataSourceRequest} from "@/utils/util"
 
   export default {
@@ -89,6 +100,7 @@
     mixins: [emitter, i18n, refMixin, containerItemMixin],
 		components: {
 		  ContainerItemWrapper,
+			TableColumnCustomRender,
 		  ...FieldComponents,
 		},
 		props: {
@@ -239,6 +251,11 @@
 					}
 				}
 			  return cellValue;
+			},
+
+			getColumnRender(row, column) {
+				/* TODO: 每个table-cell，render函数会执行2次，原因不明！！！ */
+				return new Function('h', 'params', 'components', column.render)
 			},
 
 			getRowIndex(row) {

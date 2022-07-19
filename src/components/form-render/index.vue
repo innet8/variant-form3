@@ -52,7 +52,7 @@
     buildDefaultFormJson,
     getDSByName,
     runDataSourceRequest,
-    getFieldWidgetByName
+    getFieldWidgetByName, overwriteObj
   } from "@/utils/util"
   import i18n, { changeLocale } from "@/utils/i18n"
 
@@ -757,11 +757,14 @@
       /**
        * 执行数据源请求
        * @param dsName
-       * @param dsv
+       * @param localDsv
        */
-      async executeDataSource(dsName, dsv) {
+      async executeDataSource(dsName, localDsv) {
         let ds = getDSByName(this.formJsonObj.formConfig, dsName)
-        return await runDataSourceRequest(ds, dsv, this, false, this.$message)
+        let newDsv = new Object({})
+        overwriteObj(newDsv, this.globalDsv)
+        overwriteObj(newDsv, localDsv)
+        return await runDataSourceRequest(ds, newDsv, this, false, this.$message)
       },
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//

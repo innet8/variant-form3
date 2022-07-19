@@ -346,6 +346,8 @@ export default {
       fixedColumn: '是否固定',
       alignTypeOfColumn: '对齐方式',
       formatOfColumn: '格式化',
+      customRenderGroup: '动态渲染',
+      renderFunction: '渲染函数',
       actionColumn: '操作',
       addTableColumn: '增加列',
       deleteTableColumn: '删除列',
