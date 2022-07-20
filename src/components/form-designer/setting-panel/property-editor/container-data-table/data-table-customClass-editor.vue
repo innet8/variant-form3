@@ -301,10 +301,10 @@
 				<code-editor :mode="'javascript'" :readonly="false" v-model="renderJson" ref="dsResultEditor"></code-editor>
 				<el-alert type="info" :closable="false" title="}"></el-alert>
 				<div slot="footer" class="dialog-footer">
-					<el-button size="default" @click="showRenderDialogFlag = false">
-						{{i18nt('designer.hint.cancel')}}</el-button>
 					<el-button size="default" type="primary" @click="saveColumnRender">
 						{{i18nt('designer.hint.confirm')}}</el-button>
+					<el-button size="default" @click="showRenderDialogFlag = false">
+						{{i18nt('designer.hint.cancel')}}</el-button>
 				</div>
 			</el-dialog>
 		</div>

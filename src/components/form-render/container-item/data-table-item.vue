@@ -222,6 +222,10 @@
 			},
 
 			formatterValue(row, column, cellValue) {
+				if (!cellValue) {
+					return ''
+				}
+
 				if(!!column.formatS) {
 					switch(column.formatS) {
 						case 'd1':
