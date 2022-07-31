@@ -458,8 +458,8 @@ export default {
       }
 
       if (!!this.field.options.onClick) {
-        let changeFn = new Function(this.field.options.onClick)
-        changeFn.call(this)
+        let customFn = new Function(this.field.options.onClick)
+        customFn.call(this)
       } else {
         this.dispatch('VFormRender', 'buttonClick', [this]);
       }

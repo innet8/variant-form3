@@ -20,12 +20,12 @@
     </el-upload>
 
     <div v-if="showPreviewDialogFlag" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
-    <el-dialog title="" v-model="showPreviewDialogFlag"
-               append-to-body width="60%"
-               :show-close="true" custom-class="drag-dialog small-padding-dialog"
-               :close-on-click-modal="true" :close-on-press-escape="true" :destroy-on-close="true">
-      <img :src="previewUrl" style="width: 100%" alt="" />
-    </el-dialog>
+      <el-dialog title="" v-model="showPreviewDialogFlag"
+                 append-to-body width="60%"
+                 :show-close="true" custom-class="drag-dialog small-padding-dialog"
+                 :close-on-click-modal="true" :close-on-press-escape="true" :destroy-on-close="true">
+        <img :src="previewUrl" style="width: 100%" alt="" />
+      </el-dialog>
     </div>
   </form-item-wrapper>
 </template>

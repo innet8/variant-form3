@@ -490,7 +490,7 @@
         } else if (!!widgetNames && Array.isArray(widgetNames)) {
           eventParams = [...widgetNames]
         }
-        this.broadcast('FieldWidget', 'reloadOptionItems', [eventParams])
+        this.broadcast('FieldWidget', 'reloadOptionItems', eventParams)
       },
 
       getFormData(needValidation = true) {

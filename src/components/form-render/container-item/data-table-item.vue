@@ -40,7 +40,7 @@
 							<template v-if="item.formatS === 'render' && !!item.render">
 								<table-column-custom-render :row="scope.row" :column="item" :renderFn="getColumnRender(scope.row, item)" />
 							</template>
-							<template v-else-if="!!item.formatS">
+							<template v-else-if="!!item.formatS && (item.formatS !== 'renders')">
 								<span>{{formatterValue(scope.row, item, scope.row[item.prop])}}</span>
 							</template>
 							<template v-else>
