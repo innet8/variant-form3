@@ -1,6 +1,6 @@
 import {
   Edit, Minus, Plus, InfoFilled, Search, CirclePlus, Delete,
-  ArrowDown, ArrowUp, Bottom, Top
+  ArrowDown, ArrowUp, Bottom, Top, Back, Right
 } from '@element-plus/icons-vue'
 
 export function registerIcon(app) {
@@ -15,4 +15,6 @@ export function registerIcon(app) {
   app.component('el-icon-arrow-up', ArrowUp)
   app.component('el-icon-bottom', Bottom)
   app.component('el-icon-top', Top)
+  app.component('el-icon-top', Back)
+  app.component('el-icon-top', Right)
 }

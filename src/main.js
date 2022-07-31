@@ -13,6 +13,7 @@ import 'virtual:svg-icons-register'
 
 import ContainerWidgets from '@/components/form-designer/form-widget/container-widget/index'
 import ContainerItems from '@/components/form-render/container-item/index'
+import VFormRender from '@/components/form-render/index'
 
 import { addDirective } from '@/utils/directive'
 import { installI18n } from '@/utils/i18n'
@@ -33,6 +34,7 @@ installI18n(vfApp)
 
 vfApp.use(ContainerWidgets)
 vfApp.use(ContainerItems)
+vfApp.component('VFormRender', VFormRender)
 loadExtension(vfApp)
 
 vfApp.mount('#app')

@@ -37,6 +37,7 @@
 </template>
 
 <script>
+  import { createVNode, render } from 'vue'
   //import ElForm from 'element-ui/packages/form/src/form.vue'  /* 用于源码调试Element UI */
   import emitter from '@/utils/emitter'
   import './container-item/index'
@@ -52,9 +53,11 @@
     buildDefaultFormJson,
     getDSByName,
     runDataSourceRequest,
-    getFieldWidgetByName, overwriteObj
+    getFieldWidgetByName, overwriteObj, getContainerWidgetByName
   } from "@/utils/util"
   import i18n, { changeLocale } from "@/utils/i18n"
+  import DynamicDialog from './dynamic-dialog'
+  import DynamicDrawer from './dynamic-drawer'
 
   export default {
     name: "VFormRender",
@@ -98,6 +101,10 @@
         type: Object,
         default: () => ({})
       },
+      dynamicCreation: { //是否弹窗、抽屉动态创建的VFormRender
+        type: Boolean,
+        default: false
+      }
     },
     provide() {
       return {
@@ -182,7 +189,7 @@
     methods: {
       initFormObject(insertHtmlCodeFlag = true) {
         this.formId = 'vfRender' + generateId()
-        if (!!insertHtmlCodeFlag) {
+        if (!!insertHtmlCodeFlag && !this.dynamicCreation) { // 弹窗、抽屉动态创建的VFormRender不重新插入全局CSS和全局函数节点！！
           this.insertCustomStyleAndScriptNode()
         }
         this.addFieldChangeEventHandler()
@@ -232,7 +239,9 @@
 
       buildDataFromWidget(wItem) {
         if (wItem.category === 'container') {
-          if (wItem.type === 'grid') {
+          if (wItem.type === 'vf-dialog' || wItem.type === 'vf-drawer') {
+            // 什么也不做，不处理弹窗、抽屉内部组件！！
+          } else if (wItem.type === 'grid') {
             if (!!wItem.cols && (wItem.cols.length > 0)) {
               wItem.cols.forEach((childItem) => {
                 this.buildDataFromWidget(childItem)
@@ -636,7 +645,7 @@
       },
 
       validateFields() {
-        //
+        //TODO
       },
 
       disableWidgets(widgetNames) {
@@ -765,6 +774,87 @@
         overwriteObj(newDsv, this.globalDsv)
         overwriteObj(newDsv, localDsv)
         return await runDataSourceRequest(ds, newDsv, this, false, this.$message)
+      },
+
+      /**
+       * 是否弹窗、抽屉组件动态创建的v-form-render
+       * @returns {boolean}
+       */
+      isDynamicCreation() {
+        return this.dynamicCreation
+      },
+
+      /**
+       * 显示弹窗表单，动态创建v-form-render组件，option-data、global-dsv等属性继承父级表单
+       * @param dialogName
+       * @param formData
+       */
+      showDialog(dialogName, formData) {
+        let dialogCon = getContainerWidgetByName(this.widgetList, dialogName)
+        if (!dialogName || (dialogCon.type !== 'vf-dialog')) {
+          this.$message.error(this.i18nt('render.hint.refNotFound') + dialogName)
+          return
+        }
+        let dFormJson = {
+          widgetList: deepClone(dialogCon.widgetList),
+          formConfig: deepClone(this.formConfig)
+        }
+        //console.log('test====', JSON.stringify(dFormJson))
+
+        let dialogInstance = createVNode(DynamicDialog, {
+          options: dialogCon.options,
+          formJson: dFormJson,
+          optionData: this.optionData,
+          globalDsv: this.globalDsv,
+          parentFormRef: this,
+          visible: true,
+        })
+        dialogInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
+
+        let wrapperDiv = document.getElementById('vf-dynamic-dialog-wrapper')
+        if (!wrapperDiv) {
+          wrapperDiv = document.createElement("div")
+          wrapperDiv.id = 'vf-dynamic-dialog-wrapper'
+          document.body.appendChild(wrapperDiv)
+        }
+        render(dialogInstance, wrapperDiv)
+        document.body.appendChild( dialogInstance.el )
+      },
+
+      showDrawer(drawerName, formData) {
+        let drawerCon = getContainerWidgetByName(this.widgetList, drawerName)
+        if (!drawerCon || (drawerCon.type !== 'vf-drawer')) {
+          this.$message.error(this.i18nt('render.hint.refNotFound') + drawerName)
+          return
+        }
+        let dFormJson = {
+          widgetList: deepClone(drawerCon.widgetList),
+          formConfig: deepClone(this.formConfig)
+        }
+        //console.log('test====', JSON.stringify(dFormJson))
+
+        let drawerInstance = createVNode(DynamicDrawer, {
+          options: drawerCon.options,
+          formJson: dFormJson,
+          optionData: this.optionData,
+          globalDsv: this.globalDsv,
+          parentFormRef: this,
+          visible: true,
+        })
+        drawerInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
+
+        let wrapperDiv = document.getElementById('vf-dynamic-drawer-wrapper')
+        if (!wrapperDiv) {
+          wrapperDiv = document.createElement("div")
+          wrapperDiv.id = 'vf-dynamic-drawer-wrapper'
+          document.body.appendChild(wrapperDiv)
+        }
+        render(drawerInstance, wrapperDiv)
+        document.body.appendChild( drawerInstance.el )
+      },
+
+      showDialogOrDrawer(widgetNme) {
+        //TODO
       },
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//

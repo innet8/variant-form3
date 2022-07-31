@@ -143,6 +143,14 @@ export function createDesigner(vueInstance) {
             //this.$message.info(this.vueInstance.i18nt('designer.hint.onlyFieldWidgetAcceptable'))
             return false
           }
+
+          if ((evt.to.className === 'vf-dialog-drop-zone') && (wgType === 'vf-dialog' || wgType === 'vf-drawer')) {
+            return false
+          }
+
+          if ((evt.to.className === 'vf-drawer-drop-zone') && (wgType === 'vf-dialog' || wgType === 'vf-drawer')) {
+            return false
+          }
         }
       }
 

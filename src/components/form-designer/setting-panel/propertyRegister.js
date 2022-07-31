@@ -68,6 +68,21 @@ const COMMON_PROPERTIES = {
   'offset'             :            'offset-editor',
   'push'               :            'push-editor',
   'pull'               :            'pull-editor',
+  'title'              :            'title-editor',
+  'width'              :            'width-editor',
+  'fullscreen'         :            'fullscreen-editor',
+  'showModal'          :            'showModal-editor',
+  'showClose'          :            'showClose-editor',
+  'closeOnClickModal'  :            'closeOnClickModal-editor',
+  'closeOnPressEscape' :            'closeOnPressEscape-editor',
+  'center'             :            'center-editor',
+  'direction'          :            'direction-editor',
+  'readMode'           :            'readMode-editor',
+  'disabledMode'       :            'disabledMode-editor',
+  'okButtonLabel'      :            'okButtonLabel-editor',
+  'okButtonHidden'     :            'okButtonHidden-editor',
+  'cancelButtonLabel'  :            'cancelButtonLabel-editor',
+  'cancelButtonHidden' :            'cancelButtonHidden-editor',
 
 }
 
@@ -143,6 +158,10 @@ const EVENT_PROPERTIES = {
   'onCellDoubleClick'         :            'onCellDoubleClick-editor',
   'onGetRowClassName'         :            'onGetRowClassName-editor',
   'onGetSpanMethod'           :            'onGetSpanMethod-editor',
+  'onOkButtonClick'           :            'onOkButtonClick-editor',
+  'onCancelButtonClick'       :            'onCancelButtonClick-editor',
+  'onDialogOpened'            :            'onDialogOpened-editor',
+  'onDrawerOpened'            :            'onDrawerOpened-editor',
 
 }
 

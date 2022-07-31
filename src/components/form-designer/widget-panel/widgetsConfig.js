@@ -275,7 +275,61 @@ export const containers = [
       //合并行、列事件
       onGetSpanMethod: '',
     }
-  }
+  },
+
+  {
+    type: 'vf-dialog',
+    category: 'container',
+    icon: 'vf-dialog',
+    widgetList: [],
+    options: {
+      name: '',
+      title: '',
+      width: '50%',
+      fullscreen: false,
+      showModal: true,
+      showClose: true,
+      closeOnClickModal: false,
+      closeOnPressEscape: false,
+      center: false,
+      readMode: false,
+      disabledMode: false,
+      okButtonLabel: '',
+      okButtonHidden: false,
+      cancelButtonLabel: '',
+      cancelButtonHidden: false,
+      onDialogOpened: '',
+      //onBeforeClose: '',
+      onOkButtonClick: '',
+      onCancelButtonClick: '',
+    }
+  },
+
+  {
+    type: 'vf-drawer',
+    category: 'container',
+    icon: 'vf-drawer',
+    widgetList: [],
+    options: {
+      name: '',
+      title: '',
+      size: '50%',
+      showModal: true,
+      showClose: true,
+      closeOnClickModal: false,
+      closeOnPressEscape: false,
+      direction: 'rtl',
+      readMode: false,
+      disabledMode: false,
+      okButtonLabel: '',
+      okButtonHidden: false,
+      cancelButtonLabel: '',
+      cancelButtonHidden: false,
+      onDrawerOpened: '',
+      onOkButtonClick: '',
+      onCancelButtonClick: '',
+    }
+  },
 
 ]
 

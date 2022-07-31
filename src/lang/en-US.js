@@ -33,6 +33,8 @@ export default {
       'table-cell':     'TableCell',
       'tab-pane':       'TabPane',
       'data-table':     'DataTable',
+      'vf-dialog':      'Dialog',
+      'vf-drawer':      'Drawer',
 
       input:          'Input',
       textarea:       'Textarea',
@@ -324,6 +326,24 @@ export default {
       formRefName: 'Ref Name',
       formRulesName: 'Rules Name',
       syntaxCheckWarning: 'Syntax error in the javascript codes, please check again!',
+
+      //dialog & drawer
+      title: 'Title',
+      dialogWidth: 'Width（px/%）',
+      fullscreen: 'Full Screen',
+      showModal: 'Show Modal',
+      showClose: 'Show Close',
+      closeOnClickModal: 'Click Modal To Close ',
+      closeOnPressEscape: 'Press Esc To Close',
+      center: 'Center Header And Footer',
+      readMode: 'Form Readonly',
+      disabledMode: 'Form Disabled',
+      okButtonLabel: 'Label Of OK Btn',
+      okButtonHidden: 'Hide OK Btn',
+      cancelButtonLabel: 'Label Of Cancel Btn',
+      cancelButtonHidden: 'Hide Cancel Btn',
+      drawSize: 'Size(px/%)',
+      drawDirection: 'Direction',
 
       //data-table
       tableWidth: 'Width(px/%)',

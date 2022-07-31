@@ -304,6 +304,30 @@ export function getFieldWidgetByName(widgetList, fieldName) {
   return foundWidget
 }
 
+export function getContainerWidgetByName(widgetList, containerName) {
+  let foundContainer = null
+  let handlerFn = (con) => {
+    if (con.options.name === containerName) {
+      foundContainer = con
+    }
+  }
+
+  traverseContainerWidgets(widgetList, handlerFn)
+  return foundContainer
+}
+
+export function getContainerWidgetById(widgetList, containerId) {
+  let foundContainer = null
+  let handlerFn = (con) => {
+    if (con.id === containerId) {
+      foundContainer = con
+    }
+  }
+
+  traverseContainerWidgets(widgetList, handlerFn)
+  return foundContainer
+}
+
 export function copyToClipboard(content, clickEvent, $message, successMsg, errorMsg) {
   const clipboard = new Clipboard(clickEvent.target, {
     text: () => content

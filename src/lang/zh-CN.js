@@ -33,6 +33,8 @@ export default {
       'table-cell':     '单元格',
       'tab-pane':       '选项卡页',
       'data-table':     '数据表格',
+      'vf-dialog':      '弹出窗口',
+      'vf-drawer':      '侧滑抽屉',
 
       input:          '单行输入',
       textarea:       '多行输入',
@@ -324,6 +326,24 @@ export default {
       formRefName: '引用名称',
       formRulesName: '验证规则名称',
       syntaxCheckWarning: 'JS代码存在语法错误，请仔细检查！',
+
+      //dialog & drawer
+      title: '标题',
+      dialogWidth: '弹窗宽度（px/%）',
+      fullscreen: '全屏显示弹窗',
+      showModal: '显示遮罩层',
+      showClose: '显示关闭按钮',
+      closeOnClickModal: '点击遮罩层关闭',
+      closeOnPressEscape: '按Esc键关闭',
+      center: '头部底部居中',
+      readMode: '弹窗表单只读',
+      disabledMode: '弹窗表单禁用',
+      okButtonLabel: '确认按钮文字',
+      okButtonHidden: '隐藏确认按钮',
+      cancelButtonLabel: '取消按钮文字',
+      cancelButtonHidden: '隐藏取消按钮',
+      drawSize: '抽屉大小（px/%）',
+      drawDirection: '抽屉滑出方向',
 
       //data-table
       tableWidth: '宽度(px/%)',

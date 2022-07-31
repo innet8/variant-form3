@@ -97,6 +97,7 @@
         let acData = [
           {meta: 'VForm API', caption: 'getWidgetRef', value: 'getWidgetRef()', score: 1},
           {meta: 'VForm API', caption: 'getFormRef', value: 'getFormRef()', score: 1},
+          {meta: 'VForm API', caption: 'getParentFormRef', value: 'getParentFormRef()', score: 1},
           //TODO: 待补充！！
         ]
         let langTools = ace.require('ace/ext/language_tools')
