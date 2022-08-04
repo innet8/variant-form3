@@ -298,10 +298,10 @@ export const containers = [
       okButtonHidden: false,
       cancelButtonLabel: '',
       cancelButtonHidden: false,
-      onDialogOpened: '',
-      //onBeforeClose: '',
       onOkButtonClick: '',
       onCancelButtonClick: '',
+      onDialogOpened: '',
+      onDialogBeforeClose: '',
     }
   },
 
@@ -325,9 +325,10 @@ export const containers = [
       okButtonHidden: false,
       cancelButtonLabel: '',
       cancelButtonHidden: false,
-      onDrawerOpened: '',
       onOkButtonClick: '',
       onCancelButtonClick: '',
+      onDrawerOpened: '',
+      onDrawerBeforeClose: '',
     }
   },
 

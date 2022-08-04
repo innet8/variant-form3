@@ -1,11 +1,11 @@
 <template>
-  <el-drawer :title="options.title" v-if="drawerVisible" v-model="drawerVisible" class="dynamic-drawer" append-to-body destroy-on-close
+  <el-drawer :title="options.title" v-model="drawerVisible" custom-class="dynamic-drawer" append-to-body destroy-on-close
              :size="options.size" :modal="options.showModal" :direction="options.direction"
              :show-close="options.showClose" :close-on-click-modal="options.closeOnClickModal"
              :close-on-press-escape="options.closeOnPressEscape"
-             @close="handleCloseEvent" @opened="handleOpenedEvent">
+             :before-close="handleBeforeClose" @close="handleCloseEvent" @opened="handleOpenedEvent">
     <VFormRender ref="dFormRef" :form-json="formJson" :form-data="formData"
-                 :option-data="optionData" :global-dsv="globalDsv"
+                 :option-data="optionData" :global-dsv="globalDsv" :parent-form="parentFormRef"
                  :disabled-mode="options.disabledMode" :dynamic-creation="true">
     </VFormRender>
     <template #footer>
@@ -49,14 +49,10 @@
         type: Object,
         default: null
       },
-      visible: {
-        type: Boolean,
-        default: true,
-      }
     },
     data() {
       return {
-        drawerVisible: this.visible,
+        drawerVisible: false,
       }
     },
     computed: {
@@ -78,6 +74,10 @@
       })
     },
     methods: {
+      show() {
+        this.drawerVisible = true
+      },
+
       deleteWrapperNode() {
         let wrapperNode = document.getElementById('vf-dynamic-drawer-wrapper')
         if (!!wrapperNode) {
@@ -86,12 +86,18 @@
       },
 
       handleBeforeClose(done) {
-        //
+        if (!!this.options.onDrawerBeforeClose) {
+          let customFn = new Function(this.options.onDrawerBeforeClose)
+          let closeResult = customFn.call(this)
+          return (closeResult === false) ? closeResult : done()
+        }
+
+        return done()
       },
 
       handleCloseEvent() {
         this.drawerVisible = false
-        setTimeout(this.deleteWrapperNode, 150)
+        setTimeout(this.deleteWrapperNode, 500)
       },
 
       handleOpenedEvent() {
@@ -104,7 +110,10 @@
       handleCancelClick() {
         if (!!this.options.onCancelButtonClick) {
           let customFn = new Function(this.options.onCancelButtonClick)
-          customFn.call(this)
+          let clickResult = customFn.call(this)
+          if (clickResult === false) {
+            return
+          }
         }
 
         this.drawerVisible = false
@@ -114,7 +123,10 @@
       handleOkClick() {
         if (!!this.options.onOkButtonClick) {
           let customFn = new Function(this.options.onOkButtonClick)
-          customFn.call(this)
+          let clickResult = customFn.call(this)
+          if (clickResult === false) {
+            return
+          }
         }
 
         this.drawerVisible = false

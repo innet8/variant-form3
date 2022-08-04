@@ -101,6 +101,10 @@
         type: Object,
         default: () => ({})
       },
+      parentForm: {
+        type: Object,
+        default: null
+      },
       dynamicCreation: { //是否弹窗、抽屉动态创建的VFormRender
         type: Boolean,
         default: false
@@ -777,6 +781,14 @@
       },
 
       /**
+       * 获取父级VFormRender组件实例
+       * @returns {object}
+       */
+      getParentFormRef() {
+        return this.parentForm
+      },
+
+      /**
        * 是否弹窗、抽屉组件动态创建的v-form-render
        * @returns {boolean}
        */
@@ -804,10 +816,10 @@
         let dialogInstance = createVNode(DynamicDialog, {
           options: dialogCon.options,
           formJson: dFormJson,
+          formData: formData || {},
           optionData: this.optionData,
           globalDsv: this.globalDsv,
           parentFormRef: this,
-          visible: true,
         })
         dialogInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
 
@@ -819,6 +831,7 @@
         }
         render(dialogInstance, wrapperDiv)
         document.body.appendChild( dialogInstance.el )
+        dialogInstance.component.ctx.show()
       },
 
       showDrawer(drawerName, formData) {
@@ -836,10 +849,10 @@
         let drawerInstance = createVNode(DynamicDrawer, {
           options: drawerCon.options,
           formJson: dFormJson,
+          formData: formData || {},
           optionData: this.optionData,
           globalDsv: this.globalDsv,
           parentFormRef: this,
-          visible: true,
         })
         drawerInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
 
@@ -851,6 +864,7 @@
         }
         render(drawerInstance, wrapperDiv)
         document.body.appendChild( drawerInstance.el )
+        drawerInstance.component.ctx.show()
       },
 
       showDialogOrDrawer(widgetNme) {

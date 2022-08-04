@@ -161,7 +161,9 @@ const EVENT_PROPERTIES = {
   'onOkButtonClick'           :            'onOkButtonClick-editor',
   'onCancelButtonClick'       :            'onCancelButtonClick-editor',
   'onDialogOpened'            :            'onDialogOpened-editor',
+  'onDialogBeforeClose'       :            'onDialogBeforeClose-editor',
   'onDrawerOpened'            :            'onDrawerOpened-editor',
+  'onDrawerBeforeClose'       :            'onDrawerBeforeClose-editor',
 
 }
 
