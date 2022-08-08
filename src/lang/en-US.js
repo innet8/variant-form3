@@ -217,6 +217,7 @@ export default {
       multipleLimit: 'Multiple Limit',
       checkStrictly: 'Any Level Selectable',
       contentPosition: 'Content Position',
+      dividerDirection: 'Direction',
       plain: 'Plain',
       round: 'Round',
       circle: 'Circle',
@@ -288,6 +289,7 @@ export default {
       vertical: 'Vertical',
       showBlankRow: 'Show Blank Row',
       showRowNumber: 'Show Row Number',
+      actionColumnPosition: 'Position Of Buttons Column',
       contentHeight: 'Content Area Height',
 
       insertColumnToLeft: 'insert column to left',

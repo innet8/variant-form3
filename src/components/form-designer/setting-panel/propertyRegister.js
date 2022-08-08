@@ -59,6 +59,7 @@ const COMMON_PROPERTIES = {
   //容器
   'showBlankRow'       :            'showBlankRow-editor',
   'showRowNumber'      :            'showRowNumber-editor',
+  'actionColumnPosition':           'actionColumnPosition-editor',
   'cellWidth'          :            'cellWidth-editor',
   'cellHeight'         :            'cellHeight-editor',
   'colHeight'          :            'colHeight-editor',

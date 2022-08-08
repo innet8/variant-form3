@@ -145,7 +145,7 @@ export function traverseFieldWidgets(widgetList, handler, parent = null) {
       w.tabs.map(tab => {
         traverseFieldWidgets(tab.widgetList, handler, w)
       })
-    } else if (w.type === 'sub-form') {
+    } else if (w.type === 'sub-form' || w.type === 'grid-sub-form') {
       traverseFieldWidgets(w.widgetList, handler, w)
     } else if (w.category === 'container') {  //自定义容器
       traverseFieldWidgets(w.widgetList, handler, w)
@@ -173,7 +173,7 @@ export function traverseContainerWidgets(widgetList, handler) {
       w.tabs.map(tab => {
         traverseContainerWidgets(tab.widgetList, handler)
       })
-    } else if (w.type === 'sub-form') {
+    } else if (w.type === 'sub-form' || w.type === 'grid-sub-form') {
       traverseContainerWidgets(w.widgetList, handler)
     } else if (w.category === 'container') {  //自定义容器
       traverseContainerWidgets(w.widgetList, handler)
@@ -201,7 +201,7 @@ export function traverseAllWidgets(widgetList, handler) {
       w.tabs.map(tab => {
         traverseAllWidgets(tab.widgetList, handler)
       })
-    } else if (w.type === 'sub-form') {
+    } else if (w.type === 'sub-form' || w.type === 'grid-sub-form') {
       traverseAllWidgets(w.widgetList, handler)
     } else if (w.category === 'container') {  //自定义容器
       traverseAllWidgets(w.widgetList, handler)
@@ -210,7 +210,7 @@ export function traverseAllWidgets(widgetList, handler) {
 }
 
 function handleWidgetForTraverse(widget, handler) {
-  if (!!widget.category) {
+  if (!!widget.category && (widget.category === 'container')) {
     traverseFieldWidgetsOfContainer(widget, handler)
   } else if (widget.formItemFlag) {
     handler(widget)
@@ -243,7 +243,7 @@ export function traverseFieldWidgetsOfContainer(con, handler) {
         handleWidgetForTraverse(cw, handler)
       })
     })
-  } else if (con.type === 'sub-form') {
+  } else if (con.type === 'sub-form' || con.type === 'grid-sub-form') {
     con.widgetList.forEach(cw => {
       handleWidgetForTraverse(cw, handler)
     })
@@ -386,6 +386,15 @@ export function buildDefaultFormJson() {
     widgetList: [],
     formConfig: deepClone( getDefaultFormConfig() )
   }
+}
+
+export function cloneFormConfigWithoutEventHandler(formConfig) {
+  let newFC = deepClone(formConfig)
+  newFC.onFormCreated = ''
+  newFC.onFormMounted = ''
+  newFC.onFormDataChange = ''
+
+  return newFC
 }
 
 /**

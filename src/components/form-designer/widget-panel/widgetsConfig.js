@@ -50,6 +50,26 @@ export const containers = [
       showRowNumber: true,
       labelAlign: 'label-center-align',
       hidden: false,
+      actionColumnPosition: 'left',  //操作按钮列位置
+      customClass: '',  //自定义css类名
+      onSubFormRowAdd: '',
+      onSubFormRowInsert: '',
+      onSubFormRowDelete: '',
+      onSubFormRowChange: '',
+    }
+  },
+
+  {
+    type: 'grid-sub-form',
+    category: 'container',
+    icon: 'grid-sub-form',
+    widgetList: [],
+    options: {
+      name: '',
+      showBlankRow: true,
+      showRowNumber: true,
+      hidden: false,
+      actionColumnPosition: 'left',  //操作按钮列位置
       customClass: '',  //自定义css类名
       onSubFormRowAdd: '',
       onSubFormRowInsert: '',

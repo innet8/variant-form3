@@ -29,6 +29,7 @@ export default {
       this.designer.emitHistoryChange()
     },
 
+    /* draggable组件的move钩子是在内部子组件被拖放到其他draggable组件时触发！！ */
     checkContainerMove(evt) {
       return this.designer.checkWidgetMove(evt)
     },

@@ -217,6 +217,7 @@ export default {
       multipleLimit: '多选数量限制',
       checkStrictly: '任意级节点可选',
       contentPosition: '文字位置',
+      dividerDirection: '分割线方向',
       plain: '朴素按钮',
       round: '圆角按钮',
       circle: '圆形按钮',
@@ -288,6 +289,7 @@ export default {
       vertical: '是否竖向显示',
       showBlankRow: '默认显示新行',
       showRowNumber: '显示行号',
+      actionColumnPosition: '操作列位置',
       contentHeight: '内容区高度',
 
       insertColumnToLeft: '插入左侧列',

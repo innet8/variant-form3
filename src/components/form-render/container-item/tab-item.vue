@@ -9,7 +9,8 @@
           <template v-for="(subWidget, swIdx) in tab.widgetList">
             <template v-if="'container' === subWidget.category">
               <component :is="subWidget.type + '-item'" :widget="subWidget" :key="swIdx" :parent-list="tab.widgetList"
-                              :index-of-parent-list="swIdx" :parent-widget="widget">
+                         :index-of-parent-list="swIdx" :parent-widget="widget"
+                         :sub-form-row-id="subFormRowId" :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex">
                 <!-- 递归传递插槽！！！ -->
                 <template v-for="slot in Object.keys($slots)" v-slot:[slot]="scope">
                   <slot :name="slot" v-bind="scope"/>
@@ -18,7 +19,8 @@
             </template>
             <template v-else>
               <component :is="subWidget.type + '-widget'" :field="subWidget" :key="swIdx" :parent-list="tab.widgetList"
-                            :index-of-parent-list="swIdx" :parent-widget="widget">
+                         :index-of-parent-list="swIdx" :parent-widget="widget"
+                         :sub-form-row-id="subFormRowId" :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex">
                 <!-- 递归传递插槽！！！ -->
                 <template v-for="slot in Object.keys($slots)" v-slot:[slot]="scope">
                   <slot :name="slot" v-bind="scope"/>
@@ -51,6 +53,19 @@
     },
     props: {
       widget: Object,
+
+      subFormRowIndex: { /* 子表单组件行索引，从0开始计数 */
+        type: Number,
+        default: -1
+      },
+      subFormColIndex: { /* 子表单组件列索引，从0开始计数 */
+        type: Number,
+        default: -1
+      },
+      subFormRowId: { /* 子表单组件行Id，唯一id且不可变 */
+        type: String,
+        default: ''
+      },
     },
     inject: ['refList', 'sfRefList', 'globalModel'],
     data() {

@@ -107,7 +107,7 @@ export default {
       this.widget.widgetList.forEach(subWidget => {
         let swRefName = subWidget.options.name + '@row' + this.rowIdData[rowIndex]
         let foundSW = this.getWidgetRef(swRefName)
-        if (!!foundSW) {
+        if (!!foundSW && !!foundSW.setDisabled) {
           foundSW.setDisabled(true)
         }
       })
@@ -117,7 +117,7 @@ export default {
       this.widget.widgetList.forEach(subWidget => {
         let swRefName = subWidget.options.name + '@row' + this.rowIdData[rowIndex]
         let foundSW = this.getWidgetRef(swRefName)
-        if (!!foundSW) {
+        if (!!foundSW && !!foundSW.setDisabled) {
           foundSW.setDisabled(false)
         }
       })
@@ -138,6 +138,60 @@ export default {
       if (this.rowIdData.length > 0) {
         this.rowIdData.forEach((dataRow, rIdx) => {
           this.enableSubFormRow(rIdx)
+        })
+      }
+
+      //启用3个操作按钮
+      this.actionDisabled = false
+    },
+
+    disableGridSubFormRow(rowIndex) {
+      let gsfFWList = []
+      let fieldListFn = (fw) => {
+        gsfFWList.push(fw)
+      }
+      traverseFieldWidgetsOfContainer(this.widget, fieldListFn)
+
+      gsfFWList.forEach(fw => {
+        let swRefName = fw.options.name + '@row' + this.rowIdData[rowIndex]
+        let foundSW = this.getWidgetRef(swRefName)
+        if (!!foundSW && !!foundSW.setDisabled) {
+          foundSW.setDisabled(true)
+        }
+      })
+    },
+
+    enableGridSubFormRow(rowIndex) {
+      let gsfFWList = []
+      let fieldListFn = (fw) => {
+        gsfFWList.push(fw)
+      }
+      traverseFieldWidgetsOfContainer(this.widget, fieldListFn)
+
+      gsfFWList.forEach(fw => {
+        let swRefName = fw.options.name + '@row' + this.rowIdData[rowIndex]
+        let foundSW = this.getWidgetRef(swRefName)
+        if (!!foundSW && !!foundSW.setDisabled) {
+          foundSW.setDisabled(false)
+        }
+      })
+    },
+
+    disableGridSubForm() {
+      if (this.rowIdData.length > 0) {
+        this.rowIdData.forEach((dataRow, rIdx) => {
+          this.disableGridSubFormRow(rIdx)
+        })
+      }
+
+      //禁用3个操作按钮
+      this.actionDisabled = true
+    },
+
+    enableGridSubForm() {
+      if (this.rowIdData.length > 0) {
+        this.rowIdData.forEach((dataRow, rIdx) => {
+          this.enableGridSubFormRow(rIdx)
         })
       }
 

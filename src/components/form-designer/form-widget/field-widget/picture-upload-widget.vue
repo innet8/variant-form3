@@ -241,10 +241,8 @@
       },
 
       handlePictureRemove(file, fileList) {
-        // console.log('test3333----', file)
-
         this.updateFieldModelAndEmitDataChangeForRemove(file, fileList)
-        this.fileList = deepClone(fileList)  //this.fileList = fileList
+        this.fileList = deepClone(fileList)
         this.uploadBtnHidden = fileList.length >= this.field.options.limit
 
         if (!!this.field.options.onFileRemove) {

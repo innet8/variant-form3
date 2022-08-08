@@ -14,24 +14,21 @@
 
     <div :key="widget.id" class="sub-form-container"
          :class="{'selected': selected}" @click.stop="selectWidget(widget)">
-      <el-form label-position="top">
-        <div class="sub-form-table">
-          <draggable :list="widget.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 200}"
-                     tag="transition-group" :component-data="{name: 'fade'}"
-                     handle=".drag-handler"
-                     @add="(evt) => onSubFormDragAdd(evt, widget.widgetList)"
-                     @end="onSubFormDragEnd"
-                     @update="onContainerDragUpdate" :move="checkContainerMove">
-            <template #item="{ element: subWidget, index: swIdx }">
-              <div class="sub-form-table-column" :style="{width: subWidget.options.columnWidth}">
-                <component :is="subWidget.type + '-widget'" :field="subWidget" :designer="designer" :key="subWidget.id"
-                              :parent-list="widget.widgetList" :index-of-parent-list="swIdx" :parent-widget="widget"
-                              :design-state="true" :sub-form-item-flag="true"></component>
-              </div>
+      <div class="grid-sub-form">
+        <draggable :list="widget.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 200}"
+                   tag="transition-group" :component-data="{name: 'fade'}"
+                   handle=".drag-handler"
+                   @add="(evt) => onSubFormDragAdd(evt, widget.widgetList)"
+                   @end="onSubFormDragEnd"
+                   @update="onContainerDragUpdate" :move="checkContainerMove">
+          <template #item="{ element: subWidget, index: swIdx }">
+            <template v-if="'container' === subWidget.category">
+              <component :is="subWidget.type + '-widget'" :widget="subWidget" :designer="designer" :key="subWidget.id" :parent-list="widget.widgetList"
+                         :index-of-parent-list="swIdx" :parent-widget="widget"></component>
             </template>
-          </draggable>
-        </div>
-      </el-form>
+          </template>
+        </draggable>
+      </div>
     </div>
 
   </container-wrapper>
@@ -39,13 +36,13 @@
 
 <script>
   import i18n from "@/utils/i18n"
-  import containerMixin from "@/components/form-designer/form-widget/container-widget/containerMixin"
   import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper"
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
+  import containerMixin from "@/components/form-designer/form-widget/container-widget/containerMixin"
   import refMixinDesign from "@/components/form-designer/refMixinDesign"
 
   export default {
-    name: "sub-form-widget",
+    name: "grid-sub-form-widget",
     componentName: 'ContainerWidget',
     mixins: [i18n, containerMixin, refMixinDesign],
     inject: ['refList'],
@@ -112,21 +109,17 @@
     padding: 8px;
     border: 1px dashed #336699;
 
-    :deep(.sub-form-table) {
+    :deep(.grid-sub-form) {
       min-height: 68px;
-
-      div.sub-form-table-column {
-        display: inline-block;
-        //width: 200px;
-      }
     }
 
     :deep(.ghost) {
       content: '';
       font-size: 0;
-      //height: 3px;
-      height: 74px;
-      width: 1px;
+      height: 3px;
+      width: 100%;
+      //height: 74px;
+      //width: 1px;
       box-sizing: border-box;
       display: inline-block;
       background: $--color-primary;

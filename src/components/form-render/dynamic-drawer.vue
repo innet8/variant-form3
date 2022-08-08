@@ -1,5 +1,5 @@
 <template>
-  <el-drawer :title="options.title" v-model="drawerVisible" custom-class="dynamic-drawer" append-to-body destroy-on-close
+  <el-drawer ref="drawerRef" :title="options.title" v-model="drawerVisible" custom-class="dynamic-drawer" append-to-body destroy-on-close
              :size="options.size" :modal="options.showModal" :direction="options.direction"
              :show-close="options.showClose" :close-on-click-modal="options.closeOnClickModal"
              :close-on-press-escape="options.closeOnPressEscape"
@@ -66,16 +66,34 @@
 
     },
     mounted() {
-      //设置readMode模式
-      this.$nextTick(() => {
-        if (!!this.options.readMode) {
-          this.$refs['dFormRef'].setReadMode(true)
-        }
-      })
+      //
     },
     methods: {
       show() {
         this.drawerVisible = true
+
+        //设置readMode模式
+        this.$nextTick(() => {
+          if (!!this.options.readMode) {
+            this.$refs['dFormRef'].setReadMode(true)
+          }
+
+          this.$refs['dFormRef'].setDialogOrDrawerRef(this)
+        })
+      },
+
+      close() {
+        if (!!this.options.onDrawerBeforeClose) {
+          let customFn = new Function(this.options.onDrawerBeforeClose)
+          let closeResult = customFn.call(this)
+          if (closeResult === false) {
+            return
+          }
+        }
+
+        this.drawerVisible = false
+        this.$refs['drawerRef'].handleClose()
+        setTimeout(this.deleteWrapperNode, 150)
       },
 
       deleteWrapperNode() {
@@ -97,7 +115,7 @@
 
       handleCloseEvent() {
         this.drawerVisible = false
-        setTimeout(this.deleteWrapperNode, 500)
+        setTimeout(this.deleteWrapperNode, 150)
       },
 
       handleOpenedEvent() {
@@ -139,6 +157,10 @@
 
       getFormRef() {
         return this.$refs['dFormRef']
+      },
+
+      getWidgetRef(widgetName, showError = false) {
+        return this.$refs['dFormRef'].getWidgetRef(widgetName, showError)
       },
 
     }

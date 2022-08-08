@@ -2,7 +2,7 @@
   <static-content-wrapper :designer="designer" :field="field" :design-state="designState"
                           :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                           :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <el-divider ref="fieldEditor" direction="horizontal" :content-position="field.options.contentPosition">
+    <el-divider ref="fieldEditor" :direction="field.options.direction" :content-position="field.options.contentPosition">
       {{field.options.label}}</el-divider>
   </static-content-wrapper>
 </template>

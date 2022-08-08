@@ -31,6 +31,7 @@ export default {
 
       subFormAction: 'Action',
       subFormAddAction: 'Add',
+      subFormRowNo: '#',
       subFormAddActionHint: 'add new row',
       insertSubFormRow: 'insert new row',
       deleteSubFormRow: 'delete this row',

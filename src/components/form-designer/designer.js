@@ -138,17 +138,31 @@ export function createDesigner(vueInstance) {
       if (!!evt.draggedContext && !!evt.draggedContext.element) {
         let wgCategory = evt.draggedContext.element.category
         let wgType = evt.draggedContext.element.type + ''
+
         if (!!evt.to) {
+          /* 单行子表单只允许拖入非容器组件！！ */
           if ((evt.to.className === 'sub-form-table') && (wgCategory === 'container')) {
             //this.$message.info(this.vueInstance.i18nt('designer.hint.onlyFieldWidgetAcceptable'))
             return false
           }
 
+          /* 多行子表单只允许拖入栅格组件！！ */
+          if ((evt.to.className === 'grid-sub-form') && (wgType !== 'grid')) {
+            return false
+          }
+
+          /* 弹窗不允许多层嵌套，弹窗也不允许和抽屉相互嵌套 */
           if ((evt.to.className === 'vf-dialog-drop-zone') && (wgType === 'vf-dialog' || wgType === 'vf-drawer')) {
             return false
           }
 
+          /* 抽屉不允许多层嵌套，抽屉也不允许和弹窗相互嵌套 */
           if ((evt.to.className === 'vf-drawer-drop-zone') && (wgType === 'vf-dialog' || wgType === 'vf-drawer')) {
+            return false
+          }
+
+          /* 弹窗、抽屉只允许拖入设计器画布第一层！！ */
+          if ((evt.to.className !== 'form-widget-canvas') && (wgType === 'vf-dialog' || wgType === 'vf-drawer')) {
             return false
           }
         }
@@ -162,8 +176,14 @@ export function createDesigner(vueInstance) {
         let wgCategory = evt.draggedContext.element.category
         let wgType = evt.draggedContext.element.type + ''
         if (!!evt.to) {
-          if ((evt.to.className === 'sub-form-table') && (wgType === 'slot')) {
+          /* 插槽不允许被拖入单行子表单、多行容器 */
+          if ((evt.to.className === 'sub-form-table' || evt.to.className === 'grid-sub-form') && (wgType === 'slot')) {
             //this.$message.info(this.vueInstance.i18nt('designer.hint.onlyFieldWidgetAcceptable'))
+            return false
+          }
+
+          /* 行子表单只允许拖入栅格组件！！ */
+          if ((evt.to.className === 'grid-sub-form') && (wgType !== 'grid')) {
             return false
           }
         }

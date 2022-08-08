@@ -4,79 +4,44 @@
     <div :key="widget.id" class="sub-form-container"
          v-show="!widget.options.hidden">
       <el-row class="header-row">
-        <div v-if="leftActionColumn" class="action-header-column">
+        <div class="action-header-column">
           <span class="action-label">{{i18nt('render.hint.subFormAction')}}</span>
-          <el-button v-if="!isReadMode" :disabled="actionDisabled" round type="primary" size="small"
-                     class="action-button" @click="addSubFormRow" :title="i18nt('render.hint.subFormAddActionHint')">
-            {{i18nt('render.hint.subFormAddAction')}}<svg-icon icon-class="el-plus" /></el-button>
-        </div>
-        <div v-if="!leftActionColumn && widget.options.showRowNumber" class="row-no-header-column">
-          <span>{{i18nt('render.hint.subFormRowNo')}}</span>
-        </div>
-        <template v-for="(subWidget) in widget.widgetList" :key="subWidget.id + 'thc'">
-          <div v-if="!subWidget.options.hidden" class="field-header-column"
-               :class="[getLabelAlign(widget, subWidget), !!subWidget.options.required ? 'is-required' : '']"
-               :style="{width: subWidget.options.columnWidth}">
-            <span v-if="!!subWidget.options.labelIconClass" class="custom-label">
-              <template v-if="subWidget.options.labelIconPosition === 'front'">
-                <template v-if="!!subWidget.options.labelTooltip">
-                  <el-tooltip :content="subWidget.options.labelTooltip" effect="light">
-                    <svg-icon :icon-class="subWidget.options.labelIconClass" /></el-tooltip>{{subWidget.options.label}}</template>
-                <template v-else>
-                  <svg-icon :icon-class="subWidget.options.labelIconClass" />{{subWidget.options.label}}</template>
-              </template>
-              <template v-else-if="subWidget.options.labelIconPosition === 'rear'">
-                <template v-if="!!subWidget.options.labelTooltip">
-                  {{subWidget.options.label}}<el-tooltip :content="subWidget.options.labelTooltip" effect="light">
-                  <svg-icon :icon-class="subWidget.options.labelIconClass" /></el-tooltip></template>
-                <template v-else>
-                  {{subWidget.options.label}}<svg-icon :icon-class="subWidget.options.labelIconClass" /></template>
-              </template>
-            </span>
-            <template v-else>
-              <span :title="subWidget.options.labelTooltip">{{subWidget.options.label}}</span></template>
-          </div>
-        </template>
-        <div v-if="!leftActionColumn" class="action-header-column">
-          <span class="action-label">{{i18nt('render.hint.subFormAction')}}</span>
-          <el-button v-if="!isReadMode" :disabled="actionDisabled" round type="primary" size="small"
-                     class="action-button" @click="addSubFormRow" :title="i18nt('render.hint.subFormAddActionHint')">
-            {{i18nt('render.hint.subFormAddAction')}}<svg-icon icon-class="el-plus" /></el-button>
+          <el-button v-if="!isReadMode" :disabled="actionDisabled" round type="primary" size="small" class="action-button"
+                     @click="addSubFormRow" :title="i18nt('render.hint.subFormAddActionHint')">
+            {{i18nt('render.hint.subFormAddAction')}}<i class="el-icon-plus el-icon-right"></i></el-button>
         </div>
       </el-row>
-      <el-row v-for="(subFormRowId, sfrIdx) in rowIdData" class="sub-form-row" :key="subFormRowId">
+      <div v-for="(subFormRowId, sfrIdx) in rowIdData" class="sub-form-row" :key="subFormRowId">
         <div v-if="leftActionColumn" class="sub-form-action-column hide-label">
           <div class="action-button-column">
-            <el-button :disabled="actionDisabled" circle @click="insertSubFormRow(sfrIdx)"
-                       v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"><svg-icon icon-class="el-plus" /></el-button>
-            <el-button :disabled="actionDisabled" circle @click="deleteSubFormRow(sfrIdx)"
-                       v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"><svg-icon icon-class="el-delete" /></el-button>
+            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
+                       v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"></el-button>
+            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
+                       v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"></el-button>
             <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
           </div>
         </div>
         <div v-if="!leftActionColumn && widget.options.showRowNumber" class="row-no-column">
           <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
         </div>
-        <template v-for="(subWidget, swIdx) in widget.widgetList" :key="subWidget.id + 'tc' + subFormRowId">
-          <div v-if="!subWidget.options.hidden" class="sub-form-table-column hide-label" :style="{width: subWidget.options.columnWidth}">
-            <component :is="subWidget.type + '-widget'" :field="fieldSchemaData[sfrIdx][swIdx]"
-                          :key="fieldSchemaData[sfrIdx][swIdx].id" :parent-list="widget.widgetList"
-                          :index-of-parent-list="swIdx" :parent-widget="widget"
-                          :sub-form-row-id="subFormRowId"
-                          :sub-form-row-index="sfrIdx" :sub-form-col-index="swIdx">
+        <div class="grid-sub-form-data-row">
+          <template v-for="(subWidget, swIdx) in widget.widgetList" :key="subWidget.id + 'tc' + subFormRowId">
+            <component :is="subWidget.type + '-item'" :widget="subWidget" :parent-list="widget.widgetList"
+                       :index-of-parent-list="swIdx" :parent-widget="widget"
+                       :sub-form-row-id="subFormRowId" :sub-form-row-index="sfrIdx" :sub-form-col-index="swIdx">
               <!-- 子表单暂不支持插槽！！！ -->
             </component>
-          </div>
-        </template>
+          </template>
+        </div>
         <div v-if="!leftActionColumn" class="sub-form-action-column hide-label">
           <div class="action-button-column">
-            <el-button :disabled="actionDisabled" circle @click="insertSubFormRow(sfrIdx)"
-                       v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"><svg-icon icon-class="el-plus" /></el-button>
-            <el-button :disabled="actionDisabled" circle @click="deleteSubFormRow(sfrIdx)"
-                       v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"><svg-icon icon-class="el-delete" /></el-button>
+            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
+                       v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"></el-button>
+            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
+                       v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"></el-button>
           </div>
         </div>
-      </el-row>
+      </div>
     </div>
 
   </container-item-wrapper>
@@ -84,16 +49,15 @@
 
 <script>
   import emitter from '@/utils/emitter'
-  import i18n from '@/utils/i18n'
-  import {deepClone, generateId} from '@/utils/util'
-  import refMixin from '../../../components/form-render/refMixin'
+  import i18n from "../../../utils/i18n"
+  import {deepClone, generateId} from "@/utils/util"
+  import refMixin from "../../../components/form-render/refMixin"
   import ContainerItemWrapper from './container-item-wrapper'
-  import containerItemMixin from './containerItemMixin'
+  import containerItemMixin from "./containerItemMixin";
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
-  import eventBus from "@/utils/event-bus"
 
   export default {
-    name: "sub-form-item",
+    name: "grid-sub-form-item",
     componentName: 'ContainerItem',
     mixins: [emitter, i18n, refMixin, containerItemMixin],
     components: {
@@ -137,7 +101,7 @@
     mounted() {
       this.handleSubFormFirstRowAdd()  //默认添加首行后，主动触发相关事件！！
     },
-    beforeUnmount() {
+    beforeDestroy() {
       this.unregisterFromRefList()
     },
     methods: {
@@ -146,13 +110,13 @@
       },
 
       registerSubFormToRefList() {
-        if (this.widget.type === 'sub-form') {
+        if (this.widget.type === 'grid-sub-form') {
           this.sfRefList[this.widget.options.name] = this
         }
       },
 
       initRowIdData(initFlag) {
-        if (this.widget.type === 'sub-form') {
+        if (this.widget.type === 'grid-sub-form') {
           this.rowIdData.splice(0, this.rowIdData.length)  //清除数组必须用splice，length=0不会响应式更新！！
           let subFormModel = this.formModel[this.widget.options.name]
           if (!!subFormModel && (subFormModel.length > 0)) {
@@ -192,7 +156,7 @@
       },
 
       initFieldSchemaData() {  //初始化fieldSchemaData！！！
-        if (this.widget.type !== 'sub-form') {
+        if (this.widget.type !== 'grid-sub-form') {
           return
         }
 
@@ -233,11 +197,11 @@
       },
 
       initEventHandler() {
-        if (this.widget.type !== 'sub-form') {
+        if (this.widget.type !== 'grid-sub-form') {
           return
         }
 
-        this.on$('setFormData', (newFormData) => {
+        this.on$('setFormData', function (newFormData) {
           this.initRowIdData(false)
           this.initFieldSchemaData()
 
@@ -249,14 +213,18 @@
       },
 
       handleSubFormFirstRowAdd() {
-        if (this.widget.type !== 'sub-form') {
+        if (this.widget.type !== 'grid-sub-form') {
           return
         }
 
         if (!!this.widget.options.showBlankRow && (this.rowIdData.length === 1)) {
           let oldSubFormData = this.formModel[this.widget.options.name] || []
-          this.handleSubFormRowAdd(oldSubFormData, this.rowIdData[0])
-          this.handleSubFormRowChange(oldSubFormData)
+
+          //确认组件创建成功后触发事件!!
+          this.$nextTick(() => {
+            this.handleSubFormRowAdd(oldSubFormData, this.rowIdData[0])
+            this.handleSubFormRowChange(oldSubFormData)
+          })
         }
       },
 
@@ -273,8 +241,11 @@
         this.addToRowIdData()
         this.addToFieldSchemaData()
 
-        this.handleSubFormRowAdd(oldSubFormData, this.rowIdData[oldSubFormData.length - 1])
-        this.handleSubFormRowChange(oldSubFormData)
+        //确认组件创建成功后触发事件!!
+        this.$nextTick(() => {
+          this.handleSubFormRowAdd(oldSubFormData, this.rowIdData[oldSubFormData.length - 1])
+          this.handleSubFormRowChange(oldSubFormData)
+        })
       },
 
       insertSubFormRow(beforeFormRowIndex) {
@@ -290,8 +261,11 @@
         this.insertToRowIdData(beforeFormRowIndex)
         this.addToFieldSchemaData(beforeFormRowIndex)
 
-        this.handleSubFormRowInsert(oldSubFormData, this.rowIdData[beforeFormRowIndex])
-        this.handleSubFormRowChange(oldSubFormData)
+        //确认组件创建成功后触发事件!!
+        this.$nextTick(() => {
+          this.handleSubFormRowInsert(oldSubFormData, this.rowIdData[beforeFormRowIndex])
+          this.handleSubFormRowChange(oldSubFormData)
+        })
       },
 
       deleteSubFormRow(formRowIndex) {
@@ -305,8 +279,11 @@
           this.deleteFromRowIdData(formRowIndex)
           this.deleteFromFieldSchemaData(formRowIndex)
 
-          this.handleSubFormRowDelete(oldSubFormData, deletedDataRow)
-          this.handleSubFormRowChange(oldSubFormData)
+          //确认组件创建成功后触发事件!!
+          this.$nextTick(() => {
+            this.handleSubFormRowDelete(oldSubFormData, deletedDataRow)
+            this.handleSubFormRowChange(oldSubFormData)
+          })
         }).catch(() => {
           //
         })
@@ -351,10 +328,14 @@
 
     :deep(.el-row.header-row) {
       padding: 0;
+      display: flex;
     }
 
-    :deep(.el-row.sub-form-row) {
+    :deep(div.sub-form-row) {
       padding: 0;
+      display: flex;
+      align-items: center;
+      border: 1px solid #e1e2e3;
 
       .row-number-span {
         margin-left: 16px;
@@ -363,10 +344,9 @@
   }
 
   div.action-header-column {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px;
+    display: inline-block;
+    //width: 120px;
+    width: 100%;
     border: 1px solid #e1e2e3;
     background: #f1f2f3;
     padding: 8px;
@@ -381,20 +361,8 @@
     }
   }
 
-  div.row-no-header-column {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    text-align: center;
-    border: 1px solid #e1e2e3;
-    background: #f1f2f3;
-  }
-
   div.field-header-column {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     //overflow: hidden;
     //white-space: nowrap;  //文字超出长度不自动换行
     //text-overflow: ellipsis;  //文字超出长度显示省略号
@@ -426,24 +394,30 @@
   }
 
   div.sub-form-action-column {
-    display: flex;
+    display: inline-block;
     align-items: center;
-    justify-content: center;
+    text-align: center;
     width: 120px;
-    border: 1px solid #e1e2e3;
     padding: 8px;
 
     :deep(.el-form-item) {
       margin-bottom: 0;
     }
 
-    :deep(.el-button) {
-      font-size: 14px;
+  :deep(.el-button) {
+      font-size: 18px;
       padding: 0;
       background: #DCDFE6;
       border: 4px solid #DCDFE6;
     }
 
+  }
+
+  div.grid-sub-form-data-row {
+    display: inline-block;
+    width: 100%;
+    border-left: 1px solid #e1e2e3;
+    border-right: 1px solid #e1e2e3;
   }
 
   div.sub-form-action-column.hide-label {
@@ -456,7 +430,10 @@
     display: flex;
     align-items: center;
     width: 50px;
-    border: 1px solid #e1e2e3;
+    border-radius: 10px;
+    background: #f1f2f3;
+    padding: 5px 0;
+    margin: 0 6px;
   }
 
   div.sub-form-table-column {

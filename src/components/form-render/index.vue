@@ -53,7 +53,11 @@
     buildDefaultFormJson,
     getDSByName,
     runDataSourceRequest,
-    getFieldWidgetByName, overwriteObj, getContainerWidgetByName
+    getFieldWidgetByName,
+    overwriteObj,
+    getContainerWidgetByName,
+    traverseFieldWidgetsOfContainer,
+    cloneFormConfigWithoutEventHandler
   } from "@/utils/util"
   import i18n, { changeLocale } from "@/utils/i18n"
   import DynamicDialog from './dynamic-dialog'
@@ -123,6 +127,8 @@
         },
         previewState: this.previewState,
         getReadMode: () => this.readModeFlag,
+        getSubFormFieldFlag: () => false,
+        getSubFormName: () => '',
       }
     },
     data() {
@@ -139,6 +145,7 @@
 
         externalComponents:  {},  //外部组件实例集合
         readModeFlag: false,  //是否只读查看模式
+        dialogOrDrawerRef: null, //保存子级VFormRender的包裹弹窗组件或抽屉组件的ref
       }
     },
     computed: {
@@ -289,6 +296,28 @@
             } else {
               let initialValue = this.formData[subFormName]
               this.formDataModel[subFormName] = deepClone(initialValue)
+            }
+          } else if (wItem.type === 'grid-sub-form')  {
+            let gridSubFormName = wItem.options.name
+            if (!this.formData.hasOwnProperty(gridSubFormName)) {
+              let gsfFWList = []
+              let fieldListFn = (fw) => {
+                gsfFWList.push(fw)
+              }
+              traverseFieldWidgetsOfContainer(wItem, fieldListFn)
+
+              let gridSubFormDataRow = {}
+              if (wItem.options.showBlankRow) {
+                gsfFWList.forEach(gridSubFormItem => {
+                  gridSubFormDataRow[gridSubFormItem.options.name] = gridSubFormItem.options.defaultValue
+                })
+                this.formDataModel[gridSubFormName] = [gridSubFormDataRow]
+              } else {
+                this.formDataModel[gridSubFormName] = []
+              }
+            } else {
+              let initialValue = this.formData[gridSubFormName]
+              this.$set(this.formDataModel, gridSubFormName, deepClone(initialValue))
             }
           } else if ((wItem.type === 'grid-col') || (wItem.type === 'table-cell')) {
             if (!!wItem.widgetList && (wItem.widgetList.length > 0)) {
@@ -592,6 +621,8 @@
           if (!!foundW) {
             if (!!foundW.widget && (foundW.widget.type === 'sub-form')) {
               foundW.disableSubForm()
+            } else if (!!foundW.widget && (foundW.widget.type === 'grid-sub-form')) {
+              foundW.disableGridSubForm()
             } else {
               !!foundW.setDisabled && foundW.setDisabled(true)
             }
@@ -606,6 +637,8 @@
           if (!!foundW) {
             if (!!foundW.widget && (foundW.widget.type === 'sub-form')) {
               foundW.enableSubForm()
+            } else if (!!foundW.widget && (foundW.widget.type === 'grid-sub-form')) {
+              foundW.enableGridSubForm()
             } else {
               !!foundW.setDisabled && foundW.setDisabled(false)
             }
@@ -796,6 +829,18 @@
         return this.dynamicCreation
       },
 
+      setDialogOrDrawerRef(ddRef) {
+        this.dialogOrDrawerRef = ddRef
+      },
+
+      /**
+       * 获取子级VFormRender的包裹弹窗组件或抽屉组件实例ref
+       * @returns {object}
+       */
+      getDialogOrDrawerRef() {
+        return this.dialogOrDrawerRef
+      },
+
       /**
        * 显示弹窗表单，动态创建v-form-render组件，option-data、global-dsv等属性继承父级表单
        * @param dialogName
@@ -809,7 +854,7 @@
         }
         let dFormJson = {
           widgetList: deepClone(dialogCon.widgetList),
-          formConfig: deepClone(this.formConfig)
+          formConfig: cloneFormConfigWithoutEventHandler(this.formConfig)
         }
         //console.log('test====', JSON.stringify(dFormJson))
 
@@ -842,7 +887,7 @@
         }
         let dFormJson = {
           widgetList: deepClone(drawerCon.widgetList),
-          formConfig: deepClone(this.formConfig)
+          formConfig: cloneFormConfigWithoutEventHandler(this.formConfig)
         }
         //console.log('test====', JSON.stringify(dFormJson))
 

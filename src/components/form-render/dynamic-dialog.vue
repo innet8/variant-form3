@@ -66,17 +66,33 @@
 
     },
     mounted() {
-      //设置readMode模式
-      this.$nextTick(() => {
-        if (!!this.options.readMode) {
-          this.$refs['dFormRef'].setReadMode(true)
-        }
-      })
+      //
     },
     methods: {
       show() {
-        console.log('test', '999999999')
         this.dialogVisible = true
+
+        //设置readMode模式
+        this.$nextTick(() => {
+          if (!!this.options.readMode) {
+            this.$refs['dFormRef'].setReadMode(true)
+          }
+
+          this.$refs['dFormRef'].setDialogOrDrawerRef(this)
+        })
+      },
+
+      close() {
+        if (!!this.options.onDialogBeforeClose) {
+          let customFn = new Function('done', this.options.onDialogBeforeClose)
+          let closeResult = customFn.call(this)
+          if (closeResult === false) {
+            return
+          }
+        }
+
+        this.dialogVisible = false
+        setTimeout(this.deleteWrapperNode, 150)
       },
 
       deleteWrapperNode() {
@@ -98,7 +114,7 @@
 
       handleCloseEvent() {
         this.dialogVisible = false
-        setTimeout(this.deleteWrapperNode, 500)
+        setTimeout(this.deleteWrapperNode, 150)
       },
 
       handleOpenedEvent() {
@@ -140,6 +156,10 @@
 
       getFormRef() {
         return this.$refs['dFormRef']
+      },
+
+      getWidgetRef(widgetName, showError = false) {
+        return this.$refs['dFormRef'].getWidgetRef(widgetName, showError)
       },
 
     }

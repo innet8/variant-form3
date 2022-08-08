@@ -31,6 +31,7 @@ export default {
 
       subFormAction: '操作',
       subFormAddAction: '新增',
+      subFormRowNo: '行号',
       subFormAddActionHint: '新增行',
       insertSubFormRow: '插入行',
       deleteSubFormRow: '删除行',

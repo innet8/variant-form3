@@ -2,7 +2,8 @@ import {deepClone, getDSByName, overwriteObj, runDataSourceRequest, translateOpt
 import FormValidators from '@/utils/validators'
 
 export default {
-  inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData', 'getGlobalDsv', 'getReadMode'],
+  inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData',
+    'getGlobalDsv', 'getReadMode', 'getSubFormFieldFlag', 'getSubFormName'],
   data() {
     return {
       fieldReadonlyFlag: false
@@ -18,11 +19,11 @@ export default {
     },
 
     subFormName() {
-      return !!this.parentWidget ? this.parentWidget.options.name : ''
+      return !!this.getSubFormName ? this.getSubFormName() : ''
     },
 
     subFormItemFlag() {
-      return !!this.parentWidget ? this.parentWidget.type === 'sub-form' : false
+      return !!this.getSubFormFieldFlag ? this.getSubFormFieldFlag() : false
     },
 
     formModel: {
@@ -646,6 +647,22 @@ export default {
 
     setToolbar(customToolbar) {
       this.customToolbar = customToolbar
+    },
+
+    /**
+     * 是否子表单内嵌的字段组件
+     * @returns {boolean}
+     */
+    isSubFormItem() {
+      return this.subFormItemFlag
+    },
+
+    /**
+     * 是否子表单内嵌的字段组件
+     * @returns {boolean}
+     */
+    isSubFormField() {
+      return this.subFormItemFlag
     },
 
     /**

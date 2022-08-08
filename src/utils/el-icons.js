@@ -15,6 +15,6 @@ export function registerIcon(app) {
   app.component('el-icon-arrow-up', ArrowUp)
   app.component('el-icon-bottom', Bottom)
   app.component('el-icon-top', Top)
-  app.component('el-icon-top', Back)
-  app.component('el-icon-top', Right)
+  app.component('el-icon-back', Back)
+  app.component('el-icon-right', Right)
 }
