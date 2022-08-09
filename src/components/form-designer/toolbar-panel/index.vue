@@ -17,7 +17,8 @@
         <svg-icon icon-class="node-tree" /></el-button>
     </div>
 
-    <el-drawer :title="i18nt('designer.toolbar.nodeTreeTitle')" direction="ltr" v-model="showNodeTreeDrawerFlag" :modal="true" :size="280"
+    <el-drawer :title="i18nt('designer.toolbar.nodeTreeTitle')" direction="ltr" v-model="showNodeTreeDrawerFlag"
+               :modal="true" :size="280" append-to-body
                :destroy-on-close="true" custom-class="node-tree-drawer">
       <el-tree ref="nodeTree" :data="nodeTreeData" node-key="id" default-expand-all highlight-current class="node-tree"
                icon-class="el-icon-arrow-right" @node-click="onNodeTreeClick"></el-tree>
@@ -94,7 +95,7 @@
 
     <div v-if="showExportJsonDialogFlag" class="" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
       <el-dialog :title="i18nt('designer.toolbar.exportJson')" v-model="showExportJsonDialogFlag"
-                 :show-close="true" custom-class="drag-dialog small-padding-dialog" center
+                 :show-close="true" custom-class="drag-dialog small-padding-dialog" center append-to-body
                  :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
         <code-editor :mode="'json'" :readonly="true" v-model="jsonContent"></code-editor>
         <template #footer>
@@ -111,7 +112,7 @@
 
     <div v-if="showExportCodeDialogFlag" class="" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
       <el-dialog :title="i18nt('designer.toolbar.exportCode')" v-model="showExportCodeDialogFlag"
-                 :show-close="true" custom-class="drag-dialog small-padding-dialog" center
+                 :show-close="true" custom-class="drag-dialog small-padding-dialog" center append-to-body
                  width="65%" :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
         <el-tabs type="border-card" class="no-box-shadow no-padding" v-model="activeCodeTab">
           <el-tab-pane label="Vue" name="vue">
@@ -157,7 +158,7 @@
     </div>
 
     <div v-if="showExportSFCDialogFlag" class="" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
-      <el-dialog :title="i18nt('designer.toolbar.generateSFC')" v-model="showExportSFCDialogFlag"
+      <el-dialog :title="i18nt('designer.toolbar.generateSFC')" v-model="showExportSFCDialogFlag" append-to-body
                  v-if="showExportSFCDialogFlag" :show-close="true" custom-class="drag-dialog small-padding-dialog" center
                  width="65%" :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
         <el-tabs type="border-card" class="no-box-shadow no-padding" v-model="activeSFCTab">

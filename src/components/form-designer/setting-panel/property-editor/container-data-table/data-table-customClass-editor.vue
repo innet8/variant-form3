@@ -65,7 +65,7 @@
 
 		<div v-if="dataDialogVisible" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
 			<el-dialog :title="i18nt('designer.setting.tableDataEdit')" v-model="dataDialogVisible"
-								 :show-close="true" custom-class="drag-dialog small-padding-dialog"
+								 :show-close="true" custom-class="drag-dialog small-padding-dialog" append-to-body
 								 :close-on-click-modal="false" :close-on-press-escape="false"
 								 :destroy-on-close="true" width="75%">
 				<code-editor :mode="'json'" :readonly="false" v-model="tableDataOptions"></code-editor>
@@ -80,7 +80,7 @@
 
 		<div v-if="dialogVisible" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
 			<el-dialog :title="i18nt('designer.setting.tableColEdit')" v-model="dialogVisible"
-				:show-close="true" custom-class="drag-dialog small-padding-dialog"
+				:show-close="true" custom-class="drag-dialog small-padding-dialog" append-to-body
 				:close-on-click-modal="false" :close-on-press-escape="false"
 				:destroy-on-close="true" width="1250px">
 				<el-table :data="optionModel.tableColumns" style="width: 100%"
@@ -295,7 +295,7 @@
 
 		<div v-if="showRenderDialogFlag" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
 			<el-dialog :title="i18nt('designer.setting.renderFunction')" v-model="showRenderDialogFlag"
-								 :show-close="true" custom-class="drag-dialog small-padding-dialog"
+								 :show-close="true" custom-class="drag-dialog small-padding-dialog" append-to-body
 								 :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
 				<el-alert type="info" :closable="false" title="function customRender(h, params, components) {"></el-alert>
 				<code-editor :mode="'javascript'" :readonly="false" v-model="renderJson" ref="dsResultEditor"></code-editor>

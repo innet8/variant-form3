@@ -35,8 +35,9 @@
     </div>
   </div>
 
-  <el-drawer :title="i18nt('designer.setting.dataSourceSetting')" direction="rtl" v-model="showDataSourceDialogFlag" :modal="true" :size="820"
-             :destroy-on-close="true" :append-to-body="false" :close-on-click-modal="false" :close-on-press-escape="false"
+  <el-drawer :title="i18nt('designer.setting.dataSourceSetting')" direction="rtl" v-model="showDataSourceDialogFlag"
+             :modal="true" :size="820"
+             :destroy-on-close="true" :append-to-body="true" :close-on-click-modal="false" :close-on-press-escape="false"
              custom-class="ds-setting-drawer header-small-mb">
     <template #default>
       <el-form :model="dsModel" :rules="formRules" ref="dsForm"
@@ -204,7 +205,7 @@
 
   <div v-if="showTestDataSourceDialogFlag" class="" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
     <el-dialog :title="i18nt('designer.setting.testDataSource')" v-model="showTestDataSourceDialogFlag"
-               :show-close="true" custom-class="drag-dialog small-padding-dialog"
+               :show-close="true" custom-class="drag-dialog small-padding-dialog" append-to-body
                :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
       <el-alert type="info" :closable="false" :title="i18nt('designer.setting.dsvTitle')"></el-alert>
       <code-editor :mode="'json'" :readonly="false" v-model="dsvJson" class="dsv-json-editor"></code-editor>
