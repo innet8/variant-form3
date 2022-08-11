@@ -50,7 +50,7 @@
 <script>
   import emitter from '@/utils/emitter'
   import i18n from "../../../utils/i18n"
-  import {deepClone, generateId} from "@/utils/util"
+  import {deepClone, generateId, traverseFieldWidgetsOfContainer} from "@/utils/util"
   import refMixin from "../../../components/form-render/refMixin"
   import ContainerItemWrapper from './container-item-wrapper'
   import containerItemMixin from "./containerItemMixin";
@@ -79,6 +79,8 @@
         rowIdData: [],
         fieldSchemaData: [],
         actionDisabled: false,
+
+        fieldWidgetList: [],
       }
     },
     computed: {
@@ -99,12 +101,21 @@
       this.initEventHandler()
     },
     mounted() {
+      this.extractFieldWidgetList()
       this.handleSubFormFirstRowAdd()  //默认添加首行后，主动触发相关事件！！
     },
     beforeDestroy() {
       this.unregisterFromRefList()
     },
     methods: {
+      extractFieldWidgetList() {
+        this.fieldWidgetList.splice(0, this.fieldWidgetList.length)
+        let fieldListFn = (fw) => {
+          this.fieldWidgetList.push(fw)
+        }
+        traverseFieldWidgetsOfContainer(this.widget, fieldListFn)
+      },
+
       getLabelAlign(widget, subWidget) {
         return subWidget.options.labelAlign || widget.options.labelAlign
       },
@@ -230,7 +241,7 @@
 
       addSubFormRow() {
         let newSubFormDataRow = {}
-        this.widget.widgetList.forEach(subFormItem => {
+        this.fieldWidgetList.forEach(subFormItem => {
           if (!!subFormItem.formItemFlag) {
             newSubFormDataRow[subFormItem.options.name] = subFormItem.options.defaultValue
           }
@@ -250,7 +261,7 @@
 
       insertSubFormRow(beforeFormRowIndex) {
         let newSubFormDataRow = {}
-        this.widget.widgetList.forEach(subFormItem => {
+        this.fieldWidgetList.forEach(subFormItem => {
           if (!!subFormItem.formItemFlag) {
             newSubFormDataRow[subFormItem.options.name] = subFormItem.options.defaultValue
           }
