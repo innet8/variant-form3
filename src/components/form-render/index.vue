@@ -216,6 +216,10 @@
       },
 
       getContainerWidgetName(widget) {
+        if (widget.type === 'grid') {  //grid-item跟VueGridLayout全局注册组件重名，故特殊处理！！
+          return 'vf-grid-item'
+        }
+
         return widget.type + '-item'
       },
 
@@ -385,7 +389,7 @@
 
       findWidgetAndSetDisabled(widgetName, disabledFlag) {
         let foundW = this.getWidgetRef(widgetName)
-        if (!!foundW) {
+        if (!!foundW && !!foundW.setDisabled) {
           foundW.setDisabled(disabledFlag)
         } else { //没找到，可能是子表单中的组件
           this.findWidgetOfSubFormAndSetDisabled(widgetName, disabledFlag)
@@ -400,7 +404,7 @@
 
         this.findWidgetNameInSubForm(widgetName).forEach(wn => {
           let sw = this.getWidgetRef(wn)
-          if (!!sw) {
+          if (!!sw && !!sw.setDisabled) {
             sw.setDisabled(disabledFlag)
           }
         })
@@ -408,7 +412,7 @@
 
       findWidgetAndSetHidden(widgetName, hiddenFlag) {
         let foundW = this.getWidgetRef(widgetName)
-        if (!!foundW) {
+        if (!!foundW && !!foundW.setDisabled) {
           foundW.setHidden(hiddenFlag)
         } else { //没找到，可能是子表单中的组件
           this.findWidgetOfSubFormAndSetHidden(widgetName, hiddenFlag)
@@ -423,7 +427,7 @@
 
         this.findWidgetNameInSubForm(widgetName).forEach(wn => {
           let sw = this.getWidgetRef(wn)
-          if (!!sw) {
+          if (!!sw && !!sw.setDisabled) {
             sw.setHidden(hiddenFlag)
           }
         })

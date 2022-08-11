@@ -29,11 +29,15 @@
 </template>
 
 <script>
+  import SvgIcon from '@/components/svg-icon'
   import i18n from "@/utils/i18n";
 
   export default {
     name: "static-content-wrapper",
     mixins: [i18n],
+    components: {
+      SvgIcon
+    },
     props: {
       field: Object,
       designer: Object,

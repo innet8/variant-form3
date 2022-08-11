@@ -61,11 +61,15 @@
 </template>
 
 <script>
+  import SvgIcon from '@/components/svg-icon'
   import i18n from "@/utils/i18n";
 
   export default {
     name: "form-item-wrapper",
     mixins: [i18n],
+    components: {
+      SvgIcon
+    },
     props: {
       field: Object,
       designer: Object,
@@ -93,7 +97,7 @@
 
       rules: Array,
     },
-    inject: ['getFormConfig'],
+    inject: ['getFormConfig', 'getSubFormFieldFlag', 'getSubFormName'],
     computed: {
       formConfig() {
         return this.getFormConfig()
@@ -144,11 +148,11 @@
       },
 
       subFormName() {
-        return !!this.parentWidget ? this.parentWidget.options.name : ''
+        return !!this.getSubFormName ? this.getSubFormName() : ''
       },
 
       subFormItemFlag() {
-        return !!this.parentWidget ? this.parentWidget.type === 'sub-form' : false
+        return !!this.getSubFormFieldFlag ? this.getSubFormFieldFlag() : false
       },
 
     },

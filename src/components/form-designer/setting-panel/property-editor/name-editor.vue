@@ -19,12 +19,16 @@
 </template>
 
 <script>
+  import SvgIcon from '@/components/svg-icon'
   import i18n from "@/utils/i18n"
   import {isEmptyStr} from "@/utils/util"
 
   export default {
     name: "name-editor",
     mixins: [i18n],
+    components: {
+      SvgIcon
+    },
     props: {
       designer: Object,
       selectedWidget: Object,

@@ -8,7 +8,6 @@ import '@/iconfont/iconfont.css'
 import Draggable from '@/../lib/vuedraggable/dist/vuedraggable.umd.js'
 //import Draggable from 'vuedraggable'
 import {registerIcon} from '@/utils/el-icons'
-import SvgIcon from '@/components/svg-icon'  //svg组件
 import 'virtual:svg-icons-register'
 
 import ContainerWidgets from '@/components/form-designer/form-widget/container-widget/index'
@@ -28,7 +27,6 @@ const vfApp = createApp(App)
 vfApp.use(ElementPlus)
 registerIcon(vfApp)
 vfApp.component('draggable', Draggable)
-vfApp.component('svg-icon', SvgIcon)
 addDirective(vfApp)
 installI18n(vfApp)
 

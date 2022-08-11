@@ -18,11 +18,15 @@
 </template>
 
 <script>
+  import SvgIcon from '@/components/svg-icon'
   import i18n from "@/utils/i18n"
 
   export default {
     name: "picture-upload-fileTypes-editor",
     mixins: [i18n],
+    components: {
+      SvgIcon
+    },
     props: {
       designer: Object,
       selectedWidget: Object,

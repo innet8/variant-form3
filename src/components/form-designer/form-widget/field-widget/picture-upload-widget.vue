@@ -32,6 +32,7 @@
 
 <script>
   import FormItemWrapper from './form-item-wrapper'
+  import SvgIcon from '@/components/svg-icon'
   import emitter from '@/utils/emitter'
   import i18n, {translate} from "@/utils/i18n";
   import {deepClone} from "@/utils/util";
@@ -69,6 +70,7 @@
     },
     components: {
       FormItemWrapper,
+      SvgIcon,
     },
     data() {
       return {

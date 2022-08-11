@@ -26,7 +26,7 @@
         </div>
         <div class="grid-sub-form-data-row">
           <template v-for="(subWidget, swIdx) in widget.widgetList" :key="subWidget.id + 'tc' + subFormRowId">
-            <component :is="subWidget.type + '-item'" :widget="subWidget" :parent-list="widget.widgetList"
+            <component :is="getComponentByContainer(subWidget)" :widget="subWidget" :parent-list="widget.widgetList"
                        :index-of-parent-list="swIdx" :parent-widget="widget"
                        :sub-form-row-id="subFormRowId" :sub-form-row-index="sfrIdx" :sub-form-col-index="swIdx">
               <!-- 子表单暂不支持插槽！！！ -->
