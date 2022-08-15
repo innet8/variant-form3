@@ -498,7 +498,6 @@
 			},
 
 			saveColumnRender() {
-				//this.$set(this.currentTableColumn, 'render', this.renderJson)
 				this.currentTableColumn.render = this.renderJson
 				this.showRenderDialogFlag = false
 			},

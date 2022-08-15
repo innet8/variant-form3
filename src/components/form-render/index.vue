@@ -321,7 +321,7 @@
               }
             } else {
               let initialValue = this.formData[gridSubFormName]
-              this.$set(this.formDataModel, gridSubFormName, deepClone(initialValue))
+              this.formDataModel[gridSubFormName] = deepClone(initialValue)
             }
           } else if ((wItem.type === 'grid-col') || (wItem.type === 'table-cell')) {
             if (!!wItem.widgetList && (wItem.widgetList.length > 0)) {

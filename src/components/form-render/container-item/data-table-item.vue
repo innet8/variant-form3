@@ -212,7 +212,6 @@
 					colCount++;
 				}
 
-				//this.$set(column, "formatS", this.widget.options.tableColumns[$index-colCount].formatS)
 				column.formatS = this.widget.options.tableColumns[$index-colCount].formatS
 			  return column.label;
 			},
