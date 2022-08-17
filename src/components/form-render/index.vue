@@ -146,6 +146,7 @@
         externalComponents:  {},  //外部组件实例集合
         readModeFlag: false,  //是否只读查看模式
         dialogOrDrawerRef: null, //保存子级VFormRender的包裹弹窗组件或抽屉组件的ref
+        childFormRef: null, //保存子级VFormRender组件的ref
       }
     },
     computed: {
@@ -825,6 +826,14 @@
         return this.parentForm
       },
 
+      setChildFormRef(childFormRef) {
+        this.childFormRef = childFormRef
+      },
+
+      getChildFormRef() {
+        return this.childFormRef
+      },
+
       /**
        * 是否弹窗、抽屉组件动态创建的v-form-render
        * @returns {boolean}
@@ -849,8 +858,9 @@
        * 显示弹窗表单，动态创建v-form-render组件，option-data、global-dsv等属性继承父级表单
        * @param dialogName
        * @param formData
+       * @param extraData
        */
-      showDialog(dialogName, formData) {
+      showDialog(dialogName, formData = {}, extraData = {}) {
         let dialogCon = getContainerWidgetByName(this.widgetList, dialogName)
         if (!dialogName || (dialogCon.type !== 'vf-dialog')) {
           this.$message.error(this.i18nt('render.hint.refNotFound') + dialogName)
@@ -869,6 +879,7 @@
           optionData: this.optionData,
           globalDsv: this.globalDsv,
           parentFormRef: this,
+          extraData: extraData,
         })
         dialogInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
 
@@ -883,7 +894,7 @@
         dialogInstance.component.ctx.show()
       },
 
-      showDrawer(drawerName, formData) {
+      showDrawer(drawerName, formData = {}, extraData = {}) {
         let drawerCon = getContainerWidgetByName(this.widgetList, drawerName)
         if (!drawerCon || (drawerCon.type !== 'vf-drawer')) {
           this.$message.error(this.i18nt('render.hint.refNotFound') + drawerName)
@@ -902,6 +913,7 @@
           optionData: this.optionData,
           globalDsv: this.globalDsv,
           parentFormRef: this,
+          extraData: extraData,
         })
         drawerInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
 

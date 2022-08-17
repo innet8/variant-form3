@@ -186,13 +186,16 @@
 		},
 		created() {
 			this.initRefList()
+			this.handleOnCreated()
 		},
 		mounted() {
-			// this.handleOnMounted()
-
 			if (!!this.widget.options.dsEnabled) {
 				this.loadDataFromDS({})
 			}
+
+			this.$nextTick(() => {
+				this.handleOnMounted()
+			})
 		},
 		beforeDestroy() {
 			this.unregisterFromRefList()
@@ -271,6 +274,20 @@
 						tc.show = !hiddenFlag
 					}
 				})
+			},
+
+			handleOnCreated() {
+				if (!!this.widget.options.onCreated) {
+					let customFunc = new Function(this.widget.options.onCreated)
+					customFunc.call(this)
+				}
+			},
+
+			handleOnMounted() {
+				if (!!this.widget.options.onMounted) {
+					let customFunc = new Function(this.widget.options.onMounted)
+					customFunc.call(this)
+				}
 			},
 
 			handleCurrentChange(currentRow, oldCurrentRow) {

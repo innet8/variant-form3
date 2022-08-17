@@ -49,6 +49,10 @@
         type: Object,
         default: null
       },
+      extraData: {
+        type: Object,
+        default: () => ({})
+      },
     },
     data() {
       return {
@@ -66,7 +70,10 @@
 
     },
     mounted() {
-      //
+      this.parentFormRef.setChildFormRef(this.$refs['dFormRef'])
+    },
+    beforeDestroy() {
+      this.parentFormRef.setChildFormRef(null)
     },
     methods: {
       show() {
@@ -160,6 +167,10 @@
 
       getWidgetRef(widgetName, showError = false) {
         return this.$refs['dFormRef'].getWidgetRef(widgetName, showError)
+      },
+
+      getExtraData() {
+        return this.extraData
       },
 
     }

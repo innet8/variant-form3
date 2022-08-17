@@ -266,8 +266,8 @@ export const containers = [
         },
       ],
 
-      //onCreated: '',
-      //onMounted: '',
+      onCreated: '',
+      onMounted: '',
       //分页大小改变事件
       onPageSizeChange: '',
       //当前页改变事件
