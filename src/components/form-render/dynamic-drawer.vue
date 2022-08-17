@@ -70,7 +70,7 @@
 
     },
     mounted() {
-      this.parentFormRef.setChildFormRef(this.$refs['dFormRef'])
+      //
     },
     beforeDestroy() {
       this.parentFormRef.setChildFormRef(null)
@@ -86,6 +86,7 @@
           }
 
           this.$refs['dFormRef'].setDialogOrDrawerRef(this)
+          this.parentFormRef.setChildFormRef(this.$refs['dFormRef'])
         })
       },
 
