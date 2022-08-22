@@ -212,7 +212,7 @@
           return
         }
 
-        this.on$('setFormData', function (newFormData) {
+        this.on$('setFormData', (newFormData) => {
           this.initRowIdData(false)
           this.initFieldSchemaData()
 
