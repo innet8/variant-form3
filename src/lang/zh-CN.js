@@ -309,7 +309,7 @@ export default {
 
       widgetName: '组件唯一名称',
       formSize: '全局组件大小',
-      labelPosition: '标签位置',
+      labelPosition: '字段标签位置',
       topPosition: '顶部',
       leftPosition: '左边',
       labelAlign: '字段标签对齐',

@@ -463,6 +463,10 @@
 			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
 			/* 提示：用户可自行扩充这些方法！！！ */
 
+			getTableColumns() {
+				return this.widget.options.tableColumns
+			},
+
 			/**
 			 * 设置表格列
 			 * @param tableColumns
