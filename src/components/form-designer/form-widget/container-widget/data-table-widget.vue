@@ -225,6 +225,10 @@
 				//
 			},
 
+			getTableColumns() {
+				return this.widget.options.tableColumns
+			},
+
     }
   }
 </script>
