@@ -127,9 +127,9 @@ export const loadRemoteScript = function(srcPath, callback) {  /*加载远程js�
   }
 }
 
-export function traverseFieldWidgets(widgetList, handler, parent = null) {
+export function traverseFieldWidgets(widgetList, handler, parent = null, staticWidgetsIncluded = false) {
   widgetList.map(w => {
-    if (w.formItemFlag) {
+    if (w.formItemFlag || staticWidgetsIncluded) {
       handler(w, parent)
     } else if (w.type === 'grid') {
       w.cols.map(col => {
@@ -257,9 +257,10 @@ export function traverseFieldWidgetsOfContainer(con, handler) {
 /**
  * 获取所有字段组件
  * @param widgetList
+ * @param staticWidgetsIncluded 是否包含按钮等静态组件，默认不包含
  * @returns {[]}
  */
-export function getAllFieldWidgets(widgetList) {
+export function getAllFieldWidgets(widgetList, staticWidgetsIncluded = false) {
   let result = []
   let handlerFn = (w) => {
     result.push({
@@ -268,7 +269,7 @@ export function getAllFieldWidgets(widgetList) {
       field: w
     })
   }
-  traverseFieldWidgets(widgetList, handlerFn)
+  traverseFieldWidgets(widgetList, handlerFn, null, staticWidgetsIncluded)
 
   return result
 }
@@ -292,7 +293,7 @@ export function getAllContainerWidgets(widgetList) {
   return result
 }
 
-export function getFieldWidgetByName(widgetList, fieldName) {
+export function getFieldWidgetByName(widgetList, fieldName, staticWidgetsIncluded) {
   let foundWidget = null
   let handlerFn = (widget) => {
     if (widget.options.name === fieldName) {
@@ -300,7 +301,7 @@ export function getFieldWidgetByName(widgetList, fieldName) {
     }
   }
 
-  traverseFieldWidgets(widgetList, handlerFn)
+  traverseFieldWidgets(widgetList, handlerFn, null, staticWidgetsIncluded)
   return foundWidget
 }
 

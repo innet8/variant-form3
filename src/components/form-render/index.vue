@@ -398,7 +398,7 @@
       },
 
       findWidgetOfSubFormAndSetDisabled(widgetName, disabledFlag) {
-        const widgetSchema = getFieldWidgetByName(this.formJsonObj.widgetList, widgetName)
+        const widgetSchema = getFieldWidgetByName(this.formJsonObj.widgetList, widgetName, true)
         if (!!widgetSchema && !!widgetSchema.options && widgetSchema.options.hasOwnProperty('disabled')) {
           widgetSchema.options.disabled = disabledFlag
         }
@@ -421,7 +421,7 @@
       },
 
       findWidgetOfSubFormAndSetHidden(widgetName, hiddenFlag) {
-        const widgetSchema = getFieldWidgetByName(this.formJsonObj.widgetList, widgetName)
+        const widgetSchema = getFieldWidgetByName(this.formJsonObj.widgetList, widgetName, true)
         if (!!widgetSchema && !!widgetSchema.options && widgetSchema.options.hasOwnProperty('hidden')) {
           widgetSchema.options.hidden = hiddenFlag
         }
@@ -740,10 +740,11 @@
 
       /**
        * 获取所有字段组件
+       * @param staticWidgetsIncluded 是否包含按钮等静态组件，默认不包含
        * @returns {*[]}
        */
-      getFieldWidgets() {
-        return getAllFieldWidgets(this.formJsonObj.widgetList)
+      getFieldWidgets(staticWidgetsIncluded = false) {
+        return getAllFieldWidgets(this.formJsonObj.widgetList, staticWidgetsIncluded)
       },
 
       /**

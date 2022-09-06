@@ -378,14 +378,18 @@
 
       /**
        * 获取所有字段组件
+       * @param widgetList 默认为null，代表取当前表单json组件列表
+       * @param staticWidgetsIncluded 是否包含按钮等静态组件，默认不包含
        * @returns {*[]}
        */
-      getFieldWidgets(widgetList = null) {
-        return !!widgetList ? getAllFieldWidgets(widgetList) : getAllFieldWidgets(this.designer.widgetList)
+      getFieldWidgets(widgetList = null, staticWidgetsIncluded = false) {
+        return !!widgetList ? getAllFieldWidgets(widgetList, staticWidgetsIncluded) :
+            getAllFieldWidgets(this.designer.widgetList, staticWidgetsIncluded)
       },
 
       /**
        * 获取所有容器组件
+       * @param widgetList 默认为null，代表取当前表单json组件列表
        * @returns {*[]}
        */
       getContainerWidgets(widgetList = null) {
