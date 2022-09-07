@@ -129,26 +129,26 @@ export const loadRemoteScript = function(srcPath, callback) {  /*加载远程js�
 
 export function traverseFieldWidgets(widgetList, handler, parent = null, staticWidgetsIncluded = false) {
   widgetList.map(w => {
-    if (w.formItemFlag || staticWidgetsIncluded) {
+    if (w.formItemFlag || ((w.formItemFlag === false) && staticWidgetsIncluded)) {
       handler(w, parent)
     } else if (w.type === 'grid') {
       w.cols.map(col => {
-        traverseFieldWidgets(col.widgetList, handler, w)
+        traverseFieldWidgets(col.widgetList, handler, w, staticWidgetsIncluded)
       })
     } else if (w.type === 'table') {
       w.rows.map(row => {
         row.cols.map(cell => {
-          traverseFieldWidgets(cell.widgetList, handler, w)
+          traverseFieldWidgets(cell.widgetList, handler, w, staticWidgetsIncluded)
         })
       })
     } else if (w.type === 'tab') {
       w.tabs.map(tab => {
-        traverseFieldWidgets(tab.widgetList, handler, w)
+        traverseFieldWidgets(tab.widgetList, handler, w, staticWidgetsIncluded)
       })
     } else if (w.type === 'sub-form' || w.type === 'grid-sub-form') {
-      traverseFieldWidgets(w.widgetList, handler, w)
+      traverseFieldWidgets(w.widgetList, handler, w, staticWidgetsIncluded)
     } else if (w.category === 'container') {  //自定义容器
-      traverseFieldWidgets(w.widgetList, handler, w)
+      traverseFieldWidgets(w.widgetList, handler, w, staticWidgetsIncluded)
     }
   })
 }
