@@ -32,7 +32,7 @@
 
 <style lang="scss" scoped>
   .radio-group-custom {
-    ::v-deep .el-radio-button__inner {
+    :deep(.el-radio-button__inner) {
       padding-left: 12px;
       padding-right: 12px;
     }

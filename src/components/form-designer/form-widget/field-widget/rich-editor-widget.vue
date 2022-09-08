@@ -2,16 +2,10 @@
   <form-item-wrapper :designer="designer" :field="field" :rules="rules" :design-state="designState"
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
-    <!--
-    <vue-editor ref="fieldEditor" v-model="fieldModel" :editor-toolbar="customToolbar"
-                :disabled="field.options.disabled" :placeholder="field.options.placeholder"
-                @text-change="handleRichEditorChangeEvent"
-                @focus="handleRichEditorFocusEvent" @blur="handleRichEditorBlurEvent">
-    </vue-editor>
-    -->
 
     <div :class="{'readonly-mode-rich-editor': isReadMode}">
       <quill-editor
+              ref="fieldEditor"
               v-model:value="fieldModel"
               :options="editorOption"
               :disabled="field.options.disabled || isReadMode"
@@ -65,10 +59,6 @@
     },
     components: {
       FormItemWrapper,
-
-      // VueEditor: resolve => { //懒加载！！
-      //   require(['vue2-editor'], ({VueEditor}) => resolve(VueEditor))
-      // }
       quillEditor,
     },
     data() {

@@ -1157,6 +1157,7 @@ export const advancedFields = [
       filterable: false,
       multiple: false,
       checkStrictly: false,  //可选择任意一级选项，默认不开启
+      showAllLevels: true,  //显示完整路径
       dsEnabled: false, // 是否使用数据源数据
       dsName: '', // 数据源名称
       labelKey: 'label',

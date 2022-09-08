@@ -216,6 +216,7 @@ export default {
       multiple: 'Multiple',
       multipleLimit: 'Multiple Limit',
       checkStrictly: 'Any Level Selectable',
+      showAllLevels: 'Show All Levels',
       contentPosition: 'Content Position',
       dividerDirection: 'Direction',
       plain: 'Plain',

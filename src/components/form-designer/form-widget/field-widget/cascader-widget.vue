@@ -9,6 +9,7 @@
                    :clearable="field.options.clearable"
                    :filterable="field.options.filterable"
                    :placeholder="field.options.placeholder || i18nt('render.hint.selectPlaceholder')"
+                   :show-all-levels="showFullPath"
                    :props="{ checkStrictly: field.options.checkStrictly, multiple: field.options.multiple, expandTrigger: 'hover', value: valueKey, label: labelKey, children: childrenKey }"
                    @visible-change="hideDropDownOnClick" @expand-change="hideDropDownOnClick"
                    @focus="handleFocusCustomEvent" @blur="handleBlurCustomEvent"
@@ -78,6 +79,10 @@
 
       childrenKey() {
         return this.field.options.childrenKey || 'children'
+      },
+
+      showFullPath() {
+        return (this.field.options.showAllLevels === undefined) || !!this.field.options.showAllLevels
       },
 
       contentForReadMode() {
