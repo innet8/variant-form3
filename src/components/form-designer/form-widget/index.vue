@@ -230,6 +230,11 @@
       }
     }
 
+    /* 隐藏组件拖拽状态中显示的黑点 */
+    :deep(li.container-widget-item), :deep(li.field-widget-item) {
+      list-style: none;
+    }
+
     .el-form.PC-layout {
       //
     }

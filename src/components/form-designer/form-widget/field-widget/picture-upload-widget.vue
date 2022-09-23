@@ -185,6 +185,7 @@
       },
 
       updateFieldModelAndEmitDataChangeForUpload(fileList, customResult, defaultResult) {
+        this.fieldModel = this.fieldModel || []
         let oldValue = deepClone(this.fieldModel)
         if (!!customResult && !!customResult.name && !!customResult.url) {
           this.fieldModel.push({
@@ -205,9 +206,6 @@
       },
 
       handlePictureUpload(res, file, fileList) {
-        // console.log('test----', file)
-        // console.log('test2222----', fileList)
-
         if (file.status === 'success') {
           let customResult = null
           if (!!this.field.options.onUploadSuccess) {
