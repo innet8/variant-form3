@@ -187,6 +187,7 @@
       },
 
       updateFieldModelAndEmitDataChangeForUpload(fileList, customResult, defaultResult) {
+        this.fieldModel = this.fieldModel || []
         let oldValue = deepClone(this.fieldModel)
         if (!!customResult && !!customResult.name && !!customResult.url) {
           this.fieldModel.push({
@@ -219,17 +220,6 @@
           this.uploadBtnHidden = fileList.length >= this.field.options.limit
         }
       },
-
-      // handleFileRemove(file, fileList) {
-      //   this.fileList = deepClone(fileList)  //this.fileList = fileList
-      //   this.updateUploadFieldModelAndEmitDataChange(fileList)
-      //   this.uploadBtnHidden = fileList.length >= this.field.options.limit
-      //
-      //   if (!!this.field.options.onFileRemove) {
-      //     let customFn = new Function('file', 'fileList', this.field.options.onFileRemove)
-      //     customFn.call(this, file, fileList)
-      //   }
-      // },
 
       updateFieldModelAndEmitDataChangeForRemove(deletedFileIdx, fileList) {
         let oldValue = deepClone(this.fieldModel)
