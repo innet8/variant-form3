@@ -605,6 +605,21 @@ export default {
     setRequired(flag) {
       this.field.options.required = flag
       this.buildFieldRules()
+
+      if (!this.designState && !flag) {  //清除必填校验提示
+        this.clearValidate()
+      }
+    },
+
+    /**
+     * 清除字段校验提示
+     */
+    clearValidate() {
+      if (!!this.designState) {
+        return
+      }
+
+      this.getFormRef().getNativeForm().clearValidate(this.getPropName())
     },
 
     setLabel(newLabel) {

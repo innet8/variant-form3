@@ -254,6 +254,52 @@ export function traverseFieldWidgetsOfContainer(con, handler) {
   }
 }
 
+function handleContainerTraverse(widget, fieldHandler, containerHandler) {
+  if (!!widget.category && (widget.category === 'container')) {
+    traverseWidgetsOfContainer(widget, fieldHandler, containerHandler)
+  } else if (widget.formItemFlag) {
+    fieldHandler(widget)
+  }
+}
+
+/**
+ * 遍历容器内部的字段组件和容器组件
+ * @param con
+ * @param fieldHandler
+ * @param containerHandler
+ */
+export function traverseWidgetsOfContainer(con, fieldHandler, containerHandler) {
+  if (con.type === 'grid') {
+    con.cols.forEach(col => {
+      col.widgetList.forEach(cw => {
+        handleContainerTraverse(cw, fieldHandler, containerHandler)
+      })
+    })
+  } else if (con.type === 'table') {
+    con.rows.forEach(row => {
+      row.cols.forEach(cell => {
+        cell.widgetList.forEach(cw => {
+          handleContainerTraverse(cw, fieldHandler, containerHandler)
+        })
+      })
+    })
+  } else if (con.type === 'tab') {
+    con.tabs.forEach(tab => {
+      tab.widgetList.forEach(cw => {
+        handleContainerTraverse(cw, fieldHandler, containerHandler)
+      })
+    })
+  } else if (con.type === 'sub-form' || con.type === 'grid-sub-form') {
+    con.widgetList.forEach(cw => {
+      handleContainerTraverse(cw, fieldHandler, containerHandler)
+    })
+  } else if (con.category === 'container') {  //自定义容器
+    con.widgetList.forEach(cw => {
+      handleContainerTraverse(cw, fieldHandler, containerHandler)
+    })
+  }
+}
+
 /**
  * 获取所有字段组件
  * @param widgetList

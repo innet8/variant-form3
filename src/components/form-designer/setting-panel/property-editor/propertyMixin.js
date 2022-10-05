@@ -30,6 +30,12 @@ export default {
       }
     },
 
+    onAllowCreateChange(val) {
+      if (!!val) {
+        this.optionModel.filterable = true
+      }
+    },
+
     onMultipleSelected(val) {
       if (val) {
         this.optionModel.defaultValue = []  //清空原默认值!!

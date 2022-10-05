@@ -328,6 +328,14 @@
         }
       },
 
+      setDisabled(flag) {
+        if (!!flag) {
+          this.disableSubForm()
+        } else {
+          this.enableSubForm()
+        }
+      },
+
     },
   }
 </script>

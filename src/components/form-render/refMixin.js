@@ -1,8 +1,14 @@
 export default {
   methods: {
     initRefList() {
-      if ((this.refList !== null) && !!this.widget.options.name) {
-        this.refList[this.widget.options.name] = this
+      if ((this.subFormRowIndex === -1) || (this.subFormRowIndex === undefined)) {  //容器组件未被嵌套于多行子表单之内
+        if ((this.refList !== null) && !!this.widget.options.name) {
+          this.refList[this.widget.options.name] = this
+        }
+      } else {  //容器组件被嵌套于多行子表单之内
+        if ((this.refList !== null) && !!this.widget.options.name) {
+          this.refList[this.widget.options.name + '@row' + this.subFormRowId] = this
+        }
       }
     },
 
