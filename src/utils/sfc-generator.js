@@ -411,6 +411,7 @@ ${ctn.cols.map(col => {
                             :width="${ctn.options.buttonsColumnWidth}">
               <template #default="scope">
                   ${(() => {
+          let buttons=[];
           for (
               let i = 0;
               i < ctn.options.operationButtons.length;
@@ -418,11 +419,13 @@ ${ctn.cols.map(col => {
           ) {
             let ob = ctn.options.operationButtons[i];
             if (!ob.hidden) {
-              return `<el-button type="${ob.type}" size="${ob.size}" :round="${ob.round}"
+              buttons.push( `<el-button type="${ob.type}" size="${ob.size}" :round="${ob.round}"
                           :disabled="${ob.disabled}"
-                          :class="['${"data-table-" + ob.name + "-button"}']">${ob.label}</el-button>`;
+                          :class="['${"data-table-" + ob.name + "-button"}']">${ob.label}</el-button>`
+              );                      
             }
           }
+          return buttons.join("")
         })()}
               </template>
             </el-table-column>
