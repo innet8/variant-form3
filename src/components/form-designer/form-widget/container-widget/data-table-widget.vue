@@ -6,7 +6,7 @@
 			:class="{'selected': selected}" @click.stop="selectWidget(widget)">
 
 			<el-table :data="widget.options.tableData" :class="[customClass]"
-								:height="widget.options.tableHeight" :style="{'width': widget.options.tableWidth}"
+								:height="tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
 								:size="widgetSize" @click.native.stop="selectWidget(widget)" :stripe="widget.options.stripe"
 								:cell-style="{padding: widget.options.rowSpacing + 'px 0'}">
@@ -158,6 +158,10 @@
 				}
 
 				return !this.widget.options.buttonsColumnFixed ? false : this.widget.options.buttonsColumnFixed
+			},
+
+			tableHeight() {
+				return this.widget.options.tableHeight || undefined
 			},
 
 		},

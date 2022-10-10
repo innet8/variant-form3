@@ -216,6 +216,9 @@
           }
 
           this.updateFieldModelAndEmitDataChangeForUpload(fileList, customResult, res)
+          if (!!customResult && !!customResult.url) {
+            file.url = customResult.url
+          }
           this.fileList = deepClone(fileList)
           this.uploadBtnHidden = fileList.length >= this.field.options.limit
         }

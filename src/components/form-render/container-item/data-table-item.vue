@@ -3,7 +3,7 @@
 	<container-item-wrapper v-show="!widget.options.hidden" :widget="widget">
 
 			<el-table ref="dataTable" :data="widget.options.tableData" :class="[customClass]"
-								:height="widget.options.tableHeight" :style="{'width': widget.options.tableWidth}"
+								:height="tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
 								:size="widgetSize" :stripe="widget.options.stripe"
 								:highlight-current-row="singleRowSelectFlag"
@@ -181,6 +181,10 @@
 				}
 
 				return !this.widget.options.buttonsColumnFixed ? false : this.widget.options.buttonsColumnFixed
+			},
+
+			tableHeight() {
+				return this.widget.options.tableHeight || undefined
 			},
 
 		},
