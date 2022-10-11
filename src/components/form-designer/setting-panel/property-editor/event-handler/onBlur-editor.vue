@@ -1,6 +1,7 @@
 <template>
   <el-form-item label="onBlur" label-width="150px">
-    <el-button type="info" icon="el-icon-edit" plain round @click="editEventHandler('onBlur', eventParams)">
+    <el-button type="info" icon="el-icon-edit" plain round :class="[eventHandled ? 'button-text-highlight' : '']"
+               @click="editEventHandler('onBlur', eventParams)">
       {{i18nt('designer.setting.addEventHandler')}}</el-button>
   </el-form-item>
 </template>
@@ -16,6 +17,10 @@
       designer: Object,
       selectedWidget: Object,
       optionModel: Object,
+      eventHandled: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {

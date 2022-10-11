@@ -25,7 +25,8 @@
                 <el-collapse-item name="3" v-if="showEventCollapse() && showCollapse(eventProps)" :title="i18nt('designer.setting.eventSetting')">
                   <template v-for="(editorName, propName) in eventProps">
                     <component v-if="hasPropEditor(propName, editorName)" :is="getPropEditor(propName, editorName)"
-                               :designer="designer" :selected-widget="selectedWidget" :option-model="optionModel"></component>
+                               :designer="designer" :selected-widget="selectedWidget" :option-model="optionModel"
+                               :event-handled="getEventHandled(propName)"></component>
                   </template>
                 </el-collapse-item>
               </el-collapse>
@@ -54,7 +55,8 @@
                 <el-collapse-item name="3" v-if="showEventCollapse() && showCollapse(eventProps)" :title="i18nt('designer.setting.eventSetting')">
                   <template v-for="(editorName, propName) in eventProps">
                     <component v-if="hasPropEditor(propName, editorName)" :is="getPropEditor(propName, editorName)"
-                               :designer="designer" :selected-widget="selectedWidget" :option-model="optionModel"></component>
+                               :designer="designer" :selected-widget="selectedWidget" :option-model="optionModel"
+                               :event-handled="getEventHandled(propName)"></component>
                   </template>
                 </el-collapse-item>
               </el-collapse>
@@ -233,6 +235,10 @@
       })
     },
     methods: {
+      getEventHandled(eventName) {
+        return this.optionModel[eventName].length > 0
+      },
+
       showEventCollapse() {
         if (this.designerConfig['eventCollapse'] === undefined) {
           return true
@@ -408,5 +414,10 @@
   /*:deep(.el-overlay .ds-setting-drawer) {*/
   /*  right: 320px !important;*/
   /*}*/
+
+  :deep(.el-button.button-text-highlight) {
+    font-weight: bold;
+    color: $--color-primary;
+  }
 
 </style>

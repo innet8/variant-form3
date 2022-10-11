@@ -57,16 +57,22 @@
 
         <el-collapse-item v-if="showEventCollapse()" name="2" :title="i18nt('designer.setting.eventSetting')">
           <el-form-item label="onFormCreated" label-width="150px">
-            <el-button type="info" icon="el-icon-edit" plain round @click="editFormEventHandler('onFormCreated')">
+            <el-button type="info" icon="el-icon-edit" plain round
+                       :class="[getFormEventHandled('onFormCreated') ? 'button-text-highlight' : '']"
+                       @click="editFormEventHandler('onFormCreated')">
               {{i18nt('designer.setting.addEventHandler')}}</el-button>
           </el-form-item>
           <el-form-item label="onFormMounted" label-width="150px">
-            <el-button type="info" icon="el-icon-edit" plain round @click="editFormEventHandler('onFormMounted')">
+            <el-button type="info" icon="el-icon-edit" plain round
+                       :class="[getFormEventHandled('onFormMounted') ? 'button-text-highlight' : '']"
+                       @click="editFormEventHandler('onFormMounted')">
               {{i18nt('designer.setting.addEventHandler')}}</el-button>
           </el-form-item>
           <!-- -->
           <el-form-item label="onFormDataChange" label-width="150px">
-            <el-button type="info" icon="el-icon-edit" plain round @click="editFormEventHandler('onFormDataChange')">
+            <el-button type="info" icon="el-icon-edit" plain round
+                       :class="[getFormEventHandled('onFormDataChange') ? 'button-text-highlight' : '']"
+                       @click="editFormEventHandler('onFormDataChange')">
               {{i18nt('designer.setting.addEventHandler')}}</el-button>
           </el-form-item>
           <!-- -->
@@ -203,6 +209,10 @@
       }, 1200)
     },
     methods: {
+      getFormEventHandled(eventName) {
+        return this.formConfig[eventName].length > 0
+      },
+
       showEventCollapse() {
         if (this.designerConfig['eventCollapse'] === undefined) {
           return true
