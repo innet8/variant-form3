@@ -6,7 +6,8 @@
       <el-row class="header-row">
         <div class="action-header-column">
           <span class="action-label">{{i18nt('render.hint.subFormAction')}}</span>
-          <el-button v-if="!isReadMode" :disabled="actionDisabled" round type="primary" size="small" class="action-button"
+          <el-button v-if="!isReadMode" :disabled="actionDisabled || insertDisabled"
+                     round type="primary" size="small" class="action-button"
                      @click="addSubFormRow" :title="i18nt('render.hint.subFormAddActionHint')">
             {{i18nt('render.hint.subFormAddAction')}}<i class="el-icon-plus el-icon-right"></i></el-button>
         </div>
@@ -14,9 +15,11 @@
       <div v-for="(subFormRowId, sfrIdx) in rowIdData" class="sub-form-row" :key="subFormRowId">
         <div v-if="leftActionColumn" class="sub-form-action-column hide-label">
           <div class="action-button-column">
-            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
+            <el-button :disabled="actionDisabled || insertDisabled"
+                       circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"></el-button>
-            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
+            <el-button :disabled="actionDisabled || deleteDisabled"
+                       circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"></el-button>
             <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
           </div>
@@ -35,9 +38,11 @@
         </div>
         <div v-if="!leftActionColumn" class="sub-form-action-column hide-label">
           <div class="action-button-column">
-            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
+            <el-button :disabled="actionDisabled || insertDisabled"
+                       circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"></el-button>
-            <el-button :disabled="actionDisabled" circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
+            <el-button :disabled="actionDisabled || deleteDisabled"
+                       circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"></el-button>
           </div>
         </div>
@@ -79,6 +84,8 @@
         rowIdData: [],
         fieldSchemaData: [],
         actionDisabled: false,
+        insertDisabled: false,  //是否禁止新增、插入记录
+        deleteDisabled: false,  //是否禁止删除记录
 
         fieldWidgetList: [],
       }
@@ -334,6 +341,22 @@
         } else {
           this.enableSubForm()
         }
+      },
+
+      /**
+       * 设置单行子表单是否禁止新增、插入记录
+       * @param flag
+       */
+      setInsertDisabled(flag) {
+        this.insertDisabled = flag
+      },
+
+      /**
+       * 设置单行子表单是否禁止删除记录
+       * @param flag
+       */
+      setDeleteDisabled(flag) {
+        this.deleteDisabled = flag
       },
 
     },

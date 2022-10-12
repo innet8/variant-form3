@@ -184,6 +184,7 @@
 
     },
     created() {
+      this.designer.initDesigner( !!this.designerConfig.resetFormJson )
       this.vsCodeFlag = getQueryParam('vscode') == 1
       this.caseName = getQueryParam('case')
     },

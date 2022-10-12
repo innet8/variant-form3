@@ -125,7 +125,7 @@
 
     },
     created() {
-      this.designer.initDesigner( !!this.getDesignerConfig().resetFormJson );
+      //this.designer.initDesigner( !!this.getDesignerConfig().resetFormJson )  //此行代码已移动到form-designer，以便提前赋值formConfig！！
       this.designer.loadPresetCssCode( this.getDesignerConfig().presetCssCode )
     },
     mounted() {

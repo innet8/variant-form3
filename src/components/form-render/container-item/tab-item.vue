@@ -3,7 +3,8 @@
 
     <div :key="widget.id" class="tab-container"
          v-show="!widget.options.hidden">
-      <el-tabs v-model="activeTabName" :type="widget.displayType" :ref="widget.id" :class="[customClass]">
+      <el-tabs v-model="activeTabName" :type="widget.displayType" :ref="widget.id" :class="[customClass]"
+               @tab-click="handleTabClick">
         <el-tab-pane v-for="(tab, index) in visibleTabs" :key="index" :label="tab.options.label"
                      :disabled="tab.options.disabled" :name="tab.options.name">
           <template v-for="(subWidget, swIdx) in tab.widgetList">
@@ -103,6 +104,13 @@
           }
         }
       },
+
+      handleTabClick(tab) {
+        if (!!this.widget.options.onTabClick) {
+          let customFn = new Function('tab', this.widget.options.onTabClick)
+          customFn.call(this, tab)
+        }
+      }
 
     },
   }

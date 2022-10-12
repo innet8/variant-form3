@@ -142,6 +142,7 @@ const EVENT_PROPERTIES = {
   'onAppendButtonClick':           'onAppendButtonClick-editor',
 
   //容器
+  'onTabClick'                :            'onTabClick-editor',
   'onSubFormRowAdd'           :            'onSubFormRowAdd-editor',
   'onSubFormRowInsert'        :            'onSubFormRowInsert-editor',
   'onSubFormRowDelete'        :            'onSubFormRowDelete-editor',

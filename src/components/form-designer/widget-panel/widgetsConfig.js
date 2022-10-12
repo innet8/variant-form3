@@ -36,6 +36,7 @@ export const containers = [
       name: '',
       hidden: false,
       customClass: '',  //自定义css类名
+      onTabClick: '',  //tab被选中时触发
     }
   },
 
