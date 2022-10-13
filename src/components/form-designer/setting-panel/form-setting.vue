@@ -210,7 +210,7 @@
     },
     methods: {
       getFormEventHandled(eventName) {
-        return this.formConfig[eventName].length > 0
+        return !!this.formConfig[eventName] && (this.formConfig[eventName].length > 0)
       },
 
       showEventCollapse() {

@@ -236,7 +236,7 @@
     },
     methods: {
       getEventHandled(eventName) {
-        return this.optionModel[eventName].length > 0
+        return !!this.optionModel[eventName] && (this.optionModel[eventName].length > 0)
       },
 
       showEventCollapse() {
