@@ -506,6 +506,7 @@ export const basicFields = [
       hidden: false,
       dsEnabled: false, // 是否使用数据源数据
       dsName: '', // 数据源名称
+      dataSetName: '',  //数据集名称
       labelKey: 'label',
       valueKey: 'value',
       optionItems: [
@@ -550,6 +551,7 @@ export const basicFields = [
       hidden: false,
       dsEnabled: false, // 是否使用数据源数据
       dsName: '', // 数据源名称
+      dataSetName: '',  //数据集名称
       labelKey: 'label',
       valueKey: 'value',
       optionItems: [
@@ -599,6 +601,7 @@ export const basicFields = [
       multipleLimit: 0,
       dsEnabled: false, // 是否使用数据源数据
       dsName: '', // 数据源名称
+      dataSetName: '',  //数据集名称
       labelKey: 'label',
       valueKey: 'value',
       optionItems: [
@@ -1161,6 +1164,7 @@ export const advancedFields = [
       showAllLevels: true,  //显示完整路径
       dsEnabled: false, // 是否使用数据源数据
       dsName: '', // 数据源名称
+      dataSetName: '',  //数据集名称
       labelKey: 'label',
       valueKey: 'value',
       childrenKey: 'children',

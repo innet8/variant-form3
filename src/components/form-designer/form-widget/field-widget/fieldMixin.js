@@ -3,7 +3,7 @@ import FormValidators from '@/utils/validators'
 
 export default {
   inject: ['refList', 'getFormConfig', 'globalOptionData', 'globalModel', 'getOptionData',
-    'getGlobalDsv', 'getReadMode', 'getSubFormFieldFlag', 'getSubFormName'],
+    'getGlobalDsv', 'getReadMode', 'getSubFormFieldFlag', 'getSubFormName', 'getDSResultCache'],
   data() {
     return {
       fieldReadonlyFlag: false
@@ -155,6 +155,11 @@ export default {
         }
       })
 
+      /* 监听从数据集加载选项事件 */
+      this.on$('loadOptionItemsFromDataSet', (dsName) => {
+        this.loadOptionItemsFromDataSet(dsName)
+      })
+
       this.on$('reloadOptionItems', (widgetNames) => {
         if ((widgetNames.length === 0) || (widgetNames.indexOf(this.field.options.name) > -1)) {
           this.initOptionItems(true)
@@ -251,6 +256,29 @@ export default {
             this.loadOptions(newOptionItems[this.field.options.name])
           }
         }
+      }
+    },
+
+    loadOptionItemsFromDataSet(dsName) {
+      if (this.designState) {
+        return
+      }
+
+      if ((this.field.type !== 'radio') && (this.field.type !== 'checkbox')
+          && (this.field.type !== 'select') && (this.field.type !== 'cascader')) {
+        return
+      }
+
+      if (!this.field.options.dsEnabled || !this.field.options.dsName || !this.field.options.dataSetName
+          || (this.field.options.dsName !== dsName)) {
+        return
+      }
+
+      const dataCache = this.getDSResultCache()
+      const dSetName = this.field.options.dataSetName
+      if (!!dataCache && !!dataCache[dsName] && !!dataCache[dsName][dSetName]) {
+        this.field.options.optionItems.splice(0, this.field.options.optionItems.length) // 清空原有选项
+        this.loadOptions( dataCache[dsName][dSetName] )
       }
     },
 

@@ -19,10 +19,6 @@
             <el-icon><platform /></el-icon></div>
         </template>
         {{ds.requestURL}}</el-descriptions-item>
-
-      <!--
-      <el-descriptions-item label="">{{ds.description}}</el-descriptions-item>
-      -->
     </el-descriptions>
     </template>
     <template v-else>
@@ -171,6 +167,7 @@
           </el-row>
         </el-form-item>
 
+        <!--
         <el-collapse v-model="activeNames">
           <el-collapse-item :title="i18nt('designer.setting.dsConfigHandlerTitle')" name="1" class="ch-collapse">
             <el-alert type="info" :closable="false" title="(config, isSandbox, DSV, VFR) => {"></el-alert>
@@ -188,6 +185,56 @@
             <el-alert type="info" :closable="false" title="}"></el-alert>
           </el-collapse-item>
         </el-collapse>
+        -->
+
+        <el-tabs v-model="activeNames" type="border-card">
+          <el-tab-pane name="1" :label="i18nt('designer.setting.dsConfigHandlerTitle')">
+            <el-alert type="info" :closable="false" title="(config, isSandbox, DSV, VFR) => {"></el-alert>
+            <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.configHandlerCode" ref="chEditor"></code-editor>
+            <el-alert type="info" :closable="false" title="}"></el-alert>
+          </el-tab-pane>
+
+          <el-tab-pane name="2" :label="i18nt('designer.setting.dsDataHandlerTitle')">
+            <el-alert type="info" :closable="false" title="(result, isSandbox, DSV, VFR) => {"></el-alert>
+            <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.dataHandlerCode" ref="dhEditor"></code-editor>
+            <el-alert type="info" :closable="false" title="}"></el-alert>
+          </el-tab-pane>
+
+          <el-tab-pane name="3" :label="i18nt('designer.setting.dsErrorHandlerTitle')">
+            <el-alert type="info" :closable="false" title="(error, isSandbox, DSV, $message, VFR) => {"></el-alert>
+            <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.errorHandlerCode" ref="ehEditor"></code-editor>
+            <el-alert type="info" :closable="false" title="}"></el-alert>
+          </el-tab-pane>
+
+          <el-tab-pane name="4" :label="i18nt('designer.setting.dataSetSettingTitle')">
+            <el-form-item :label="i18nt('designer.setting.dataSetEnabled')">
+              <el-switch v-model="dsModel.dataSetEnabled"></el-switch>
+            </el-form-item>
+            <el-form-item :label="i18nt('designer.setting.dataSetSetting')" v-if="dsModel.dataSetEnabled" class="display-block">
+              <el-row v-for="(dSet, dIdx) in dsModel.dataSets" class="rd-row" :gutter="8">
+                <el-col :span="7">
+                  <el-form-item :prop="'dataSets.' + dIdx + '.name'" :rules="nameRules" label-width="0">
+                    <el-input v-model="dSet.name" :placeholder="i18nt('designer.setting.dsRequestNameInputPlaceholder')"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item :prop="'dataSets.' + dIdx + '.remark'" label-width="0">
+                    <el-input v-model="dSet.remark" :placeholder="i18nt('designer.setting.dataSetRemarkInputPlaceholder')"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="3">
+                  <el-button icon="el-icon-delete" plain circle @click="deleteDataSet(dIdx)"></el-button>
+                </el-col>
+              </el-row>
+              <el-row class="rd-row" :gutter="8">
+                <el-col :span="6">
+                  <el-button type="text" icon="el-icon-plus" @click="addDataSet">
+                    {{i18nt('designer.setting.addDataSet')}}</el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
 
       </el-form>
     </template>
@@ -242,7 +289,8 @@
     },
     data() {
       return {
-        activeNames: ['2'],
+        //activeNames: ['2'],
+        activeNames: '2',
 
         dsModel: {
           dataSourceId: null,
@@ -260,6 +308,9 @@
           configHandlerCode: '  return config',
           dataHandlerCode: '  return result.data.data;',
           errorHandlerCode: '  $message.error(error.message);',
+          dataSetEnabled: false,  // 是否开启多数据集
+          dataSets: [
+          ],
         },
         curEditDSIdx: -1,
 
@@ -328,12 +379,17 @@
         this.dsModel.configHandlerCode = '  return config'
         this.dsModel.dataHandlerCode = '  return result.data.data;'
         this.dsModel.errorHandlerCode = '  $message.error(error.message);'
+        this.dsModel.dataSetEnabled = false
+        this.dsModel.dataSets = []
 
         this.showDataSourceDialogFlag = true
       },
 
       editDataSource(dsIdx) {
         this.dsModel = deepClone(this.formConfig.dataSources[dsIdx])
+        if (!this.dsModel.hasOwnProperty('dataSets')) { //补齐dataSets属性
+          this.dsModel.dataSets = []
+        }
         this.curEditDSIdx = dsIdx
         this.showDataSourceDialogFlag = true
       },
@@ -434,6 +490,17 @@
         this.$refs.dsResultEditor.setValue('')
       },
 
+      addDataSet() {
+        this.dsModel.dataSets.push({
+          name: '',
+          remark: ''
+        })
+      },
+
+      deleteDataSet(idx) {
+        this.dsModel.dataSets.splice(idx, 1)
+      },
+
     },
   }
 </script>
@@ -516,6 +583,10 @@
   .footer-button {
     float: right;
     margin-bottom: 12px;
+  }
+
+  .display-block :deep(.el-form-item__content) {
+    display: block !important;
   }
 
 </style>

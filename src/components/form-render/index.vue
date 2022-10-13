@@ -129,6 +129,7 @@
         getReadMode: () => this.readModeFlag,
         getSubFormFieldFlag: () => false,
         getSubFormName: () => '',
+        getDSResultCache: () => this.dsResultCache,
       }
     },
     data() {
@@ -147,6 +148,8 @@
         readModeFlag: false,  //是否只读查看模式
         dialogOrDrawerRef: null, //保存子级VFormRender的包裹弹窗组件或抽屉组件的ref
         childFormRef: null, //保存子级VFormRender组件的ref
+
+        dsResultCache: {},  //数据源请求结果缓存
       }
     },
     computed: {
@@ -196,6 +199,7 @@
     },
     mounted() {
       this.initLocale()
+      this.initDataSetRequest()
       this.handleOnMounted()
     },
     methods: {
@@ -459,6 +463,33 @@
         return result
       },
 
+      initDataSetRequest() {
+        let dsNameSet = new Set()
+        this.getFieldWidgets().forEach(fw => {
+          if (!!fw.field.options.dsEnabled && !!fw.field.options.dsName && !!fw.field.options.dataSetName) {
+            dsNameSet.add(fw.field.options.dsName)
+          }
+        })
+
+        if (dsNameSet.size > 0) {
+          dsNameSet.forEach(async (dsName) => {
+            let curDS = getDSByName(this.formConfig, dsName)
+            if (!!curDS) {
+              let localDsv = new Object({})
+              overwriteObj(localDsv, this.globalDsv || {})
+              let dsResult = null
+              try {
+                dsResult = await runDataSourceRequest(curDS, localDsv, this, false, this.$message)
+                this.dsResultCache[dsName] = dsResult
+                this.broadcast('FieldWidget', 'loadOptionItemsFromDataSet', dsName)  //注意：跟Vue2不同，事件参数不需要包含在数组中传递！！
+              } catch (err) {
+                this.$message.error(err.message)
+              }
+            }
+          })
+        }
+      },
+
       //--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
       /* 提示：用户可自行扩充这些方法！！！ */
 
@@ -518,6 +549,7 @@
             this.insertCustomStyleAndScriptNode()  /* 必须先插入表单全局函数，否则VForm内部引用全局函数会报错！！！ */
             this.$nextTick(() => {
               this.initFormObject(false)
+              this.initDataSetRequest()
               this.handleOnMounted()
             })
           } else {
@@ -871,7 +903,6 @@
           widgetList: deepClone(dialogCon.widgetList),
           formConfig: cloneFormConfigWithoutEventHandler(this.formConfig)
         }
-        //console.log('test====', JSON.stringify(dFormJson))
 
         let dialogInstance = createVNode(DynamicDialog, {
           options: dialogCon.options,
@@ -905,7 +936,6 @@
           widgetList: deepClone(drawerCon.widgetList),
           formConfig: cloneFormConfigWithoutEventHandler(this.formConfig)
         }
-        //console.log('test====', JSON.stringify(dFormJson))
 
         let drawerInstance = createVNode(DynamicDrawer, {
           options: drawerCon.options,
@@ -929,8 +959,12 @@
         drawerInstance.component.ctx.show()
       },
 
-      showDialogOrDrawer(widgetNme) {
-        //TODO
+      /**
+       * 判断表单是否处于设计器预览状态
+       * @return {boolean}
+       */
+      isPreviewState() {
+        return this.previewState
       },
 
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//

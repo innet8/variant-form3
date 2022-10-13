@@ -145,6 +145,7 @@
 				}],
 
 				selectedIndices: [],
+				selectedRows: [],
 				pageSize: this.widget.options.pagination.pageSize,
 				pageSizes: this.widget.options.pagination.pageSizes,
 				currentPage: this.widget.options.pagination.currentPage,
@@ -300,9 +301,11 @@
 				}
 
 				this.selectedIndices.length = 0
+				this.selectedRows.length = 0
 				let rowIndex = this.getRowIndex(currentRow)
 				if (rowIndex >= 0) {
 					this.selectedIndices.push(rowIndex)
+					this.selectedRows.push(currentRow)
 				}
 
 				if (!!this.widget.options.onSelectionChange) {
@@ -320,10 +323,12 @@
 				}
 
 				this.selectedIndices.length = 0
+				this.selectedRows.length = 0
 				selection.map((row) => {
 					let rowIndex = this.getRowIndex(row)
 					if (rowIndex >= 0) {
 						this.selectedIndices.push(rowIndex)
+						this.selectedRows.push(row)
 					}
 				})
 
@@ -602,7 +607,8 @@
 			 * @returns {[]}
 			 */
 			getSelectedRow() {
-				return this.$refs.dataTable.selection
+				//return this.$refs.dataTable.selection
+				return this.selectedRows
 			},
 
 			/**

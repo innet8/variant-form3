@@ -3,6 +3,7 @@
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
     <el-button ref="fieldEditor" :type="field.options.type" :size="widgetSize"
+               :class="[(field.options.label === '') ? 'hide-text-span' : '']"
                :plain="field.options.plain" :round="field.options.round"
                :circle="field.options.circle" :icon="field.options.icon"
                :disabled="field.options.disabled"
@@ -84,4 +85,7 @@
 <style lang="scss" scoped>
   @import "../../../../styles/global.scss"; //* static-content-wrapper已引入，还需要重复引入吗？ *//
 
+  .hide-text-span :deep(span) {
+    display: none;
+  }
 </style>

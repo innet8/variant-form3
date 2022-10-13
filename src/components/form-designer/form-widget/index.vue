@@ -69,6 +69,7 @@
         },
         getSubFormFieldFlag: () => false,
         getSubFormName: () => '',
+        getDSResultCache: () => this.dsResultCache,
       }
     },
     inject: ['getDesignerConfig'],
@@ -76,6 +77,7 @@
       return {
         formModel: {},
         widgetRefList: {},
+        dsResultCache: {},
       }
     },
     computed: {
