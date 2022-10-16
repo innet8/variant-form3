@@ -1,4 +1,4 @@
-import {traverseFieldWidgetsOfContainer, traverseWidgetsOfContainer} from "@/utils/util";
+import {deepClone, traverseFieldWidgetsOfContainer, traverseWidgetsOfContainer} from "@/utils/util";
 
 export default {
   computed: {
@@ -19,6 +19,19 @@ export default {
   },
 
   methods: {
+    cloneWidgetSchema(widget) {
+      return deepClone(widget)
+      /**
+       * 注意：在v-for循环中，必须保证克隆对象与原对象完全一致，修改克隆对象任何属性，
+       * 都会触发组件的beforeDestroy事件钩子！！！
+       */
+
+
+      // let newWidgetSchema = deepClone(widget)
+      // newWidgetSchema.id = widget.type + generateId()
+      // return newWidgetSchema
+    },
+
     unregisterFromRefList() {  //销毁容器组件时注销组件ref
       if ((this.refList !== null) && !!this.widget.options.name) {
         let oldRefName = this.widget.options.name

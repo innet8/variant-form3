@@ -61,10 +61,10 @@
         <div v-if="!leftActionColumn && widget.options.showRowNumber" class="row-no-column">
           <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
         </div>
-        <template v-for="(subWidget, swIdx) in widget.widgetList" :key="subWidget.id + 'tc' + subFormRowId">
+        <template v-for="(subWidget, swIdx) in widget.widgetList" :key="fieldSchemaData[sfrIdx][swIdx].id">
           <div v-if="!subWidget.options.hidden" class="sub-form-table-column hide-label" :style="{width: subWidget.options.columnWidth}">
             <component :is="subWidget.type + '-widget'" :field="fieldSchemaData[sfrIdx][swIdx]"
-                          :key="fieldSchemaData[sfrIdx][swIdx].id" :parent-list="widget.widgetList"
+                          :parent-list="widget.widgetList"
                           :index-of-parent-list="swIdx" :parent-widget="widget"
                           :sub-form-row-id="subFormRowId"
                           :sub-form-row-index="sfrIdx" :sub-form-col-index="swIdx">

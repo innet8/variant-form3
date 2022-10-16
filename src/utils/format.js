@@ -1,9 +1,13 @@
+function validateDate(dateStr) {
+	let date = new Date( Date.parse(dateStr) )
+	return (date instanceof Date) && !isNaN(date.getTime())
+}
 
 export function formatDate1(date) {
-	if (new Date(Date.parse(date.replace(/-/g, "/"))) === "Invalid Date") {
+	if (!validateDate(date)) {
 		return date;
 	}
-	date = new Date(Date.parse(date.replace(/-/g, "/"))); //转换成Date
+	date = new Date(Date.parse(date)); //转换成Date
 	let y = date.getFullYear();
 	let m = date.getMonth() + 1;
 	m = m < 10 ? '0' + m : m;
@@ -13,10 +17,10 @@ export function formatDate1(date) {
 }
 
 export function formatDate2(date) {
-	if (new Date(Date.parse(date.replace(/-/g, "/"))) === "Invalid Date") {
+	if (!validateDate(date)) {
 		return date;
 	}
-	date = new Date(Date.parse(date.replace(/-/g, "/"))); //转换成Date
+	date = new Date(Date.parse(date)); //转换成Date
 	let y = date.getFullYear();
 	let m = date.getMonth() + 1;
 	m = m < 10 ? '0' + m : m;
@@ -26,10 +30,10 @@ export function formatDate2(date) {
 }
 
 export function formatDate3(date) {
-	if (new Date(Date.parse(date.replace(/-/g, "/"))) === "Invalid Date") {
+	if (!validateDate(date)) {
 		return date;
 	}
-	date = new Date(Date.parse(date.replace(/-/g, "/"))); //转换成Date
+	date = new Date(Date.parse(date)); //转换成Date
 	let y = date.getFullYear();
 	let m = date.getMonth() + 1;
 	m = m < 10 ? '0' + m : m;
@@ -39,18 +43,18 @@ export function formatDate3(date) {
 }
 
 export function formatDate4(date) {
-	if (new Date(Date.parse(date.replace(/-/g, "/"))) === "Invalid Date"){
+	if (!validateDate(date)) {
 		return date;
 	}
-	date = new Date(Date.parse(date.replace(/-/g, "/"))); //转换成Date
+	date = new Date(Date.parse(date)); //转换成Date
 	return date.toLocaleString()
 }
 
 export function formatDate5(date) {
-	if (new Date(Date.parse(date.replace(/-/g, "/"))) === "Invalid Date") {
+	if (!validateDate(date)) {
 		return date;
 	}
-	date = new Date(Date.parse(date.replace(/-/g, "/"))); //转换成Data();
+	date = new Date(Date.parse(date)); //转换成Date
 	return date.toLocaleString('chinese', { hour12: false })
 }
 

@@ -28,8 +28,9 @@
           <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
         </div>
         <div class="grid-sub-form-data-row">
-          <template v-for="(subWidget, swIdx) in widget.widgetList" :key="subWidget.id + 'tc' + subFormRowId">
-            <component :is="getComponentByContainer(subWidget)" :widget="subWidget" :parent-list="widget.widgetList"
+          <template v-for="(subWidget, swIdx) in widget.widgetList" :key="widgetSchemaData[sfrIdx][swIdx].id">
+            <component :is="getComponentByContainer(subWidget)" :widget="widgetSchemaData[sfrIdx][swIdx]"
+                       :parent-list="widget.widgetList"
                        :index-of-parent-list="swIdx" :parent-widget="widget"
                        :sub-form-row-id="subFormRowId" :sub-form-row-index="sfrIdx" :sub-form-col-index="swIdx">
               <!-- 子表单暂不支持插槽！！！ -->
@@ -82,7 +83,7 @@
     data() {
       return {
         rowIdData: [],
-        fieldSchemaData: [],
+        widgetSchemaData: [],
         actionDisabled: false,
         insertDisabled: false,  //是否禁止新增、插入记录
         deleteDisabled: false,  //是否禁止删除记录
@@ -104,7 +105,7 @@
       this.initRefList()
       this.registerSubFormToRefList()
       this.initRowIdData(true)
-      this.initFieldSchemaData()
+      this.initWidgetSchemaData()
       this.initEventHandler()
     },
     mounted() {
@@ -173,45 +174,45 @@
         return this.getWidgetRef(realWidgetName)
       },
 
-      initFieldSchemaData() {  //初始化fieldSchemaData！！！
+      initWidgetSchemaData() {  //初始化widgetSchemaData！！！
         if (this.widget.type !== 'grid-sub-form') {
           return
         }
 
         let rowLength = this.rowIdData.length
-        this.fieldSchemaData.splice(0, this.fieldSchemaData.length)  //清除数组必须用splice，length=0不会响应式更新！！
+        this.widgetSchemaData.splice(0, this.widgetSchemaData.length)  //清除数组必须用splice，length=0不会响应式更新！！
         if (rowLength > 0) {
           for (let i = 0; i < rowLength; i++) {
-            let fieldSchemas = []
+            let widgetSchemas = []
             this.widget.widgetList.forEach(swItem => {
-              fieldSchemas.push( this.cloneFieldSchema(swItem) )
+              widgetSchemas.push( this.cloneSchemaOfWidget(swItem) )
             })
-            this.fieldSchemaData.push(fieldSchemas)
+            this.widgetSchemaData.push(widgetSchemas)
           }
         }
       },
 
-      addToFieldSchemaData(rowIndex) {
-        let fieldSchemas = []
+      addToWidgetSchemaData(rowIndex) {
+        let widgetSchemas = []
         this.widget.widgetList.forEach(swItem => {
-          fieldSchemas.push( this.cloneFieldSchema(swItem) )
+          widgetSchemas.push( this.cloneSchemaOfWidget(swItem) )
         })
 
         if (rowIndex === undefined) {
-          this.fieldSchemaData.push(fieldSchemas)
+          this.widgetSchemaData.push(widgetSchemas)
         } else {
-          this.fieldSchemaData.splice(rowIndex, 0, fieldSchemas)
+          this.widgetSchemaData.splice(rowIndex, 0, widgetSchemas)
         }
       },
 
-      deleteFromFieldSchemaData(rowIndex) {
-        this.fieldSchemaData.splice(rowIndex, 1)
+      deleteFromWidgetSchemaData(rowIndex) {
+        this.widgetSchemaData.splice(rowIndex, 1)
       },
 
-      cloneFieldSchema(fieldWidget) {
-        let newFieldSchema = deepClone(fieldWidget)
-        newFieldSchema.id = fieldWidget.type + generateId()
-        return newFieldSchema
+      cloneSchemaOfWidget(widget) {
+        let newWidgetSchema = deepClone(widget)
+        newWidgetSchema.id = widget.type + generateId()
+        return newWidgetSchema
       },
 
       initEventHandler() {
@@ -221,7 +222,7 @@
 
         this.on$('setFormData', (newFormData) => {
           this.initRowIdData(false)
-          this.initFieldSchemaData()
+          this.initWidgetSchemaData()
 
           let subFormData = newFormData[this.widget.options.name] || []
           setTimeout(() => {  //延时触发SubFormRowChange事件, 便于更新计算字段！！
@@ -257,7 +258,7 @@
         let oldSubFormData = this.formModel[this.widget.options.name] || []
         oldSubFormData.push(newSubFormDataRow)
         this.addToRowIdData()
-        this.addToFieldSchemaData()
+        this.addToWidgetSchemaData()
 
         //确认组件创建成功后触发事件!!
         this.$nextTick(() => {
@@ -277,7 +278,7 @@
         let oldSubFormData = this.formModel[this.widget.options.name] || []
         oldSubFormData.splice(beforeFormRowIndex, 0, newSubFormDataRow)
         this.insertToRowIdData(beforeFormRowIndex)
-        this.addToFieldSchemaData(beforeFormRowIndex)
+        this.addToWidgetSchemaData(beforeFormRowIndex)
 
         //确认组件创建成功后触发事件!!
         this.$nextTick(() => {
@@ -295,7 +296,7 @@
           let deletedDataRow = deepClone(oldSubFormData[formRowIndex])
           oldSubFormData.splice(formRowIndex, 1)
           this.deleteFromRowIdData(formRowIndex)
-          this.deleteFromFieldSchemaData(formRowIndex)
+          this.deleteFromWidgetSchemaData(formRowIndex)
 
           //确认组件创建成功后触发事件!!
           this.$nextTick(() => {
