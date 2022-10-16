@@ -2,32 +2,38 @@
 
   <div class="ds-list">
     <template v-if="!!formConfig.dataSources && (formConfig.dataSources.length > 0)">
-    <el-descriptions v-for="(ds, dsIdx) in formConfig.dataSources"
-                     :column="1" size="small" border>
-      <template #title>
-        <span :title="ds.description">{{ds.uniqueName}}</span>
-      </template>
-      <template #extra>
-        <el-button type="primary" icon="el-icon-edit" plain circle
-                   size="small" @click="editDataSource(dsIdx)"></el-button>
-        <el-button type="danger" icon="el-icon-delete" plian circle
-                   size="small" @click="deleteDataSource(dsIdx)"></el-button>
-      </template>
-      <el-descriptions-item>
-        <template #label>
-          <div :title="ds.requestURL">
-            <el-icon><platform /></el-icon></div>
+      <el-descriptions v-for="(ds, dsIdx) in formConfig.dataSources"
+                       :column="1" size="small" border>
+        <template #title>
+          <span :title="ds.description">{{ds.uniqueName}}</span>
         </template>
-        {{ds.requestURL}}</el-descriptions-item>
-    </el-descriptions>
+        <template #extra>
+          <el-button type="primary" icon="el-icon-edit" plain circle
+                     size="small" @click="editDataSource(dsIdx)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" plian circle
+                     size="small" @click="deleteDataSource(dsIdx)"></el-button>
+        </template>
+        <el-descriptions-item>
+          <template #label>
+            <div :title="ds.requestURL">
+              <el-icon><platform /></el-icon></div>
+          </template>
+          {{ds.requestURL}}</el-descriptions-item>
+      </el-descriptions>
     </template>
     <template v-else>
       <el-empty :description="i18nt('designer.setting.noDataSource')"></el-empty>
     </template>
 
     <div class="ds-button-wrapper">
-      <el-button type="primary" icon="el-icon-plus" plain round @click="addDataSource">
-        {{i18nt('designer.setting.addDataSource')}}</el-button>
+      <el-button-group>
+        <el-button type="primary" icon="el-icon-plus" plain @click="addDataSource">
+          {{i18nt('designer.setting.addDataSource')}}</el-button>
+        <el-button icon="el-icon-bottom-left" plain :title="i18nt('designer.setting.importDataSource')"
+                   @click="importDataSource"></el-button>
+        <el-button icon="el-icon-top-right" plain :title="i18nt('designer.setting.exportDataSource')"
+                   @click="exportDataSource"></el-button>
+      </el-button-group>
     </div>
   </div>
 
@@ -167,26 +173,6 @@
           </el-row>
         </el-form-item>
 
-        <!--
-        <el-collapse v-model="activeNames">
-          <el-collapse-item :title="i18nt('designer.setting.dsConfigHandlerTitle')" name="1" class="ch-collapse">
-            <el-alert type="info" :closable="false" title="(config, isSandbox, DSV, VFR) => {"></el-alert>
-            <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.configHandlerCode" ref="chEditor"></code-editor>
-            <el-alert type="info" :closable="false" title="}"></el-alert>
-          </el-collapse-item>
-          <el-collapse-item :title="i18nt('designer.setting.dsDataHandlerTitle')" name="2" class="dh-collapse">
-            <el-alert type="info" :closable="false" title="(result, isSandbox, DSV, VFR) => {"></el-alert>
-            <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.dataHandlerCode" ref="dhEditor"></code-editor>
-            <el-alert type="info" :closable="false" title="}"></el-alert>
-          </el-collapse-item>
-          <el-collapse-item :title="i18nt('designer.setting.dsErrorHandlerTitle')" name="3" class="eh-collapse">
-            <el-alert type="info" :closable="false" title="(error, isSandbox, DSV, $message, VFR) => {"></el-alert>
-            <code-editor :mode="'javascript'" :readonly="false" v-model="dsModel.errorHandlerCode" ref="ehEditor"></code-editor>
-            <el-alert type="info" :closable="false" title="}"></el-alert>
-          </el-collapse-item>
-        </el-collapse>
-        -->
-
         <el-tabs v-model="activeNames" type="border-card">
           <el-tab-pane name="1" :label="i18nt('designer.setting.dsConfigHandlerTitle')">
             <el-alert type="info" :closable="false" title="(config, isSandbox, DSV, VFR) => {"></el-alert>
@@ -267,12 +253,71 @@
     </el-dialog>
   </div>
 
+  <div v-if="showImportDSDialogFlag" class="" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
+    <el-dialog :title="i18nt('designer.setting.importDataSource')" v-model="showImportDSDialogFlag"
+               :show-close="true" custom-class="drag-dialog small-padding-dialog" center
+               append-to-body :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
+      <el-alert type="info" :title="i18nt('designer.hint.importDSHint')" show-icon class="alert-padding"></el-alert>
+      <code-editor :mode="'json'" :readonly="false" v-model="importDSTemplate"></code-editor>
+      <el-switch v-model="clearOldDSFlag" style="margin-top: 10px"
+                 :active-text="i18nt('designer.setting.clearExistingDataSource')"
+                 :inactive-text="i18nt('designer.setting.remainExistingDataSource')"></el-switch>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doImportDataSource">
+          {{i18nt('designer.hint.import')}}</el-button>
+        <el-button @click="showImportDSDialogFlag = false">
+          {{i18nt('designer.hint.cancel')}}</el-button>
+      </div>
+    </el-dialog>
+  </div>
+
+  <div v-if="showExportDSDialogFlag" class="" v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']">
+    <el-dialog :title="i18nt('designer.setting.exportDataSource')" v-model="showExportDSDialogFlag"
+               :show-close="true" custom-class="drag-dialog small-padding-dialog" center
+               :close-on-click-modal="false" :close-on-press-escape="false" :destroy-on-close="true">
+      <el-tabs type="border-card" class="no-box-shadow no-padding" v-model="activeExportTab" @tab-click="handleExportTabClick">
+        <el-tab-pane :label="i18nt('designer.setting.selectDataSourceForExport')" name="setting">
+          <div v-if="exportDSArray && (exportDSArray.length > 0)" class="export-ds-list">
+            <el-descriptions v-for="(ds, dsIdx) in exportDSArray" :key="dsIdx"
+                             :column="1" size="small" border>
+              <template #title>
+                <span :title="ds.description">{{ds.uniqueName}}</span>
+              </template>
+              <template #extra>
+                <el-checkbox v-model="ds.checked" @change="handleExportDSChange">{{i18nt('designer.setting.dataSourceChecked')}}</el-checkbox>
+              </template>
+              <el-descriptions-item>
+                <template #label>
+                  <div :title="ds.requestURL">
+                    <el-icon><platform /></el-icon></div>
+                </template>
+                {{ds.requestURL}}
+              </el-descriptions-item>
+            </el-descriptions>
+          </div>
+          <template v-else>
+            <el-empty :description="i18nt('designer.setting.noDataSource')"></el-empty>
+          </template>
+        </el-tab-pane>
+        <el-tab-pane :label="i18nt('designer.setting.previewDataSourceExportResult')" name="result">
+          <code-editor :mode="'json'" :readonly="true" v-model="dsExportContent" ref="exportDSEditor"></code-editor>
+        </el-tab-pane>
+      </el-tabs>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" class="copy-json-btn" :data-clipboard-text="dsRawExportContent" @click="copyDataSourceJson">
+          {{i18nt('designer.hint.copyJson')}}</el-button>
+        <el-button type="" @click="showExportDSDialogFlag = false">
+          {{i18nt('designer.hint.closePreview')}}</el-button>
+      </div>
+    </el-dialog>
+  </div>
+
 </template>
 
 <script>
   import i18n from "@/utils/i18n"
   import CodeEditor from "@/components/code-editor/index"
-  import {deepClone, generateId, runDataSourceRequest} from "@/utils/util"
+  import {copyToClipboard, deepClone, generateId, runDataSourceRequest} from "@/utils/util"
   import { Platform } from '@element-plus/icons-vue'
 
   export default {
@@ -337,7 +382,17 @@
 
         dsvJson: '{\n  \n}',
         dsResultJson: '',
-        showTestDataSourceDialogFlag: false
+        showTestDataSourceDialogFlag: false,
+
+        showImportDSDialogFlag: false,
+        importDSTemplate: '',
+        clearOldDSFlag: false,  //导入后是否清空原有数据源
+
+        showExportDSDialogFlag: false,
+        activeExportTab: 'setting',
+        exportDSArray: [],
+        dsExportContent: '',
+        dsRawExportContent: '',
       }
     },
     methods: {
@@ -501,6 +556,69 @@
         this.dsModel.dataSets.splice(idx, 1)
       },
 
+      importDataSource() {
+        this.importDSTemplate = ''
+        this.showImportDSDialogFlag = true
+      },
+
+      doImportDataSource() {
+        try {
+          let importDSArray = JSON.parse(this.importDSTemplate)
+          if (!!this.clearOldDSFlag) {
+            this.formConfig.dataSources.splice(0, this.formConfig.dataSources.length)
+          }
+          this.formConfig.dataSources = this.formConfig.dataSources.concat(importDSArray)
+          this.$message.success(this.i18nt('designer.hint.importJsonSuccess'))
+          this.designer.emitHistoryChange()
+          this.showImportDSDialogFlag = false
+        } catch (ex) {
+          this.$message.error(ex.message)
+        }
+      },
+
+      exportDataSource() {
+        this.dsExportContent = ''
+        this.dsRawExportContent = ''
+        this.exportDSArray.splice(0, this.exportDSArray.length)
+        if (!!this.formConfig.dataSources && (this.formConfig.dataSources.length > 0)) {
+          this.formConfig.dataSources.forEach(ds => {
+            let newDS = deepClone(ds)
+            newDS.checked = false
+            this.exportDSArray.push(newDS)
+          })
+        }
+
+        this.showExportDSDialogFlag = true
+      },
+
+      copyDataSourceJson(e) {
+        copyToClipboard(this.dsRawExportContent, e,
+            this.$message,
+            this.i18nt('designer.hint.copyJsonSuccess'),
+            this.i18nt('designer.hint.copyJsonFail')
+        )
+      },
+
+      handleExportDSChange(val) {
+        let selectedDSArray = []
+        this.exportDSArray.forEach(ds => {
+          if (!!ds.checked) {
+            let selectedDs = deepClone(ds)
+            delete selectedDs['checked']
+            selectedDSArray.push(selectedDs)
+          }
+        })
+
+        this.dsExportContent = JSON.stringify(selectedDSArray, null, '  ')
+        this.dsRawExportContent = JSON.stringify(selectedDSArray)
+      },
+
+      handleExportTabClick() {
+        this.$nextTick(() => {
+          this.$refs.exportDSEditor.setValue(this.dsExportContent)
+        })
+      },
+
     },
   }
 </script>
@@ -511,7 +629,7 @@
   /*}*/
 
   .ds-list {
-    :deep(.el-descriptions) {
+    :deep(.el-descriptions__content) {
       width: 284px;
       overflow-x: hidden;
       margin-bottom: 15px;
@@ -521,6 +639,10 @@
 
     :deep(.el-descriptions__title) {
       font-weight: normal;
+    }
+
+    :deep(.el-descriptions__label) {
+      width: 36px;
     }
   }
 
@@ -587,6 +709,28 @@
 
   .display-block :deep(.el-form-item__content) {
     display: block !important;
+  }
+
+  .dialog-footer {
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  .export-ds-list {
+    :deep(.el-descriptions__content) {
+      overflow-x: hidden;
+      margin-bottom: 15px;
+      padding: 8px;
+      background: #f5f7fa;
+    }
+
+    :deep(.el-descriptions__title) {
+      font-weight: normal;
+    }
+
+    :deep(.el-descriptions__label) {
+      width: 36px !important;
+    }
   }
 
 </style>

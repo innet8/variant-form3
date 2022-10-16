@@ -399,10 +399,6 @@
     }
   }
 
-  :deep(.ds-setting-drawer) { /* 必须加上:deep，否则不生效 */
-    right: 320px !important;
-  }
-
   :deep(.header-small-mb .el-drawer__header) {
     margin-bottom: 6px;
   }
@@ -411,13 +407,16 @@
     padding: 12px;
   }
 
-  /*:deep(.el-overlay .ds-setting-drawer) {*/
-  /*  right: 320px !important;*/
-  /*}*/
-
   :deep(.el-button.button-text-highlight) {
     font-weight: bold;
     color: $--color-primary;
+  }
+
+</style>
+
+<style lang="scss">
+  .ds-setting-drawer {
+    right: 320px !important;
   }
 
 </style>
