@@ -228,8 +228,9 @@ export default {
         if (!!this.field.options.dsEnabled) {
           this.field.options.optionItems.splice(0, this.field.options.optionItems.length) // 清空原有选项
           let curDSName = this.field.options.dsName
+          let curDSetName = this.field.options.dataSetName
           let curDS = getDSByName(this.formConfig, curDSName)
-          if (!!curDS) {
+          if (!!curDS && !curDSetName) {
             let gDsv = this.getGlobalDsv() || {}
             //console.log('Global DSV is: ', gDsv)
             let localDsv = new Object({})
