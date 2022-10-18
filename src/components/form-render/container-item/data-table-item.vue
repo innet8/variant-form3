@@ -559,6 +559,7 @@
 			 */
 			loadDataFromDS(localDsv = {}, dsName = '') {
 				let curDSName = dsName || this.widget.options.dsName
+				let curDSetName = this.field.options.dataSetName
 				let curDS = getDSByName(this.formConfig, curDSName)
 				if (!!curDS) {
 					let gDsv = this.getGlobalDsv() || {}
@@ -569,7 +570,11 @@
 					newDsv.pageSize = this.pageSize
 					newDsv.currentPage = this.currentPage
 					runDataSourceRequest(curDS, newDsv, this.getFormRef(), false, this.$message).then(res => {
-						this.setTableData(res)
+						if (!!curDSetName && res.hasOwnProperty(curDSetName)) {
+							this.setTableData(res[curDSetName])
+						} else {
+							this.setTableData(res)
+						}
 					}).catch(err => {
 						this.$message.error(err.message)
 					})

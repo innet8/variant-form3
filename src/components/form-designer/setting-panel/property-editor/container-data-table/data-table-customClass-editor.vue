@@ -51,9 +51,15 @@
 			<el-switch v-model="optionModel.dsEnabled"></el-switch>
 		</el-form-item>
 		<el-form-item v-if="!!optionModel.dsEnabled" :label="i18nt('designer.setting.dsName')">
-			<el-select v-model="optionModel.dsName" filterable clearable>
+			<el-select v-model="optionModel.dsName" filterable clearable @change="getDataSetList">
 				<el-option v-for="(item, idx) in dataSourceList" :key="idx" :title="item.description"
 									 :label="item.uniqueName" :value="item.uniqueName"></el-option>
+			</el-select>
+		</el-form-item>
+		<el-form-item v-if="!!optionModel.dsEnabled" :label="i18nt('designer.setting.dataSetName')">
+			<el-select v-model="optionModel.dataSetName" filterable clearable>
+				<el-option v-for="(item, idx) in dataSetList" :key="idx" :title="item.remark"
+									 :label="item.name" :value="item.name"></el-option>
 			</el-select>
 		</el-form-item>
 		<el-form-item :label="i18nt('designer.setting.showButtonsColumn')">
@@ -313,7 +319,7 @@
 
 <script>
   import i18n from "@/utils/i18n"
-	import {deepClone, generateId} from "@/utils/util"
+	import {deepClone, generateId, getDSByName} from "@/utils/util"
 	import Sortable from "sortablejs"
 	import CodeEditor from '@/components/code-editor/index'
 
@@ -337,6 +343,7 @@
 				oldButtonName: '',
         cssClassList: [],
 				tableDataOptions:[],
+				dataSetList: [],
 				widgetSizes: [
 				  {label: 'default', value: ''},
 				  {label: 'large', value: 'large'},
@@ -404,6 +411,19 @@
 				} else {
 					return this.designer.formConfig.dataSources
 				}
+			},
+
+		},
+		watch: {
+			selectedWidget: {
+				handler(val, oldVal) {
+					if (!val) {
+						return
+					}
+
+					this.loadDataSet(val.options.dsName)
+				},
+				immediate: true
 			},
 
 		},
@@ -547,6 +567,28 @@
 					hidden: false,
 					disabled: false,
 				})
+			},
+
+			loadDataSet(dsName) {
+				this.dataSetList.length = 0
+				if (!dsName) {
+					return
+				}
+
+				let dsModel = getDSByName(this.designer.formConfig, dsName)
+				if (!!dsModel && !!dsModel.dataSets) {
+					dsModel.dataSets.forEach(dSet => {
+						this.dataSetList.push({
+							name: dSet.name,
+							remark: dSet.remark
+						})
+					})
+				}
+			},
+
+			getDataSetList() {
+				this.optionModel.dataSetName = ''
+				this.loadDataSet(this.optionModel.dsName)
 			},
 
     }

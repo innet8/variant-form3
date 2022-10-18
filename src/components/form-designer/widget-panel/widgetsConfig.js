@@ -207,6 +207,7 @@ export const containers = [
       },
       dsEnabled: false, //是否使用数据源数据
       dsName: '',  //数据源名称
+      dataSetName: '',  //数据集名称
       tableData: [ //表格数据
         {
           date: '2016-05-02',
