@@ -559,7 +559,7 @@
 			 */
 			loadDataFromDS(localDsv = {}, dsName = '') {
 				let curDSName = dsName || this.widget.options.dsName
-				let curDSetName = this.field.options.dataSetName
+				let curDSetName = this.widget.options.dataSetName
 				let curDS = getDSByName(this.formConfig, curDSName)
 				if (!!curDS) {
 					let gDsv = this.getGlobalDsv() || {}
