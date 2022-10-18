@@ -14,10 +14,6 @@ export default {
       return this.getFormConfig()
     },
 
-    widgetSize() {
-      return this.field.options.size || 'default'
-    },
-
     subFormName() {
       return !!this.getSubFormName ? this.getSubFormName() : ''
     },

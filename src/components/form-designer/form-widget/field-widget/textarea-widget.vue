@@ -4,7 +4,6 @@
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
     <el-input type="textarea" ref="fieldEditor" v-model="fieldModel" v-show="!isReadMode"
               :disabled="field.options.disabled" :readonly="field.options.readonly"
-              :size="widgetSize"
               :placeholder="field.options.placeholder" :rows="field.options.rows"
               :minlength="field.options.minLength" :maxlength="field.options.maxLength"
               :show-word-limit="field.options.showWordLimit"

@@ -24,9 +24,7 @@
         widgetSizes: [
           {label: 'default', value: ''},
           {label: 'large', value: 'large'},
-          //{label: 'medium', value: 'medium'},
           {label: 'small', value: 'small'},
-          //{label: 'mini', value: 'mini'},
         ],
       }
     }

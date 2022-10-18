@@ -3,7 +3,7 @@
                      :parent-widget="parentWidget" :parent-list="parentList" :index-of-parent-list="indexOfParentList"
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
     <el-radio-group ref="fieldEditor" v-model="fieldModel" v-show="!isReadMode"
-                    :disabled="field.options.disabled" :size="widgetSize"
+                    :disabled="field.options.disabled"
                     :style="{display: field.options.displayStyle + ' !important'}"
                     @change="handleChangeEvent">
       <template v-if="!!field.options.buttonStyle">

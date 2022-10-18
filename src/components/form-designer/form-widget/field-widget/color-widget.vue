@@ -4,7 +4,6 @@
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
     <div :class="[isReadMode ? 'readonly-mode-color' : '']">
       <el-color-picker ref="fieldEditor" v-model="fieldModel"
-                       :size="widgetSize"
                        :disabled="field.options.disabled"
                        @change="handleChangeEvent">
       </el-color-picker>
