@@ -262,7 +262,7 @@
       <el-switch v-model="clearOldDSFlag" style="margin-top: 10px"
                  :active-text="i18nt('designer.setting.clearExistingDataSource')"
                  :inactive-text="i18nt('designer.setting.remainExistingDataSource')"></el-switch>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer-center">
         <el-button type="primary" @click="doImportDataSource">
           {{i18nt('designer.hint.import')}}</el-button>
         <el-button @click="showImportDSDialogFlag = false">
@@ -303,7 +303,7 @@
           <code-editor :mode="'json'" :readonly="true" v-model="dsExportContent" ref="exportDSEditor"></code-editor>
         </el-tab-pane>
       </el-tabs>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer-center">
         <el-button type="primary" class="copy-json-btn" :data-clipboard-text="dsRawExportContent" @click="copyDataSourceJson">
           {{i18nt('designer.hint.copyJson')}}</el-button>
         <el-button type="" @click="showExportDSDialogFlag = false">
@@ -712,6 +712,10 @@
   }
 
   .dialog-footer {
+    margin-top: 15px;
+  }
+
+  .dialog-footer-center {
     margin-top: 15px;
     text-align: center;
   }

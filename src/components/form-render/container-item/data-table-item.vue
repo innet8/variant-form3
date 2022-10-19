@@ -5,6 +5,7 @@
 			<el-table ref="dataTable" :data="widget.options.tableData" :class="[customClass]"
 								:height="tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
+								:row-key="widget.options.rowKey" :tree-props="{ children: widget.options.childrenKey }"
 								:size="widgetSize" :stripe="widget.options.stripe"
 								:highlight-current-row="singleRowSelectFlag"
 								:row-class-name="getRowClassName"
@@ -17,11 +18,13 @@
 								@row-dblclick="handleRowDoubleClick"
 								@cell-click="handleCellClick"
 								@cell-dblclick="handleCellDoubleClick"
+								@select="handleRowSelect"
+								@select-all="handleAllSelect"
 								:cell-style="{padding: widget.options.rowSpacing + 'px 0'}" >
 
 				<el-table-column v-if="widget.options.showIndex" type="index" width="50" fixed="left"></el-table-column>
 				<el-table-column v-if="widget.options.showCheckBox" type="selection"
-												 :width="!widget.options.showSummary ? 42: 53"  fixed="left"></el-table-column>
+												 :width="selectionWidth"  fixed="left"></el-table-column>
 
 				<template v-for="(item, index) in widget.options.tableColumns">
 					<el-table-column
@@ -126,23 +129,7 @@
 		inject: ['refList', 'sfRefList', 'globalModel', 'getFormConfig', 'getGlobalDsv'],
 		data() {
 			return {
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎1',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎2',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎3',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎4',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}],
+				selectAllFlag: false,
 
 				selectedIndices: [],
 				selectedRows: [],
@@ -186,6 +173,10 @@
 
 			tableHeight() {
 				return this.widget.options.tableHeight || undefined
+			},
+
+			selectionWidth() {
+				return !this.widget.options.showSummary ? (!this.widget.options.treeDataEnabled ? 42 : 70): 53
 			},
 
 		},
@@ -467,6 +458,52 @@
 					let customFn = new Function('row', 'column', 'cell', 'event', this.widget.options.onCellDoubleClick)
 					return customFn.call(this, row, column, cell, event)
 				}
+			},
+
+			setChildrenSelected(children, flag) {
+				let childrenKey = this.widget.options.childrenKey
+				children.map(child => {
+					this.toggleSelection(child, flag)
+					if (child[childrenKey]) {
+						this.setChildrenSelected(child[childrenKey], flag)
+					}
+				})
+			},
+
+			toggleSelection(row, flag) {
+				if (row) {
+					this.$nextTick(() => {
+						this.$refs.dataTable.toggleRowSelection(row, flag)
+					})
+				}
+			},
+
+			handleRowSelect(selection, row) {
+				let childrenKey = this.widget.options.childrenKey
+				if (selection.some(el => { return row.id === el.id })) {
+					if (row[childrenKey]) {
+						this.setChildrenSelected(row[childrenKey], true)
+					}
+				} else {
+					if (row[childrenKey]) {
+						this.setChildrenSelected(row[childrenKey], false)
+					}
+				}
+			},
+
+			setSelectedFlag(data, flag) {
+				let childrenKey = this.widget.options.childrenKey
+				data.forEach(row => {
+					this.$refs.dataTable.toggleRowSelection(row, flag)
+					if (row[childrenKey]) {
+						this.setSelectedFlag(row[childrenKey], flag)
+					}
+				})
+			},
+
+			handleAllSelect(selection) {
+				this.selectAllFlag = !this.selectAllFlag
+				this.setSelectedFlag(this.widget.options.tableData, this.selectAllFlag)
 			},
 
 			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//

@@ -4,6 +4,7 @@
                      :sub-form-row-index="subFormRowIndex" :sub-form-col-index="subFormColIndex" :sub-form-row-id="subFormRowId">
     <div :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '', isReadMode ? 'readonly-mode-date-range' : '']">
       <el-date-picker ref="fieldEditor" :type="field.options.type" v-model="fieldModel"
+                      :class="[!!field.options.autoFullWidth ? 'auto-full-width' : '']"
                       :disabled="field.options.disabled" :readonly="field.options.readonly"
                       :clearable="field.options.clearable" :editable="field.options.editable"
                       :format="field.options.format" :value-format="field.options.valueFormat"
@@ -114,8 +115,14 @@
   .auto-full-width {
     width: 100%;
 
-    :deep(.el-range-editor) {
+    :deep(.el-date-editor) {
       width: 100% !important;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    :deep(.el-range__icon) {
+      margin-left: 10px;
     }
   }
 

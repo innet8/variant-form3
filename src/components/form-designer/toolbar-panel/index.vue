@@ -691,9 +691,9 @@
       },
 
       testDTSC(dt, s1, s2) {
-        console.log('test', dt)
-        console.log('test', s1)
-        console.log('test', s2)
+        console.log('test dt', dt)
+        console.log('test s1', s1)
+        console.log('test s2', s2)
       },
 
       testOBC(aa) {

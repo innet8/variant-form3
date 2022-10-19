@@ -111,8 +111,14 @@
   .auto-full-width {
     width: 100%;
 
-    :deep(.el-range-editor) {
+    :deep(.el-date-editor) {
       width: 100% !important;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    :deep(.el-range__icon) {
+      margin-left: 10px;
     }
   }
 

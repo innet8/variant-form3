@@ -208,6 +208,9 @@ export const containers = [
       dsEnabled: false, //是否使用数据源数据
       dsName: '',  //数据源名称
       dataSetName: '',  //数据集名称
+      treeDataEnabled: false,  //是否允许加载树形数据
+      rowKey: 'id',  //树形数据数据row-key
+      childrenKey: 'children',  //树形数据children
       tableData: [ //表格数据
         {
           date: '2016-05-02',

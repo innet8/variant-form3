@@ -62,6 +62,15 @@
 									 :label="item.name" :value="item.name"></el-option>
 			</el-select>
 		</el-form-item>
+		<el-form-item :label="i18nt('designer.setting.treeDataEnabled')">
+			<el-switch v-model="optionModel.treeDataEnabled" @change="handleTDEChange"></el-switch>
+		</el-form-item>
+		<el-form-item v-if="!!optionModel.treeDataEnabled" :label="i18nt('designer.setting.rowKeyOfTreeData')">
+			<el-input v-model="optionModel.rowKey"></el-input>
+		</el-form-item>
+		<el-form-item v-if="!!optionModel.treeDataEnabled" :label="i18nt('designer.setting.childrenKeyOfTreeData')">
+			<el-input v-model="optionModel.childrenKey"></el-input>
+		</el-form-item>
 		<el-form-item :label="i18nt('designer.setting.showButtonsColumn')">
 			<el-switch v-model="optionModel.showButtonsColumn"></el-switch>
 		</el-form-item>
@@ -589,6 +598,16 @@
 			getDataSetList() {
 				this.optionModel.dataSetName = ''
 				this.loadDataSet(this.optionModel.dsName)
+			},
+
+			handleTDEChange(val) {
+				if (!!val) {
+					this.optionModel.rowKey = 'id'
+					this.optionModel.childrenKey = 'children'
+				} else {
+					this.optionModel.rowKey = ''
+					this.optionModel.childrenKey = ''
+				}
 			},
 
     }
