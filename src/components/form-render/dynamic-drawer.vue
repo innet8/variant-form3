@@ -53,6 +53,10 @@
         type: Object,
         default: () => ({})
       },
+      wrapperId: {
+        type: String,
+        default: null
+      }
     },
     data() {
       return {
@@ -105,7 +109,7 @@
       },
 
       deleteWrapperNode() {
-        let wrapperNode = document.getElementById('vf-dynamic-drawer-wrapper')
+        let wrapperNode = document.getElementById('vf-dynamic-drawer-wrapper' + this.wrapperId)
         if (!!wrapperNode) {
           document.body.removeChild(wrapperNode)
         }

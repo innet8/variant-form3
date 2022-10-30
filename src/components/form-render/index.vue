@@ -865,6 +865,23 @@
         return this.parentForm
       },
 
+      /**
+       * 当显示多级嵌套弹窗或抽屉时，获取最顶层VFormRender组件实例
+       * @returns {object}
+       */
+      getTopFormRef() {
+        if (!this.parentForm) {
+          return this
+        }
+
+        let topFormRef = this.parentForm
+        while (topFormRef.parentForm) {
+          topFormRef = topFormRef.parentForm
+        }
+
+        return topFormRef
+      },
+
       setChildFormRef(childFormRef) {
         this.childFormRef = childFormRef
       },
@@ -900,66 +917,66 @@
        * @param extraData
        */
       showDialog(dialogName, formData = {}, extraData = {}) {
-        let dialogCon = getContainerWidgetByName(this.widgetList, dialogName)
+        let topFormRef = this.getTopFormRef()
+        let dialogCon = getContainerWidgetByName(topFormRef.widgetList, dialogName)
         if (!dialogName || (dialogCon.type !== 'vf-dialog')) {
           this.$message.error(this.i18nt('render.hint.refNotFound') + dialogName)
           return
         }
         let dFormJson = {
           widgetList: deepClone(dialogCon.widgetList),
-          formConfig: cloneFormConfigWithoutEventHandler(this.formConfig)
+          formConfig: cloneFormConfigWithoutEventHandler(topFormRef.formConfig)
         }
 
+        let wrapperDivId = generateId() + ''
         let dialogInstance = createVNode(DynamicDialog, {
           options: dialogCon.options,
           formJson: dFormJson,
           formData: formData || {},
-          optionData: this.optionData,
-          globalDsv: this.globalDsv,
+          optionData: topFormRef.optionData,
+          globalDsv: topFormRef.globalDsv,
           parentFormRef: this,
           extraData: extraData,
+          wrapperId: wrapperDivId,
         })
         dialogInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
 
-        let wrapperDiv = document.getElementById('vf-dynamic-dialog-wrapper')
-        if (!wrapperDiv) {
-          wrapperDiv = document.createElement("div")
-          wrapperDiv.id = 'vf-dynamic-dialog-wrapper'
-          document.body.appendChild(wrapperDiv)
-        }
+        let wrapperDiv = document.createElement("div")
+        wrapperDiv.id = 'vf-dynamic-dialog-wrapper' + wrapperDivId
+        document.body.appendChild(wrapperDiv)
         render(dialogInstance, wrapperDiv)
         document.body.appendChild( dialogInstance.el )
         dialogInstance.component.ctx.show()
       },
 
       showDrawer(drawerName, formData = {}, extraData = {}) {
-        let drawerCon = getContainerWidgetByName(this.widgetList, drawerName)
+        let topFormRef = this.getTopFormRef()
+        let drawerCon = getContainerWidgetByName(topFormRef.widgetList, drawerName)
         if (!drawerCon || (drawerCon.type !== 'vf-drawer')) {
           this.$message.error(this.i18nt('render.hint.refNotFound') + drawerName)
           return
         }
         let dFormJson = {
           widgetList: deepClone(drawerCon.widgetList),
-          formConfig: cloneFormConfigWithoutEventHandler(this.formConfig)
+          formConfig: cloneFormConfigWithoutEventHandler(topFormRef.formConfig)
         }
 
+        let wrapperDivId = generateId() + ''
         let drawerInstance = createVNode(DynamicDrawer, {
           options: drawerCon.options,
           formJson: dFormJson,
           formData: formData || {},
-          optionData: this.optionData,
-          globalDsv: this.globalDsv,
+          optionData: topFormRef.optionData,
+          globalDsv: topFormRef.globalDsv,
           parentFormRef: this,
           extraData: extraData,
+          wrapperId: wrapperDivId,
         })
         drawerInstance.appContext = this.$root.$.appContext  //非常重要， 覆盖应用上下文！！
 
-        let wrapperDiv = document.getElementById('vf-dynamic-drawer-wrapper')
-        if (!wrapperDiv) {
-          wrapperDiv = document.createElement("div")
-          wrapperDiv.id = 'vf-dynamic-drawer-wrapper'
-          document.body.appendChild(wrapperDiv)
-        }
+        let wrapperDiv = document.createElement("div")
+        wrapperDiv.id = 'vf-dynamic-drawer-wrapper' + wrapperDivId
+        document.body.appendChild(wrapperDiv)
         render(drawerInstance, wrapperDiv)
         document.body.appendChild( drawerInstance.el )
         drawerInstance.component.ctx.show()
