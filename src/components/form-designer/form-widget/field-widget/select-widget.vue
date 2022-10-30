@@ -101,6 +101,13 @@
     },
 
     methods: {
+      /**
+       * 获取选中项label
+       * @return {*}
+       */
+      getSelectedLabel() {
+        return this.$refs.fieldEditor.selectedLabel
+      },
 
     }
   }

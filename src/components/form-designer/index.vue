@@ -162,7 +162,9 @@
 
         designer: createDesigner(this),
 
-        fieldList: []
+        fieldList: [],
+
+        externalComponents:  {},  //外部组件实例集合
       }
     },
     provide() {
@@ -429,6 +431,33 @@
        */
       addDataSource(dsObj) {
         this.designer.formConfig.dataSources.push(dsObj)
+      },
+
+      /**
+       * 增加外部组件引用，可通过getEC()方法获取外部组件，以便在VForm内部调用外部组件方法
+       * @param componentName 外部组件名称
+       * @param externalComponent 外部组件实例
+       */
+      addEC(componentName, externalComponent) {
+        this.externalComponents[componentName] = externalComponent
+      },
+
+      /**
+       * 判断外部组件是否可获取
+       * @param componentName 外部组件名称
+       * @returns {boolean}
+       */
+      hasEC(componentName) {
+        return this.externalComponents.hasOwnProperty(componentName)
+      },
+
+      /**
+       * 获取外部组件实例
+       * @param componentName
+       * @returns {*}
+       */
+      getEC(componentName) {
+        return this.externalComponents[componentName]
       },
 
       //TODO: 增加更多方法！！

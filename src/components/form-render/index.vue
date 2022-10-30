@@ -362,7 +362,9 @@
       addFieldValidateEventHandler() {
         this.off$('fieldValidation')  //移除原有事件监听
         this.on$('fieldValidation', (fieldName) => {
-          this.$refs.renderForm.validateField(fieldName)
+          if (!!this.$refs.renderForm) {
+            this.$refs.renderForm.validateField(fieldName)
+          }
         })
       },
 
@@ -503,6 +505,10 @@
 
       getNativeForm() { //获取原生form引用
         return this.$refs['renderForm']
+      },
+
+      getFormRef() {
+        return this
       },
 
       getWidgetRef(widgetName, showError = false) {

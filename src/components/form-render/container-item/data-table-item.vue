@@ -95,7 +95,7 @@
 	import refMixin from "@/components/form-render/refMixin"
 	import containerItemMixin from "@/components/form-render/container-item/containerItemMixin"
 	import TableColumnCustomRender from '@/components/form-render/table-column-custom-render'
-	import {getDSByName, overwriteObj, runDataSourceRequest} from "@/utils/util"
+	import {deepClone, getDSByName, overwriteObj, runDataSourceRequest} from "@/utils/util"
 
   export default {
     name: "DataTableItem",
@@ -260,6 +260,7 @@
 				return new Function('h', 'params', 'components', column.render)
 			},
 
+			/* 注意：在加载树形结构数据时，此方法只能获取第一级选中节点，选择子节点时返回-1，应在文档中加以说明！！！ */
 			getRowIndex(row) {
 				return this.widget.options.tableData.lastIndexOf(row)
 			},
@@ -291,13 +292,15 @@
 					return
 				}
 
+				if (!!this.widget.options.showCheckBox) {
+					return
+				}
+
 				this.selectedIndices.length = 0
 				this.selectedRows.length = 0
 				let rowIndex = this.getRowIndex(currentRow)
-				if (rowIndex >= 0) {
-					this.selectedIndices.push(rowIndex)
-					this.selectedRows.push(currentRow)
-				}
+				this.selectedIndices.push(rowIndex)
+				this.selectedRows.push(currentRow)
 
 				if (!!this.widget.options.onSelectionChange) {
 					let customFn = new Function('selection', 'selectedIndices', this.widget.options.onSelectionChange)
@@ -308,6 +311,10 @@
 				}
 			},
 
+			/**
+			 * 注意：加载树形数据后，选中行如包含子节点则会触发两次该事件！！
+			 * @param selection
+			 */
 			handleSelectionChange(selection) {
 				if (!!this.skipSelectionChangeEvent) {
 					return
@@ -317,10 +324,8 @@
 				this.selectedRows.length = 0
 				selection.map((row) => {
 					let rowIndex = this.getRowIndex(row)
-					if (rowIndex >= 0) {
-						this.selectedIndices.push(rowIndex)
-						this.selectedRows.push(row)
-					}
+					this.selectedIndices.push(rowIndex)
+					this.selectedRows.push(row)
 				})
 
 				if (!!this.widget.options.onSelectionChange) {
@@ -460,39 +465,64 @@
 				}
 			},
 
-			setChildrenSelected(children, flag) {
-				let childrenKey = this.widget.options.childrenKey
+			toggleSelection(row, flag, selectedRows) {
+				if (row) {
+					this.$refs.dataTable.toggleRowSelection(row, flag)
+
+					if (flag) {
+						selectedRows.push(row)
+						return
+					}
+
+					let foundRowIdx = -1
+					let rowKey = this.widget.options.rowKey || 'id'
+					selectedRows.forEach((sr, idx) => {
+						if (sr[rowKey] === row[rowKey]) {
+							foundRowIdx = idx
+						}
+					})
+
+					if (foundRowIdx > -1) {
+						selectedRows.splice(foundRowIdx, 1)
+					}
+				}
+			},
+
+			setChildrenSelected(children, flag, selectedRows) {
+				let childrenKey = this.widget.options.childrenKey || 'children'
 				children.map(child => {
-					this.toggleSelection(child, flag)
+					this.toggleSelection(child, flag, selectedRows)
 					if (child[childrenKey]) {
-						this.setChildrenSelected(child[childrenKey], flag)
+						this.setChildrenSelected(child[childrenKey], flag, selectedRows)
 					}
 				})
 			},
 
-			toggleSelection(row, flag) {
-				if (row) {
-					this.$nextTick(() => {
-						this.$refs.dataTable.toggleRowSelection(row, flag)
-					})
-				}
-			},
-
 			handleRowSelect(selection, row) {
-				let childrenKey = this.widget.options.childrenKey
-				if (selection.some(el => { return row.id === el.id })) {
+				this.skipSelectionChangeEvent = true
+
+				let selectedRows = deepClone(selection)
+				let rowKey = this.widget.options.rowKey || 'id'
+				let childrenKey = this.widget.options.childrenKey || 'children'
+				if (selection.some(el => { return row[rowKey] === el[rowKey] })) {
 					if (row[childrenKey]) {
-						this.setChildrenSelected(row[childrenKey], true)
+						this.setChildrenSelected(row[childrenKey], true, selectedRows)
 					}
 				} else {
 					if (row[childrenKey]) {
-						this.setChildrenSelected(row[childrenKey], false)
+						this.setChildrenSelected(row[childrenKey], false, selectedRows)
 					}
 				}
+
+				this.skipSelectionChangeEvent = false
+				// 一次性处理多行选中或取消选中，只触发一次事件！！！
+				this.$nextTick(() => {
+					this.handleSelectionChange(selectedRows)
+				})
 			},
 
 			setSelectedFlag(data, flag) {
-				let childrenKey = this.widget.options.childrenKey
+				let childrenKey = this.widget.options.childrenKey || 'children'
 				data.forEach(row => {
 					this.$refs.dataTable.toggleRowSelection(row, flag)
 					if (row[childrenKey]) {
@@ -502,8 +532,15 @@
 			},
 
 			handleAllSelect(selection) {
+				this.skipSelectionChangeEvent = true
 				this.selectAllFlag = !this.selectAllFlag
 				this.setSelectedFlag(this.widget.options.tableData, this.selectAllFlag)
+
+				this.skipSelectionChangeEvent = false
+				// 一次性处理多行选中或取消选中，只触发一次事件！！！
+				this.$nextTick(() => {
+					this.handleSelectionChange(selection)
+				})
 			},
 
 			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
