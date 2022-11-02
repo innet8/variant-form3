@@ -15,7 +15,7 @@
                      :move="checkContainerMove" @end="onContainerDragEnd">
             <template #item="{ element: ctn }">
               <li class="container-widget-item" :title="ctn.displayName" @dblclick="addContainerByDbClick(ctn)">
-                <span><svg-icon :icon-class="ctn.icon" class-name="color-svg-icon" />{{i18n2t(`designer.widgetLabel.${ctn.type}`, `extension.widgetLabel.${ctn.type}`)}}</span>
+                <span><svg-icon :icon-class="ctn.icon" class-name="color-svg-icon" />{{getWidgetLabel(ctn)}}</span>
               </li>
             </template>
           </draggable>
@@ -27,7 +27,7 @@
                      :clone="handleFieldWidgetClone" ghost-class="ghost" :sort="false">
             <template #item="{ element: fld }">
               <li class="field-widget-item" :title="fld.displayName" @dblclick="addFieldByDbClick(fld)">
-                <span><svg-icon :icon-class="fld.icon" class-name="color-svg-icon" />{{i18n2t(`designer.widgetLabel.${fld.type}`, `extension.widgetLabel.${fld.type}`)}}</span>
+                <span><svg-icon :icon-class="fld.icon" class-name="color-svg-icon" />{{getWidgetLabel(fld)}}</span>
               </li>
             </template>
           </draggable>
@@ -39,7 +39,7 @@
                      :clone="handleFieldWidgetClone" ghost-class="ghost" :sort="false">
             <template #item="{ element: fld }">
               <li class="field-widget-item" :title="fld.displayName" @dblclick="addFieldByDbClick(fld)">
-                <span><svg-icon :icon-class="fld.icon" class-name="color-svg-icon" />{{i18n2t(`designer.widgetLabel.${fld.type}`, `extension.widgetLabel.${fld.type}`)}}</span>
+                <span><svg-icon :icon-class="fld.icon" class-name="color-svg-icon" />{{getWidgetLabel(fld)}}</span>
               </li>
             </template>
           </draggable>
@@ -52,7 +52,7 @@
             <template #item="{ element: fld }">
               <li class="field-widget-item" :title="fld.displayName" @dblclick="addFieldByDbClick(fld)">
                 <span>
-                  <svg-icon :icon-class="fld.icon" class-name="color-svg-icon" />{{i18n2t(`designer.widgetLabel.${fld.type}`, `extension.widgetLabel.${fld.type}`)}}</span>
+                  <svg-icon :icon-class="fld.icon" class-name="color-svg-icon" />{{getWidgetLabel(fld)}}</span>
               </li>
             </template>
           </draggable>
@@ -163,6 +163,14 @@
       })
     },
     methods: {
+      getWidgetLabel(widget) {
+        if (!!widget.alias) {  //优先显示组件别名
+          return this.i18n2t(`designer.widgetLabel.${widget.alias}`, `extension.widgetLabel.${widget.alias}`)
+        }
+
+        return this.i18n2t(`designer.widgetLabel.${widget.type}`, `extension.widgetLabel.${widget.type}`)
+      },
+
       isBanned(wName) {
         return this.getBannedWidgets().indexOf(wName) > -1
       },

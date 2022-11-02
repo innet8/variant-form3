@@ -216,6 +216,9 @@
           }
 
           this.updateFieldModelAndEmitDataChangeForUpload(fileList, customResult, res)
+          if (!!customResult && !!customResult.name) {
+            file.name = customResult.name
+          }
           if (!!customResult && !!customResult.url) {
             file.url = customResult.url
           }

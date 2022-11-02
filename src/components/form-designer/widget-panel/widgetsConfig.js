@@ -2,6 +2,7 @@
 export const containers = [
   {
     type: 'grid',
+    alias: '',  //组件别名，可以自定义
     category: 'container',
     icon: 'grid',
     cols: [],
@@ -362,6 +363,7 @@ export const containers = [
 export const basicFields = [
   {
     type: 'input',
+    alias: '',  //组件别名，可以自定义
     icon: 'text-field',
     formItemFlag: true,
     options: {

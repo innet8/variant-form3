@@ -525,6 +525,10 @@
         }
       },
 
+      getFormJson() {
+        return this.formJsonObj
+      },
+
       /**
        * 动态加载表单JSON
        * @param newFormJson
