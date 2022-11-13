@@ -10,6 +10,7 @@ import enLocale_render from "@/lang/en-US_render";
 import zhLocale_render from "@/lang/zh-CN_render";
 import enLocale_extension from "@/lang/en-US_extension";
 import zhLocale_extension from "@/lang/zh-CN_extension";
+import {overwriteObj} from "@/utils/util";
 
 const langResources = {
   'en-US': {
@@ -47,8 +48,24 @@ export const translate = function(key) {
   return i18n.$st(key)
 }
 
-export const installI18n = (app) => {
-  //
+export const addZHExtensionLang = (zhLang) => {
+  if (!!zhLang.extension && !!zhLang.extension.widgetLabel) {
+    overwriteObj(zhLocale_extension.extension.widgetLabel, zhLang.extension.widgetLabel)
+  }
+
+  if (!!zhLang.extension && !!zhLang.extension.setting) {
+    overwriteObj(zhLocale_extension.extension.setting, zhLang.extension.setting)
+  }
+}
+
+export const addENExtensionLang = (enLang) => {
+  if (!!enLang.extension && !!enLang.extension.widgetLabel) {
+    overwriteObj(enLocale_extension.extension.widgetLabel, enLang.extension.widgetLabel)
+  }
+
+  if (!!enLang.extension && !!enLang.extension.setting) {
+    overwriteObj(enLocale_extension.extension.setting, enLang.extension.setting)
+  }
 }
 
 export default {

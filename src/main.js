@@ -15,7 +15,6 @@ import ContainerItems from '@/components/form-render/container-item/index'
 import VFormRender from '@/components/form-render/index'
 
 import { addDirective } from '@/utils/directive'
-import { installI18n } from '@/utils/i18n'
 import { loadExtension } from '@/extension/extension-loader'
 
 if (typeof window !== 'undefined') {
@@ -28,7 +27,6 @@ vfApp.use(ElementPlus)
 registerIcon(vfApp)
 vfApp.component('draggable', Draggable)
 addDirective(vfApp)
-installI18n(vfApp)
 
 vfApp.use(ContainerWidgets)
 vfApp.use(ContainerItems)

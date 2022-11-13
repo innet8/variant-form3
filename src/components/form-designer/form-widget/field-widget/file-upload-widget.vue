@@ -93,7 +93,7 @@
           //authorization: '',  //又拍云上传签名
         },
         fileList: [],  //上传文件列表
-        uploadBtnHidden: false,
+        //uploadBtnHidden: false,
 
         styleVariables: {
           '--select-file-action': selectFileText,
@@ -109,6 +109,10 @@
         }
 
         return this.field.options.uploadURL
+      },
+
+      uploadBtnHidden() {
+        return !this.fileList || (this.fileList.length >= this.field.options.limit)
       },
 
     },

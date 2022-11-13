@@ -88,7 +88,7 @@
         },
         fileList: [],  //上传文件列表
         fileListBeforeRemove: [],  //删除前的文件列表
-        uploadBtnHidden: false,
+        //uploadBtnHidden: false,
 
         previewUrl: '',
         showPreviewDialogFlag: false,
@@ -103,6 +103,10 @@
         }
 
         return this.field.options.uploadURL
+      },
+
+      uploadBtnHidden() {
+        return !this.fileList || (this.fileList.length >= this.field.options.limit)
       },
 
     },

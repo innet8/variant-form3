@@ -128,6 +128,10 @@ export const loadRemoteScript = function(srcPath, callback) {  /*加载远程js�
 }
 
 export function traverseFieldWidgets(widgetList, handler, parent = null, staticWidgetsIncluded = false) {
+  if (!widgetList) {
+    return
+  }
+
   widgetList.map(w => {
     if (w.formItemFlag || ((w.formItemFlag === false) && staticWidgetsIncluded)) {
       handler(w, parent)
@@ -154,6 +158,10 @@ export function traverseFieldWidgets(widgetList, handler, parent = null, staticW
 }
 
 export function traverseContainerWidgets(widgetList, handler) {
+  if (!widgetList) {
+    return
+  }
+
   widgetList.map(w => {
     if (w.category === 'container') {
       handler(w)
@@ -182,6 +190,10 @@ export function traverseContainerWidgets(widgetList, handler) {
 }
 
 export function traverseAllWidgets(widgetList, handler) {
+  if (!widgetList) {
+    return
+  }
+
   widgetList.map(w => {
     handler(w)
 
@@ -307,6 +319,10 @@ export function traverseWidgetsOfContainer(con, fieldHandler, containerHandler) 
  * @returns {[]}
  */
 export function getAllFieldWidgets(widgetList, staticWidgetsIncluded = false) {
+  if (!widgetList) {
+    return []
+  }
+
   let result = []
   let handlerFn = (w) => {
     result.push({
@@ -326,6 +342,10 @@ export function getAllFieldWidgets(widgetList, staticWidgetsIncluded = false) {
  * @returns {[]}
  */
 export function getAllContainerWidgets(widgetList) {
+  if (!widgetList) {
+    return []
+  }
+
   let result = []
   let handlerFn = (w) => {
     result.push({
@@ -340,6 +360,10 @@ export function getAllContainerWidgets(widgetList) {
 }
 
 export function getFieldWidgetByName(widgetList, fieldName, staticWidgetsIncluded) {
+  if (!widgetList) {
+    return null
+  }
+
   let foundWidget = null
   let handlerFn = (widget) => {
     if (widget.options.name === fieldName) {
@@ -352,6 +376,10 @@ export function getFieldWidgetByName(widgetList, fieldName, staticWidgetsInclude
 }
 
 export function getContainerWidgetByName(widgetList, containerName) {
+  if (!widgetList) {
+    return null
+  }
+
   let foundContainer = null
   let handlerFn = (con) => {
     if (con.options.name === containerName) {
@@ -364,6 +392,10 @@ export function getContainerWidgetByName(widgetList, containerName) {
 }
 
 export function getContainerWidgetById(widgetList, containerId) {
+  if (!widgetList) {
+    return null
+  }
+
   let foundContainer = null
   let handlerFn = (con) => {
     if (con.id === containerId) {

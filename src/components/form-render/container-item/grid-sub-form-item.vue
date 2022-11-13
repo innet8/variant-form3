@@ -338,9 +338,9 @@
 
       setDisabled(flag) {
         if (!!flag) {
-          this.disableSubForm()
+          this.disableGridSubForm()
         } else {
-          this.enableSubForm()
+          this.enableGridSubForm()
         }
       },
 

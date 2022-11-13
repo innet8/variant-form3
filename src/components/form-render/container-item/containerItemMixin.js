@@ -21,15 +21,6 @@ export default {
   methods: {
     cloneWidgetSchema(widget) {
       return deepClone(widget)
-      /**
-       * 注意：在v-for循环中，必须保证克隆对象与原对象完全一致，修改克隆对象任何属性，
-       * 都会触发组件的beforeDestroy事件钩子！！！
-       */
-
-
-      // let newWidgetSchema = deepClone(widget)
-      // newWidgetSchema.id = widget.type + generateId()
-      // return newWidgetSchema
     },
 
     unregisterFromRefList() {  //销毁容器组件时注销组件ref
@@ -187,6 +178,10 @@ export default {
     },
 
     disableSubForm() {
+      this.widget.widgetList.forEach(subWidget => {
+        subWidget.options.disabled = true
+      })
+
       if (this.rowIdData.length > 0) {
         this.rowIdData.forEach((dataRow, rIdx) => {
           this.disableSubFormRow(rIdx)
@@ -198,6 +193,10 @@ export default {
     },
 
     enableSubForm() {
+      this.widget.widgetList.forEach(subWidget => {
+        subWidget.options.disabled = false
+      })
+
       if (this.rowIdData.length > 0) {
         this.rowIdData.forEach((dataRow, rIdx) => {
           this.enableSubFormRow(rIdx)
@@ -241,6 +240,10 @@ export default {
     },
 
     disableGridSubForm() {
+      traverseFieldWidgetsOfContainer(this.widget, (fw) => {
+        fw.options.disabled = true
+      })
+
       if (this.rowIdData.length > 0) {
         this.rowIdData.forEach((dataRow, rIdx) => {
           this.disableGridSubFormRow(rIdx)
@@ -252,6 +255,10 @@ export default {
     },
 
     enableGridSubForm() {
+      traverseFieldWidgetsOfContainer(this.widget, (fw) => {
+        fw.options.disabled = false
+      })
+
       if (this.rowIdData.length > 0) {
         this.rowIdData.forEach((dataRow, rIdx) => {
           this.enableGridSubFormRow(rIdx)

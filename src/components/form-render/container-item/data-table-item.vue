@@ -41,7 +41,8 @@
 													 :min-width="item.width">
 						<template #default="scope">
 							<template v-if="item.formatS === 'render' && !!item.render">
-								<table-column-custom-render :row="scope.row" :column="item" :renderFn="getColumnRender(scope.row, item)" />
+								<table-column-custom-render :row="scope.row" :column="item" :data-table-ref="getDataTableRef"
+																						:renderFn="getColumnRender(scope.row, item)" />
 							</template>
 							<template v-else-if="!!item.formatS && (item.formatS !== 'renders')">
 								<span>{{formatterValue(scope.row, item, scope.row[item.prop])}}</span>
@@ -197,6 +198,10 @@
 			this.unregisterFromRefList()
 		},
     methods: {
+			getDataTableRef() {
+				return this
+			},
+
 			selectWidget(widget) {
 				this.designer.setSelected(widget)
 			},

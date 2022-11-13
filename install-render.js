@@ -7,11 +7,9 @@ import {registerIcon} from '@/utils/el-icons'
 import 'virtual:svg-icons-register'
 import '@/iconfont/iconfont.css'
 
-import { installI18n } from '@/utils/i18n'
 import { loadExtension } from '@/extension/extension-loader'
 
 VFormRender.install = function (app) {
-  installI18n(app)
   loadExtension(app)
 
   app.use(ContainerItems)
@@ -24,7 +22,6 @@ const components = [
 ]
 
 const install = (app) => {
-  installI18n(app)
   loadExtension(app)
 
   app.use(ContainerItems)
