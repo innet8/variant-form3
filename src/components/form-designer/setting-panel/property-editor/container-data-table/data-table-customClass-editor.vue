@@ -507,7 +507,7 @@
 			},
 
 			addCol(){
-				let newRow = {columnId: new Date().getTime()};
+				let newRow = {columnId: new Date().getTime(), show: false};
 				this.optionModel.tableColumns.push(newRow);
 				this.designer.emitHistoryChange()
 			},

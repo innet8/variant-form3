@@ -330,6 +330,7 @@
 
       clearDesigner() {
         this.$refs.toolbarRef.clearFormWidget()
+        this.$refs.formRef.clearWidgetRefList()
       },
 
 

@@ -46,6 +46,8 @@ import fieldMixin from "@/components/form-designer/form-widget/field-widget/fiel
 
 
 VFormDesigner.install = function (app) {
+  console.error('99999999999')
+
   addDirective(app)
   loadExtension(app)
 
@@ -72,6 +74,8 @@ const components = [
 ]
 
 const install = (app) => {
+  console.error('99999999999')
+
   addDirective(app)
   loadExtension(app)
 
@@ -95,7 +99,7 @@ if (typeof window !== 'undefined' && window.Vue) { /* script方式引入时赋�
 /**
  * 导出二开组件所需的所有对象、工具方法及组件
  */
-export const VFormSDK = {
+const VFormSDK = {
   addContainerWidgetSchema,
   addBasicFieldSchema,
   addAdvancedFieldSchema,
@@ -109,7 +113,7 @@ export const VFormSDK = {
 
   i18n,
   containerMixin,
-  //Draggable,  //已全局注册，无须导出！！
+  Draggable,
   ContainerWrapper,
   FieldComponents,
   refMixinDesign,

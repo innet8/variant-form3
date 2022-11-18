@@ -637,17 +637,17 @@
         }
       },
 
-      setFieldValue(fieldName, fieldValue) { //单个更新字段值
+      setFieldValue(fieldName, fieldValue, disableChangeEvent = false) { //单个更新字段值
         let fieldRef = this.getWidgetRef(fieldName)
         if (!!fieldRef && !!fieldRef.setValue) {
-          fieldRef.setValue(fieldValue)
+          fieldRef.setValue(fieldValue, disableChangeEvent)
         }
 
         if (!fieldRef) { //如果是子表单字段
           this.findWidgetNameInSubForm(fieldName).forEach(wn => {
             let sw = this.getWidgetRef(wn)
             if (!!sw && !!sw.setValue) {
-              sw.setValue(fieldValue)
+              sw.setValue(fieldValue, disableChangeEvent)
             }
           })
         }
