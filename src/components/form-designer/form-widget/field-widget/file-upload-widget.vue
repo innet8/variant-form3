@@ -93,7 +93,6 @@
           //authorization: '',  //又拍云上传签名
         },
         fileList: [],  //上传文件列表
-        //uploadBtnHidden: false,
 
         styleVariables: {
           '--select-file-action': selectFileText,
@@ -227,7 +226,6 @@
             file.url = customResult.url
           }
           this.fileList = deepClone(fileList)
-          this.uploadBtnHidden = fileList.length >= this.field.options.limit
         }
       },
 
@@ -251,7 +249,6 @@
         if (foundIdx >= 0) {
           this.fileList.splice(foundIdx, 1)
           this.updateFieldModelAndEmitDataChangeForRemove(foundIdx, this.fileList)
-          this.uploadBtnHidden = this.fileList.length >= this.field.options.limit
 
           if (!!this.field.options.onFileRemove) {
             let customFn = new Function('file', 'fileList', this.field.options.onFileRemove)

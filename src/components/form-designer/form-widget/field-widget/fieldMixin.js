@@ -126,10 +126,8 @@ export default {
       if (!!this.fieldModel) {
         if (Array.isArray(this.fieldModel)) {
           this.fileList = deepClone(this.fieldModel)
-          this.uploadBtnHidden = this.fileList.length >= this.field.options.limit
         } else {
           this.fileList.splice(0, 0, deepClone(this.fieldModel))
-          this.uploadBtnHidden = this.field.options.limit <= 1
         }
       }
     },

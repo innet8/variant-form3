@@ -180,6 +180,10 @@
 				return !this.widget.options.showSummary ? (!this.widget.options.treeDataEnabled ? 42 : 70): 53
 			},
 
+			getDataTableRef() {
+				return this
+			},
+
 		},
 		created() {
 			this.initRefList()
@@ -198,10 +202,6 @@
 			this.unregisterFromRefList()
 		},
     methods: {
-			getDataTableRef() {
-				return this
-			},
-
 			selectWidget(widget) {
 				this.designer.setSelected(widget)
 			},

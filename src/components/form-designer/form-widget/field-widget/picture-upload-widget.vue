@@ -88,7 +88,6 @@
         },
         fileList: [],  //上传文件列表
         fileListBeforeRemove: [],  //删除前的文件列表
-        //uploadBtnHidden: false,
 
         previewUrl: '',
         showPreviewDialogFlag: false,
@@ -219,7 +218,6 @@
 
           this.updateFieldModelAndEmitDataChangeForUpload(fileList, customResult, res)
           this.fileList = deepClone(fileList)
-          this.uploadBtnHidden = fileList.length >= this.field.options.limit
         }
       },
 
@@ -247,7 +245,6 @@
       handlePictureRemove(file, fileList) {
         this.updateFieldModelAndEmitDataChangeForRemove(file, fileList)
         this.fileList = deepClone(fileList)
-        this.uploadBtnHidden = fileList.length >= this.field.options.limit
 
         if (!!this.field.options.onFileRemove) {
           let customFn = new Function('file', 'fileList', this.field.options.onFileRemove)

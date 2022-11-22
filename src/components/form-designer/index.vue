@@ -73,7 +73,7 @@
   import {createDesigner} from "@/components/form-designer/designer"
   import {
     addWindowResizeHandler, deepClone, getQueryParam, getAllContainerWidgets,
-    getAllFieldWidgets, traverseAllWidgets
+    getAllFieldWidgets, traverseAllWidgets, traverseFieldWidgetsOfContainer
   } from "@/utils/util"
   import {MOCK_CASE_URL, VARIANT_FORM_VERSION} from "@/utils/config"
   import i18n, { changeLocale } from "@/utils/i18n"
@@ -459,6 +459,42 @@
        */
       getEC(componentName) {
         return this.externalComponents[componentName]
+      },
+
+      /**
+       * 根据表单json构建表单数据结构对象。
+       * @return {{}}
+       */
+      buildFormDataSchema() {
+        let dataSchema = {}
+        let allCws = getAllContainerWidgets(this.designer.widgetList)
+        let subFormCws = []
+        allCws.forEach(ctn => {
+          if (ctn.type === 'sub-form' || ctn.type === 'grid-sub-form') {
+            subFormCws.push(ctn.container)
+          }
+        })
+
+        let allSFFields = []
+        subFormCws.forEach(sf => {
+          let sfDataSchema = {}
+          traverseFieldWidgetsOfContainer(sf, (w) => {
+            if (!!w.formItemFlag) {
+              sfDataSchema[w.options.name] = w.type  //
+              allSFFields.push(w.options.name)
+            }
+          })
+          dataSchema[sf.options.name] = sfDataSchema
+        })
+
+        let allFields = getAllFieldWidgets(this.designer.widgetList)
+        allFields.forEach(fld => {
+          if (allSFFields.indexOf(fld.name) === -1) {
+            dataSchema[fld.name] = fld.type  //
+          }
+        })
+
+        return dataSchema
       },
 
       //TODO: 增加更多方法！！
