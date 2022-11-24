@@ -123,7 +123,7 @@
             generateSFCButton: true,  //是否显示生成SFC按钮
             logoHeader: true,  //是否显示Logo头部区域（仅Pro）
 
-            toolbarMaxWidth: 420,  //设计器工具按钮栏最大宽度（单位像素）
+            toolbarMaxWidth: 450,  //设计器工具按钮栏最大宽度（单位像素）
             toolbarMinWidth: 300,  //设计器工具按钮栏最小宽度（单位像素）
 
             productName: '',  //自定义表单设计器名称，对应“VForm Pro”（仅Pro）
