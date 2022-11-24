@@ -38,6 +38,7 @@
   import i18n from "../../../utils/i18n"
   import refMixin from "../../../components/form-render/refMixin"
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
+  import {traverseFieldWidgetsOfContainer} from "@/utils/util"
 
   export default {
     name: "GridColItem",
@@ -102,6 +103,7 @@
     created() {
       this.initLayoutProps()
       this.initRefList()
+      this.callSetHidden()
     },
     methods: {
       initLayoutProps() {
@@ -127,6 +129,32 @@
           this.layoutProps.sm = undefined
           this.layoutProps.xs = undefined
         }
+      },
+
+      /* 主动触发setHidden()方法，以清空被隐藏容器内字段组件的校验规则！！ */
+      callSetHidden() {
+        if (this.widget.options.hidden === true) {
+          this.setHidden(true)
+        }
+      },
+
+      setHidden(flag) {
+        this.widget.options.hidden = flag
+
+        /* 容器被隐藏后，需要同步清除容器内部字段组件的校验规则 */
+        let clearRulesFn = (fieldWidget) => {
+          let fwName = fieldWidget.options.name
+          let fwRef = this.getWidgetRef(fwName)
+          if (flag && !!fwRef && !!fwRef.clearFieldRules) {
+            fwRef.clearFieldRules()
+          }
+
+          if (!flag && !!fwRef && !!fwRef.buildFieldRules) {
+            fwRef.buildFieldRules()
+          }
+        }
+
+        traverseFieldWidgetsOfContainer(this.widget, clearRulesFn)
       },
 
     }
