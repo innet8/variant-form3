@@ -316,6 +316,7 @@
           }
 
           if (modifiedFlag) {
+            this.$refs.formRef.clearWidgetRefList()
             this.designer.emitHistoryChange()
           }
         }

@@ -51,7 +51,7 @@ export default defineConfig({
   },
 
   build: {
-    minify: false,
+    //minify: false,
     lib: {
       entry: resolve(__dirname, 'install.js'),
       name: 'VFormDesigner',
