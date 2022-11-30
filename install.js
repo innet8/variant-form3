@@ -46,8 +46,6 @@ import fieldMixin from "@/components/form-designer/form-widget/field-widget/fiel
 
 
 VFormDesigner.install = function (app) {
-  console.error('99999999999')
-
   addDirective(app)
   loadExtension(app)
 
@@ -74,8 +72,6 @@ const components = [
 ]
 
 const install = (app) => {
-  console.error('99999999999')
-
   addDirective(app)
   loadExtension(app)
 
