@@ -204,7 +204,7 @@
 								 :show-close="true" class="drag-dialog small-padding-dialog" append-to-body
 								 :close-on-click-modal="false" :close-on-press-escape="false"
 								 :destroy-on-close="true" width="1120px">
-				<el-form label-width="110" label-position="left" :model="optionModel">
+				<el-form label-position="left" :model="optionModel">
 					<el-row :gutter="8">
 						<el-col :span="11">
 							<el-form-item prop="buttonsColumnTitle" :label="i18nt('designer.setting.buttonsColumnTitle')">

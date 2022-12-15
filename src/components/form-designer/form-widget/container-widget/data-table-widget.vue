@@ -8,7 +8,7 @@
 			<el-table ref="dataTable" :data="widget.options.tableData" :class="[customClass]"
 								:height="tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
-								:row-key="widget.options.rowKey" :tree-props="{ children: widget.options.childrenKey }"
+								:row-key="tableRowKey" :tree-props="{ children: widget.options.childrenKey }"
 								:size="widgetSize" @click.native.stop="selectWidget(widget)" :stripe="widget.options.stripe"
 								@select="handleRowSelect" @select-all="handleAllSelect"
 								:cell-style="{padding: widget.options.rowSpacing + 'px 0'}">
@@ -152,6 +152,10 @@
 
 			selectionWidth() {
 				return !this.widget.options.showSummary ? (!this.widget.options.treeDataEnabled ? 42 : 70): 53
+			},
+
+			tableRowKey() {
+				return !this.widget.options.treeDataEnabled ? null : this.widget.options.rowKey
 			},
 
 		},

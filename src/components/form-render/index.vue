@@ -443,12 +443,16 @@
       findWidgetNameInSubForm(widgetName) {
         let result = []
         let subFormName = null
-        let handlerFn = (field, parent) => {
-          if (!!field.options && (field.options.name === widgetName)) {
-            subFormName = parent.options.name
+        Object.keys(this.subFormRefList).forEach(sfName => {
+          const fwHandler = (fw) => {
+            if (fw.options.name === widgetName) {
+              subFormName = sfName
+            }
           }
-        }
-        traverseFieldWidgets(this.widgetList, handlerFn)
+
+          const sfRef = this.subFormRefList[sfName]
+          traverseFieldWidgetsOfContainer(sfRef.widget, fwHandler)
+        })
 
         if (!!subFormName) {
           let subFormRef = this.getWidgetRef(subFormName)

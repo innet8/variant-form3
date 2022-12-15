@@ -6,7 +6,8 @@ export default {
     'getGlobalDsv', 'getReadMode', 'getSubFormFieldFlag', 'getSubFormName', 'getDSResultCache'],
   data() {
     return {
-      fieldReadonlyFlag: false
+      fieldReadonlyFlag: false,
+      dataSetLoadedFlag: false,
     }
   },
   computed: {
@@ -152,6 +153,7 @@ export default {
       /* 监听从数据集加载选项事件 */
       this.on$('loadOptionItemsFromDataSet', (dsName) => {
         this.loadOptionItemsFromDataSet(dsName)
+        this.dataSetLoadedFlag = true
       })
 
       this.on$('reloadOptionItems', (widgetNames) => {
@@ -237,6 +239,8 @@ export default {
             } catch(err) {
               this.$message.error(err.message)
             }
+          } else if (!!curDS && !!curDSetName && !this.dataSetLoadedFlag) {
+            this.loadOptionItemsFromDataSet(curDSName)
           }
 
           return;

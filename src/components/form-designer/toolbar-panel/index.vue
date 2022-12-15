@@ -614,7 +614,7 @@
       },
 
       saveFormData() {
-        this.saveAsFile(this.htmlCode, `formData${generateId()}.json`)
+        this.saveAsFile(this.formDataJson, `formData${generateId()}.json`)
       },
 
       resetForm() {

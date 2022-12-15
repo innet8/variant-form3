@@ -5,7 +5,7 @@
 			<el-table ref="dataTable" :data="widget.options.tableData" :class="[customClass]"
 								:height="tableHeight" :style="{'width': widget.options.tableWidth}"
 								:border="widget.options.border" :show-summary="widget.options.showSummary"
-								:row-key="widget.options.rowKey" :tree-props="{ children: widget.options.childrenKey }"
+								:row-key="tableRowKey" :tree-props="{ children: widget.options.childrenKey }"
 								:size="widgetSize" :stripe="widget.options.stripe"
 								:highlight-current-row="singleRowSelectFlag"
 								:row-class-name="getRowClassName"
@@ -182,6 +182,10 @@
 
 			getDataTableRef() {
 				return this
+			},
+
+			tableRowKey() {
+				return !this.widget.options.treeDataEnabled ? null : this.widget.options.rowKey
 			},
 
 		},

@@ -27,12 +27,6 @@ export const deepClone = function (origin) {
 }
 
 export const overwriteObj = function(obj1, obj2) {  /* 浅拷贝对象属性，obj2覆盖obj1 */
-  // for (let prop in obj2) {
-  //   if (obj2.hasOwnProperty(prop)) {
-  //     obj1[prop] = obj2[prop]
-  //   }
-  // }
-
   Object.keys(obj2).forEach(prop => {
     obj1[prop] = obj2[prop]
   })
@@ -281,6 +275,10 @@ function handleContainerTraverse(widget, fieldHandler, containerHandler) {
  * @param containerHandler
  */
 export function traverseWidgetsOfContainer(con, fieldHandler, containerHandler) {
+  if (con.category === 'container') {
+    containerHandler(con)
+  }
+
   if (con.type === 'grid') {
     con.cols.forEach(col => {
       col.widgetList.forEach(cw => {

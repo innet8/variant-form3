@@ -1,6 +1,6 @@
 <template>
   <el-form-item :label="i18nt('designer.setting.textContent')">
-    <el-input v-model="optionModel.textContent"></el-input>
+    <el-input v-model="optionModel.textContent" type="textarea" :rows="3"></el-input>
   </el-form-item>
 </template>
 

@@ -86,7 +86,6 @@
 
       contentForReadMode() {
         if (!!this.field.options.multiple) {
-          //console.log('test======', this.$refs.fieldEditor.presentTags)
           const curTags = this.$refs.fieldEditor.presentTags
           if (!curTags || (curTags.length <= 0)) {
             return '--'

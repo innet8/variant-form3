@@ -43,9 +43,8 @@ export default {
     setHidden(flag) {
       this.widget.options.hidden = flag
 
-      /* 容器被隐藏后，需要同步清除容器内部字段组件的校验规则 */
-      let clearRulesFn = (fieldWidget) => {
-        let fwName = fieldWidget.options.name
+      const fwHandler = (fw) => {
+        let fwName = fw.options.name
         let fwRef = this.getWidgetRef(fwName)
         if (flag && !!fwRef && !!fwRef.clearFieldRules) {
           fwRef.clearFieldRules()
@@ -56,9 +55,38 @@ export default {
         }
       }
 
-      traverseFieldWidgetsOfContainer(this.widget, clearRulesFn)
-    },
+      let sfArray = []
+      const cwHandler = (cw) => {
+        if ((cw.type === 'sub-form') || (cw.type === 'grid-sub-form')) {
+          sfArray.push(cw)
+        }
+      }
+      traverseWidgetsOfContainer(this.widget, fwHandler, cwHandler)
 
+      sfArray.forEach(sf => {
+        const sfRef = this.getWidgetRef(sf.options.name)
+        if (!!sfRef) {
+          const rowIds = sfRef.getRowIdData()
+          const sfwHandler = (sfw) => {
+            if (!!rowIds && (rowIds.length > 0)) {
+              rowIds.forEach(rid => {
+                const sfwName = sfw.options.name + '@row' + rid
+                const sfwRef = this.getWidgetRef(sfwName)
+                if (flag && !!sfwRef && !!sfwRef.clearFieldRules) {
+                  sfwRef.clearFieldRules()
+                }
+
+                if (!flag && !!sfwRef && !!sfwRef.buildFieldRules) {
+                  sfwRef.buildFieldRules()
+                }
+              })
+            }
+          }
+
+          traverseFieldWidgetsOfContainer(sfRef.widget, sfwHandler)
+        }
+      })
+    },
     /**
      * 禁用或启用容器组件（包含容器内部的所有组件）
      * @param flag
@@ -270,7 +298,7 @@ export default {
     },
 
     resetSubForm() { //重置subForm数据为空
-      if (this.widget.type === 'sub-form') {
+      if ((this.widget.type === 'sub-form') || (this.widget.type === 'grid-sub-form')) {
         let subFormModel = this.formModel[this.widget.options.name]
         if (!!subFormModel) {
           subFormModel.splice(0, subFormModel.length)
