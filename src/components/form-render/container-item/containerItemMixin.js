@@ -312,12 +312,16 @@ export default {
     },
 
     getSubFormValues(needValidation = true) {
-      if (this.widget.type === 'sub-form') {
+      if ((this.widget.type === 'sub-form') || (this.widget.type === 'grid-sub-form')) {
         //TODO: 逐行校验子表单！！
         return this.formModel[this.widget.options.name]
       } else {
         this.$message.error(this.i18nt('render.hint.nonSubFormType'))
       }
+    },
+
+    setSubFormValues(subFormValues) {
+      //在sub-form-item、grid-sub-form-item中实现！！
     },
 
     // validateField(fieldName) { //逐行校验子表单字段

@@ -579,11 +579,14 @@ export default {
     },
 
     getValue() {
-      /* if ((this.field.type === 'picture-upload') || (this.field.type === 'file-upload')) {
-        return this.fileList
-      } else */ {
-        return this.fieldModel
-      }
+      return this.fieldModel
+    },
+
+    /**
+     * 返回选项类字段的当前选中项的label值
+     */
+    getSelectedLabel() {
+      //TODO: 待实现！！
     },
 
     resetField() {

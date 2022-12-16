@@ -659,10 +659,12 @@
 
       getSubFormValues(subFormName, needValidation = true) {
         let foundSFRef = this.subFormRefList[subFormName]
-        // if (!foundSFRef) {
-        //   return this.formDataModel[subFormName]
-        // }
         return foundSFRef.getSubFormValues(needValidation)
+      },
+
+      setSubFormValues(subFormName, subFormValues) {
+        let foundSFRef = this.subFormRefList[subFormName]
+        return foundSFRef.setSubFormValues(subFormValues)
       },
 
       disableForm() {

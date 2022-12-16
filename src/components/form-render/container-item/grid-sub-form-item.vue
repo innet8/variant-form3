@@ -360,6 +360,16 @@
         this.deleteDisabled = flag
       },
 
+      setSubFormValues(subFormValues) {
+        this.globalModel.formModel[this.widget.options.name] = subFormValues
+        this.initRowIdData(false)
+        this.initWidgetSchemaData()
+
+        setTimeout(() => {  //延时触发SubFormRowChange事件, 便于更新计算字段！！
+          this.handleSubFormRowChange(subFormValues)
+        }, 800)
+      },
+
     },
   }
 </script>

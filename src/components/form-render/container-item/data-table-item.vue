@@ -10,6 +10,7 @@
 								:highlight-current-row="singleRowSelectFlag"
 								:row-class-name="getRowClassName"
 								:span-method="getSpanMethod"
+								v-loading="loadingFlag"
 								@current-change="handleCurrentChange"
 								@selection-change="handleSelectionChange"
 								@sort-change="handleSortChange"
@@ -141,6 +142,8 @@
 
 				//是否跳过selectionChange事件
 				skipSelectionChangeEvent: false,
+
+				loadingFlag: false,
 			}
 		},
 		computed: {
@@ -591,10 +594,13 @@
 					overwriteObj(newDsv, gDsv)
 					overwriteObj(newDsv, localDsv)
 					newDsv.widgetName = this.widget.options.name
+					this.loadingFlag = true
 					runDataSourceRequest(curDS, newDsv, this.getFormRef(), false, this.$message).then(res => {
 						this.setTableColumns(res)
+						this.loadingFlag = false
 					}).catch(err => {
 						this.$message.error(err.message)
+						this.loadingFlag = false
 					})
 				}
 			},
@@ -632,7 +638,9 @@
 			 * @param tableData
 			 */
 			setTableData(tableData) {
+				this.loadingFlag = true
 				this.widget.options.tableData = tableData
+				this.loadingFlag = false
 			},
 
 			/**
@@ -652,14 +660,17 @@
 					newDsv.widgetName = this.widget.options.name
 					newDsv.pageSize = this.pageSize
 					newDsv.currentPage = this.currentPage
+					this.loadingFlag = true
 					runDataSourceRequest(curDS, newDsv, this.getFormRef(), false, this.$message).then(res => {
 						if (!!curDSetName && res.hasOwnProperty(curDSetName)) {
 							this.setTableData(res[curDSetName])
 						} else {
 							this.setTableData(res)
 						}
+						this.loadingFlag = false
 					}).catch(err => {
 						this.$message.error(err.message)
+						this.loadingFlag = false
 					})
 				}
 			},
