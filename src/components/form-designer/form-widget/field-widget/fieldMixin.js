@@ -398,7 +398,58 @@ export default {
     //--------------------- 组件内部方法 end ------------------//
 
     //--------------------- 事件处理 begin ------------------//
-
+		/** 树节点点击事件
+		 * @param {Object} data 传递给 data 属性的数组中该节点所对应的对象
+		 * @param {Object} node 节点对应的 Node
+		 * @param {Object} el 节点组件本身
+		 */
+		handleTreeNodeClick(data,node,el) {
+		  if (!!this.designState) { //设计状态不触发点击事件
+		    return
+		  }
+		  if (!!this.field.options.onNodeClick) {
+		    let changeFn = new Function('data','node','el',this.field.options.onNodeClick)
+		    changeFn.call(this,data,Node,el)
+		  } else {
+				this.dispatch('VFormRender', 'node-click', [this]);
+		  }
+		},
+		
+		/** 树节点右键事件
+		 * @param {Object} event 事件句柄
+		 * @param {Object} data 传递给 data 属性的数组中该节点所对应的对象
+		 * @param {Object} node 节点对应的 Node
+		 * @param {Object} el 节点组件本身
+		 */
+		handleTreeNodeContextmenu(event,data,node,el) {
+		  if (!!this.designState) { //设计状态不触发点击事件
+		    return
+		  }
+		  if (!!this.field.options.onNodeContextmenu) {
+		    let changeFn = new Function('event','data','node','el',this.field.options.onNodeContextmenu)
+		    changeFn.call(this,event,data,Node,el)
+		  } else {
+		    this.dispatch('VFormRender', 'node-contextmenu', [this]);
+		  }
+		},
+		/** 树组件当复选框被点击的时候触发
+		 * @param {Object} checkedNodes
+		 * @param {Object} checkedKeys
+		 * @param {Object} halfCheckedNodes
+		 * @param {Object} halfCheckedKeys
+		 */
+		handleTreeNodeCheck(checkedNodes,checkedKeys,halfCheckedNodes,halfCheckedKeys) {
+		  if (!!this.designState) { //设计状态不触发点击事件
+		    return
+		  }
+		  if (!!this.field.options.onNodeCheck) {
+		    let changeFn = new Function('checkedNodes','checkedKeys','halfCheckedNodes','halfCheckedKeys',this.field.options.onNodeCheck)
+		    changeFn.call(this,checkedNodes,checkedKeys,halfCheckedNodes,halfCheckedKeys)
+		  } else {
+		    this.dispatch('VFormRender', 'node-check', [this]);
+		  }
+		},
+		
     emitFieldDataChange(newValue, oldValue) {
       this.emit$('field-value-changed', [newValue, oldValue])
 
