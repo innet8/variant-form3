@@ -56,21 +56,7 @@ const COMMON_PROPERTIES = {
   'fileTypes'         :            'fileTypes-editor',
   'contentHeight'     :            'contentHeight-editor',
   'customClass'       :            'customClass-editor',
-	// tree
-	'filter':            							'show-filter-editor',
-	'draggable':            					'show-draggable-editor',
-	'defultExpandAll':            		'show-defultExpandAll-editor',
-	'expandRetractAllNode':           'tree-expandRetractAllNode-editor',
-	'selectClearAllNode':            	'tree-selectClearAllNode-editor',
-	'expandOnClickNode':            	'show-expandOnClickNode-editor',
-	'nodeEdit':            						'tree-nodeEdit-editor',
-	'showCheckBox':            				'show-checkbox-editor',
-	'accordion':            					'tree-accordion-editor',
-	'lazy':            								'tree-lazy-editor',
-	'defaultEK':            					'tree-defaultEK-editor',
-	'defaultCK':            					'tree-defaultCK-editor',
-	'treeDataEdit':            				'treeData-editor',
-	
+
   //容器
   'showBlankRow'       :            'showBlankRow-editor',
   'showRowNumber'      :            'showRowNumber-editor',
@@ -181,10 +167,7 @@ const EVENT_PROPERTIES = {
   'onDialogBeforeClose'       :            'onDialogBeforeClose-editor',
   'onDrawerOpened'            :            'onDrawerOpened-editor',
   'onDrawerBeforeClose'       :            'onDrawerBeforeClose-editor',
-	//tree
-	'onNodeClick' 				:						  'onNodeCheck-editor',
-	'onNodeCheck' 				:							'onNodeClick-editor',
-	'onNodeContextmenu' 	:							'onNodeContextmenu-editor',
+
 }
 
 /**

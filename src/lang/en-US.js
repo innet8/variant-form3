@@ -60,7 +60,7 @@ export default {
       'rich-editor':    'Rich Editor',
       cascader:         'Cascader',
       slot:             'Slot',
-			tree:             'tree',
+
       custom:           'Custom Component',
     },
 
@@ -452,38 +452,6 @@ export default {
       dsRequestBooleanTypeError: 'Boolean value error',
       dsValidationError: 'Datasource check failure.',
       dsDuplicatedNameError: 'Duplicate datasource name.',
-			
-			// tree
-			accordion: 'Accordion',
-			showCheckBox:'show CheckBox',
-			lazy:'Lazy',
-			defaultEK:'default EK',
-			defaultCK:'default CK',
-			treeDataEdit:'TreeData Edit',
-			defultExpandAll:'Defult ExpandAll',
-			expandRetractAllNode:'ExpandRetractAllNode',
-			selectClearAllNode:'SelectClearAllNode',
-			
-			expandAllNode:'ExpandAllNode',
-			retractAllNode:'RetractAllNode',
-			selectAllNode:'SelectAllNode',
-			selectAllNodeRemark:'SelectAllNodeRemark',
-			clearAllNode:'ClearAllNode',
-			clearAllNodeRemark:'ClearAllNodeRemark',
-			
-			draggable:'Draggable',
-			filter:'Filter',
-			expandOnClickNode:'ExpandOnClickNode',
-			nodeEdit:'NodeEdit',
-			inputNodeName:'InputNodeName',
-			deleteNode:'DeleteNode?',
-			tips:'Tips',
-			onNodeCheckRemark:'onNodeCheck',
-			onNodeClickRemark:'onNodeClick',
-			onNodeContextmenuRemark:'onNodeContextmenu',
-			enterForQuery:'EnterForQuery',
-			add:'Add',
-			delete:'Delete',
     }
 
   }
