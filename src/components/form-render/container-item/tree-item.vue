@@ -151,7 +151,7 @@
     },
     methods: {
 			setDataSource(data){
-				this.field.options.treeData=data;
+				this.widget.options.treeData=data;
 				this.curren=data[0].id;
 			},
 			// 给当前节点添加下级节点
