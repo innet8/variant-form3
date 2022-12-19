@@ -308,8 +308,10 @@ export const containers = [
 	  icon: 'tree',
 		// category: 'tree',
 	  formItemFlag: false,
+		category: 'container',
+		widgetList: [],
 	  options: {
-			name: '',
+			name: 'tree',
 			label: '',
 			filter:true,// 过滤框
 			draggable:false,// 可拖拽
@@ -323,8 +325,8 @@ export const containers = [
 			showCheckBox:true,// 展示复选框
 			expandOnClickNode:true,// 点击节点收缩
 			lazy:false,// 懒加载
-			defaultEK:[2,3],// 默认展开节点
-			defaultCK:[5],// 默认选择节点
+			// defaultEK:[2,3],// 默认展开节点
+			// defaultCK:[5],// 默认选择节点
 			treeDataEdit:true,// 编辑树节点数据
 			nodeEdit:true,// 树节点编辑
 			columnWidth: '200px',
