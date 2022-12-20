@@ -4,12 +4,12 @@
 			<el-main style="align-items: baseline;">
 				<el-input v-if="widget.options.filter" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
 				<el-button-group>
-				  <el-button type="primary" plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
-						{{i18nt('designer.setting.expandRetractAllNode')}}
-					</el-button>
-				  <el-button type="primary" plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
-						{{i18nt('designer.setting.selectClearAllNode')}}
-					</el-button>
+						<el-button type="primary" plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
+							{{i18nt('designer.setting.expandRetractAllNode')}}
+						</el-button>
+						<el-button type="primary" plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
+							{{i18nt('designer.setting.selectClearAllNode')}}
+						</el-button>
 				</el-button-group>
 				<el-tree :data="widget.options.treeData" :props="defaultProps" ref="tree" border
 					:lazy="widget.options.lazy" 
@@ -31,18 +31,8 @@
 						<span class="custom-tree-node">
 							<span>{{ node.label }}</span>
 							<span v-if="widget.options.nodeEdit">
-								<el-button
-									type="text"
-									size="mini"
-									@click="() => append(data)">
-									{{i18nt('designer.setting.add')}}
-								</el-button>
-								<el-button
-									type="text"
-									size="mini"
-									@click="() => remove(node, data)">
-									{{i18nt('designer.setting.delete')}}
-								</el-button>
+								<a @click="append(data)"> {{i18nt('designer.setting.add')}} </a>
+								<a style="margin-left: 8px" @click="remove(node, data)"> {{i18nt('designer.setting.delete')}} </a>
 							</span>
 						</span>
 					</template>

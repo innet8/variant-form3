@@ -330,7 +330,7 @@ export const containers = [
 			treeDataEdit:true,// 编辑树节点数据
 			nodeEdit:true,// 树节点编辑
 			columnWidth: '200px',
-			size: 'mini',
+			size: 'small',
 			disabled: false,
 			hidden: false,
 			type: 'primary',

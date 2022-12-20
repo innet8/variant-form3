@@ -7,13 +7,14 @@
 				<el-main style="align-items: baseline;">
 					<el-input v-if="widget.options.filter" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
 					<el-button-group>
-						<el-button type="primary" plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
-							{{i18nt('designer.setting.expandRetractAllNode')}}
-						</el-button>
-						<el-button type="primary" plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
-							{{i18nt('designer.setting.selectClearAllNode')}}
-						</el-button>
+							<el-button type="primary" plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
+								{{i18nt('designer.setting.expandRetractAllNode')}}
+							</el-button>
+							<el-button type="primary" plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
+								{{i18nt('designer.setting.selectClearAllNode')}}
+							</el-button>
 					</el-button-group>
+						
 					<el-tree :data="widget.options.treeData" :props="defaultProps" ref="tree" border
 						:lazy="widget.options.lazy" 
 						node-key="id"
@@ -26,26 +27,13 @@
 						:expand-on-click-node="widget.options.expandOnClickNode"
 						:default-expand-all="widget.options.defultExpandAll"
 						:draggable="widget.options.draggable"
-						@node-click="handleTreeNodeClick"
-						@node-contextmenu="handleTreeNodeContextmenu"
-						@check="handleTreeNodeCheck"
 						:filter-node-method="filterNode">
 						<template #default="{ node, data }">
 							<span class="custom-tree-node">
 								<span>{{ node.label }}</span>
 								<span v-if="widget.options.nodeEdit">
-									<el-button
-										type="text"
-										size="mini"
-										@click="() => append(data)">
-										{{i18nt('designer.setting.add')}}
-									</el-button>
-									<el-button
-										type="text"
-										size="mini"
-										@click="() => remove(node, data)">
-										{{i18nt('designer.setting.delete')}}
-									</el-button>
+									<a > {{i18nt('designer.setting.add')}} </a>
+									<a style="margin-left: 8px"> {{i18nt('designer.setting.delete')}} </a>
 								</span>
 							</span>
 						</template>

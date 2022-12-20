@@ -8,7 +8,7 @@
   import i18n from "@/utils/i18n";
 
   export default {
-    name: "show-checkbox-editor",
+    name: "show-filter-editor",
     mixins: [i18n],
     props: {
       designer: Object,
