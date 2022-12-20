@@ -398,7 +398,7 @@ export default {
     //--------------------- 组件内部方法 end ------------------//
 
     //--------------------- 事件处理 begin ------------------//
-
+		
     emitFieldDataChange(newValue, oldValue) {
       this.emit$('field-value-changed', [newValue, oldValue])
 
