@@ -455,11 +455,8 @@ export default {
       dsDuplicatedNameError: '数据源名称重复，请修改！',
 
 			// 树
-			accordion: '手风琴模式',
       showTreeCheckBox:'显示复选框',
 			lazy:'懒加载',
-			defaultEK:'默认展开节点',
-			defaultCK:'默认选中节点',
 			treeDataEdit:'树数据编辑',
 			defaultExpandAllNode:'默认展开所有节点',
 			expandRetractAllNode:'展开/收缩',
@@ -473,7 +470,6 @@ export default {
 			draggable:'允许拖拽节点',
 			filter:'显示过滤框',
 			expandOnClickNode:'点击节点可收缩',
-			nodeEdit:'允许编辑节点',
 			inputNodeName:'请输入节点名',
 			deleteNode:'确定删除节点?',
 			tips:'提示',

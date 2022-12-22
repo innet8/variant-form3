@@ -17,7 +17,6 @@
 					highlight-current
 					:current-node-key="currentKey"
 					:show-checkbox="widget.options.showCheckBox"
-					:accordion="widget.options.accordion"
 					:default-expanded-keys="widget.options.defaultEK"
 					:default-checked-keys="widget.options.defaultCK"
 					:expand-on-click-node="widget.options.expandOnClickNode"
@@ -30,10 +29,6 @@
 					<template #default="{ node, data }">
 						<span class="custom-tree-node">
 							<span>{{ node.label }}</span>
-							<span v-if="widget.options.nodeEdit">
-								<a @click="append(data)"> {{i18nt('designer.setting.add')}} </a>
-								<a style="margin-left: 8px" @click="remove(node, data)"> {{i18nt('designer.setting.delete')}} </a>
-							</span>
 						</span>
 					</template>
 				</el-tree>

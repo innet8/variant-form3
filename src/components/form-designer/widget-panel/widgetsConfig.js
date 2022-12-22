@@ -316,12 +316,10 @@ export const containers = [
 			defaultExpandAllNode:true,// 默认展开所有节点
 			selectClearAllNode:true,// 显示展开/收缩所有节点功能
 			expandRetractAllNode:true,// 显示展开/收缩所有节点功能
-			accordion:false,// 节点手风琴模式
 			showCheckBox:true,// 展示复选框
 			expandOnClickNode:true,// 点击节点收缩
 			lazy:false,// 懒加载
 			treeDataEdit:true,// 编辑树节点数据
-			nodeEdit:true,// 树节点编辑
 			columnWidth: '200px',
 			size: 'small',
 			disabled: false,

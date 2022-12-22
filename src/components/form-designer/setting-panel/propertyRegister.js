@@ -64,11 +64,7 @@ const COMMON_PROPERTIES = {
 	'selectClearAllNode':            	'tree-selectClearAllNode-editor',
 	'expandOnClickNode':            	'show-expandOnClickNode-editor',
   'draggable':            					'show-draggable-editor',
-	'nodeEdit':            						'tree-nodeEdit-editor',
-	'accordion':            					'tree-accordion-editor',
 	'lazy':            								'tree-lazy-editor',
-	'defaultEK':            					'tree-defaultEK-editor',
-	'defaultCK':            					'tree-defaultCK-editor',
 	'treeDataEdit':            				'treeData-editor',
 
   //容器

@@ -455,11 +455,8 @@ export default {
       dsDuplicatedNameError: 'Duplicate datasource name.',
 
       // tree
-      accordion: 'Accordion',
       showTreeCheckBox:'Show CheckBox',
       lazy:'Lazy',
-      defaultEK:'default EK',
-      defaultCK:'default CK',
       treeDataEdit:'Tree Data Edit',
       defaultExpandAllNode:'Default Expand All',
       expandRetractAllNode:'Expand/Retract All',
@@ -473,7 +470,6 @@ export default {
       draggable:'Node Draggable',
       filter:'Filter',
       expandOnClickNode:'Expand On Click',
-      nodeEdit:'Node Editable',
       inputNodeName:'Input Name Of Node',
       deleteNode:'Delete this node?',
       tips:'Tips',
