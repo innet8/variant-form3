@@ -57,20 +57,20 @@ const COMMON_PROPERTIES = {
   'contentHeight'     :            'contentHeight-editor',
   'customClass'       :            'customClass-editor',
 	// tree
+  'showCheckBox':            				'show-checkbox-editor',
 	'filter':            							'show-filter-editor',
-	'draggable':            					'show-draggable-editor',
-	'defultExpandAll':            		'show-defultExpandAll-editor',
+	'defaultExpandAllNode':            'show-defaultExpandAllNode-editor',
 	'expandRetractAllNode':           'tree-expandRetractAllNode-editor',
 	'selectClearAllNode':            	'tree-selectClearAllNode-editor',
 	'expandOnClickNode':            	'show-expandOnClickNode-editor',
+  'draggable':            					'show-draggable-editor',
 	'nodeEdit':            						'tree-nodeEdit-editor',
-	'showCheckBox':            				'show-checkbox-editor',
 	'accordion':            					'tree-accordion-editor',
 	'lazy':            								'tree-lazy-editor',
 	'defaultEK':            					'tree-defaultEK-editor',
 	'defaultCK':            					'tree-defaultCK-editor',
 	'treeDataEdit':            				'treeData-editor',
-	
+
   //容器
   'showBlankRow'       :            'showBlankRow-editor',
   'showRowNumber'      :            'showRowNumber-editor',

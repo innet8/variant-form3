@@ -7,25 +7,25 @@
 				<el-main style="align-items: baseline;">
 					<el-input v-if="widget.options.filter" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
 					<el-button-group>
-							<el-button type="primary" plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
+							<el-button type="primary" round plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
 								{{i18nt('designer.setting.expandRetractAllNode')}}
 							</el-button>
-							<el-button type="primary" plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
+							<el-button type="primary" round plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
 								{{i18nt('designer.setting.selectClearAllNode')}}
 							</el-button>
 					</el-button-group>
-						
+
 					<el-tree :data="widget.options.treeData" :props="defaultProps" ref="tree" border
-						:lazy="widget.options.lazy" 
+						:lazy="widget.options.lazy"
 						node-key="id"
 						highlight-current
-						:current-node-key="curren"
-						:show-checkbox="widget.options.showCheckBox" 
+						:current-node-key="currentKey"
+						:show-checkbox="widget.options.showCheckBox"
 						:accordion="widget.options.accordion"
 						:default-expanded-keys="widget.options.defaultEK"
 						:default-checked-keys="widget.options.defaultCK"
 						:expand-on-click-node="widget.options.expandOnClickNode"
-						:default-expand-all="widget.options.defultExpandAll"
+						:default-expand-all="widget.options.defaultExpandAllNode"
 						:draggable="widget.options.draggable"
 						:filter-node-method="filterNode">
 						<template #default="{ node, data }">
@@ -40,7 +40,7 @@
 					</el-tree>
 				</el-main>
 			</el-container>
-		</div> 
+		</div>
 	</container-wrapper>
 </template>
 
@@ -50,7 +50,7 @@
   import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper"
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
   import refMixinDesign from "@/components/form-designer/refMixinDesign"
-	
+
 	let id = 1000;
   export default {
     name: "TreeWidget",
@@ -78,9 +78,9 @@
 		},
 		data() {
 			return {
-				isexpand:true,
+				isExpand:true,
 				isSelected:false,
-				curren:'',
+				currentKey:'',
 				filterText: '',
 				defaultProps: {
 					children: 'children',
@@ -99,11 +99,11 @@
     methods: {
 			setDataSource(data){
 				this.widget.options.treeData=data;
-				this.curren=data[0].id;
+				this.currentKey=data[0].id;
 			},
 			// 给当前节点添加下级节点
 			append(data) {
-				this.$prompt(this.i18nt('designer.setting.inputNodeName'), 
+				this.$prompt(this.i18nt('designer.setting.inputNodeName'),
 				this.i18nt('designer.setting.tips'), {
 					confirmButtonText: this.i18nt('designer.hint.confirm'),
 					cancelButtonText: this.i18nt('designer.hint.cancel'),
@@ -114,12 +114,12 @@
 					}
 					data.children.push(newChild);
 				}).catch(() => {
-					return;     
+					return;
 				});
 			},
 			// 删除节点
 			remove(node, data) {
-				this.$confirm(this.i18nt('designer.setting.deleteNode'), 
+				this.$confirm(this.i18nt('designer.setting.deleteNode'),
 					this.i18nt('designer.setting.tips'), {
 					confirmButtonText: this.i18nt('designer.hint.confirm'),
 					cancelButtonText: this.i18nt('designer.hint.cancel'),
@@ -134,26 +134,26 @@
 						message: '删除成功!'
 					});
 				}).catch(() => {
-					         
+
 				});
 			},
 			expandAllNode(){
-				this.isexpand = !this.isexpand;
+				this.isExpand = !this.isExpand;
 				this.changeTreeNodeExpaned(this.$refs.tree.store.root);
 			},
 			//改变节点的展开/收缩状态
 			changeTreeNodeExpaned(node) {
-				node.expanded = this.isexpand;
+				node.expanded = this.isExpand;
 				for(let i = 0; i < node.childNodes.length; i++ ) {
 				 //改变节点的自身expanded状态
-					node.childNodes[i].expanded = this.isexpand;
+					node.childNodes[i].expanded = this.isExpand;
 				 //看看他孩子的长度，有的话就调用自己往下找
 					if(node.childNodes[i].childNodes.length > 0) {
 						this.changeTreeNodeExpaned(node.childNodes[i]);
 					}
 				}
 			},
-			selectAllNode(){ 
+			selectAllNode(){
 				this.isSelected = !this.isSelected;
 				this.changeTreeNodeSelected(this.$refs.tree.store.root);
 			},
@@ -186,7 +186,7 @@
 	.tree-container {
 	  //padding: 5px;
 	  margin: 2px;
-	
+
 	  .form-widget-list {
 	    min-height: 28px;
 	  }

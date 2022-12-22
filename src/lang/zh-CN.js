@@ -33,6 +33,7 @@ export default {
       'table-cell':     '单元格',
       'tab-pane':       '选项卡页',
       'data-table':     '数据表格',
+      tree:             '树形',
       'vf-dialog':      '弹出窗口',
       'vf-drawer':      '侧滑抽屉',
 
@@ -60,7 +61,7 @@ export default {
       'rich-editor':    '富文本',
       cascader:         '级联选择',
       slot:             '插槽',
-			tree:             '树组件',
+
       custom:           'Custom Component',
     },
 
@@ -452,29 +453,27 @@ export default {
       dsRequestBooleanTypeError: '布尔类型值错误',
       dsValidationError: '数据源设置存在错误，请修改',
       dsDuplicatedNameError: '数据源名称重复，请修改！',
-			
+
 			// 树
 			accordion: '手风琴模式',
-			showCheckBox:'显示复选框',
+      showTreeCheckBox:'显示复选框',
 			lazy:'懒加载',
 			defaultEK:'默认展开节点',
 			defaultCK:'默认选中节点',
 			treeDataEdit:'树数据编辑',
-			defultExpandAll:'默认展开所有节点',
-			expandRetractAllNode:'全部展开/收缩',
-			selectClearAllNode:'全部选中/取消选中',
-			
+			defaultExpandAllNode:'默认展开所有节点',
+			expandRetractAllNode:'展开/收缩',
+			selectClearAllNode:'选中/取消选中',
+
 			expandAllNode:'展开所有',
 			retractAllNode:'收缩所有',
 			selectAllNode:'选择所有',
-			selectAllNodeRemark:'展示选择所有节点的按钮',
 			clearAllNode:'清除所有',
-			clearAllNodeRemark:'取消选择所有节点的按钮',
-			
-			draggable:'是否节点拖拽',
-			filter:'是否显示过滤',
-			expandOnClickNode:'点击节点收缩',
-			nodeEdit:'是否节点编辑',
+
+			draggable:'允许拖拽节点',
+			filter:'显示过滤框',
+			expandOnClickNode:'点击节点可收缩',
+			nodeEdit:'允许编辑节点',
 			inputNodeName:'请输入节点名',
 			deleteNode:'确定删除节点?',
 			tips:'提示',

@@ -352,7 +352,9 @@
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
-          background: #f1f2f3;
+          background: #fafafa;
+          border: 1px #c1c2c3 solid;
+          border-radius: 5px;
         }
 
         .container-widget-item:hover, .field-widget-item:hover {

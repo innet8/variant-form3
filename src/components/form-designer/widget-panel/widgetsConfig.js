@@ -306,8 +306,6 @@ export const containers = [
 	{
 	  type: 'tree',
 	  icon: 'tree',
-		// category: 'tree',
-	  formItemFlag: false,
 		category: 'container',
 		widgetList: [],
 	  options: {
@@ -315,29 +313,19 @@ export const containers = [
 			label: '',
 			filter:true,// 过滤框
 			draggable:false,// 可拖拽
-			defultExpandAll:true,// 默认展开所有节点
-			// expandAllNode:true,// 显示展开所有节点功能
-			// retractAllNode:true,// 显示收起所有节点功能
+			defaultExpandAllNode:true,// 默认展开所有节点
 			selectClearAllNode:true,// 显示展开/收缩所有节点功能
 			expandRetractAllNode:true,// 显示展开/收缩所有节点功能
-			// clearAllNode:true,// 显示收起所有节点功能
 			accordion:false,// 节点手风琴模式
 			showCheckBox:true,// 展示复选框
 			expandOnClickNode:true,// 点击节点收缩
 			lazy:false,// 懒加载
-			// defaultEK:[2,3],// 默认展开节点
-			// defaultCK:[5],// 默认选择节点
 			treeDataEdit:true,// 编辑树节点数据
 			nodeEdit:true,// 树节点编辑
 			columnWidth: '200px',
 			size: 'small',
 			disabled: false,
 			hidden: false,
-			type: 'primary',
-			plain: false,
-			round: false,
-			circle: false,
-			icon: null,
 			//-------------------
 			customClass: '',  //自定义css类名
 			//-------------------
@@ -383,7 +371,7 @@ export const containers = [
 			]
 	  }
 	},
-	
+
   {
     type: 'vf-dialog',
     category: 'container',
