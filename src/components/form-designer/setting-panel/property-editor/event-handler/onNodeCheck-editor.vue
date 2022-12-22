@@ -19,7 +19,7 @@
     },
     data() {
       return {
-        eventParams: ['checkedNodes','checkedKeys','halfCheckedNodes','halfCheckedKeys'],
+        eventParams: ['checkedNode','checkNodePlus'],
       }
     }
   }

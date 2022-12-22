@@ -245,18 +245,16 @@
 				}
 			},
 			/** 树组件当复选框被点击的时候触发
-			 * @param {Object} checkedNodes
-			 * @param {Object} checkedKeys
-			 * @param {Object} halfCheckedNodes
-			 * @param {Object} halfCheckedKeys
+			 * @param {Object} checkNode
+			 * @param {Object} checkNodePlus
 			 */
-			handleTreeNodeCheck(checkedNodes,checkedKeys,halfCheckedNodes,halfCheckedKeys) {
+			handleTreeNodeCheck(checkNode,checkNodePlus) {
 				if (!!this.designState) { //设计状态不触发点击事件
 					return
 				}
 				if (!!this.widget.options.onNodeCheck) {
-					let changeFn = new Function('checkedNodes','checkedKeys','halfCheckedNodes','halfCheckedKeys',this.widget.options.onNodeCheck)
-					changeFn.call(this,checkedNodes,checkedKeys,halfCheckedNodes,halfCheckedKeys)
+					let changeFn = new Function('checkNode','checkNodePlus',this.widget.options.onNodeCheck)
+					changeFn.call(this,checkNode,checkNodePlus)
 				} else {
 					this.dispatch('VFormRender', 'node-check', [this]);
 				}
