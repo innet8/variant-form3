@@ -7,7 +7,7 @@
 						<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.expandRetractAllNode" @click="expandAllNodes()">
 							{{i18nt('designer.setting.expandRetractAllNode')}}
 						</el-button>
-						<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNodes()">
+						<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="checkAllNodes()">
 							{{i18nt('designer.setting.selectClearAllNode')}}
 						</el-button>
 				</el-button-group>
@@ -23,6 +23,7 @@
 					@node-click="handleTreeNodeClick"
 					@node-contextmenu="handleTreeNodeContextmenu"
 					@check="handleTreeNodeCheck"
+				  @check-change="handleCheckChange"
 					:filter-node-method="filterNode">
 					<template #default="{ node, data }">
 						<span class="custom-tree-node">
@@ -63,7 +64,7 @@
 		data() {
 			return {
 				isExpanded:true,
-				isSelected:false,
+				isChecked:false,
 				currentKey:'',
 				filterText: '',
 				data: [{
@@ -189,8 +190,8 @@
 			 */
 			handleTreeNodeClick(data,node,el) {
 				if (!!this.widget.options.onNodeClick) {
-					let changeFn = new Function('data','node','el',this.widget.options.onNodeClick)
-					changeFn.call(this, data, node, el)
+					let customFn = new Function('data','node','el',this.widget.options.onNodeClick)
+					customFn.call(this, data, node, el)
 				}
 			},
 
@@ -202,8 +203,8 @@
 			 */
 			handleTreeNodeContextmenu(event, data, node, el) {
 				if (!!this.widget.options.onNodeContextmenu) {
-					let changeFn = new Function('event', 'data', 'node', 'el', this.widget.options.onNodeContextmenu)
-					changeFn.call(this, event, data, node, el)
+					let customFn = new Function('event', 'data', 'node', 'el', this.widget.options.onNodeContextmenu)
+					customFn.call(this, event, data, node, el)
 				}
 			},
 
@@ -213,26 +214,16 @@
 			 */
 			handleTreeNodeCheck(data, treeState) {
 				if (!!this.widget.options.onNodeCheck) {
-					let changeFn = new Function('data', 'treeState', this.widget.options.onNodeCheck)
-					changeFn.call(this, data, treeState)
+					let customFn = new Function('data', 'treeState', this.widget.options.onNodeCheck)
+					customFn.call(this, data, treeState)
 				}
 			},
 
-			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
-			/* 提示：用户可自行扩充这些方法！！！ */
-
-			setTreeData(data) {
-				this.widget.options.treeData = data;
-				this.currentKey = data[0].id;
-			},
-
-			getTreeData() {
-				return this.widget.options.treeData;
-			},
-
-			expandAllNodes(flag) {
-				this.isExpanded = flag || !this.isExpanded;
-				this.setNodeExpanded(this.$refs.tree.store.root, this.isExpanded);
+			handleCheckChange(data, checked, indeterminate) {
+				if (!!this.widget.options.onCheckChange) {
+					let customFn = new Function('data', 'checked', 'indeterminate', this.widget.options.onCheckChange)
+					customFn.call(this, data, checked, indeterminate)
+				}
 			},
 
 			//改变节点的展开/收缩状态
@@ -248,23 +239,52 @@
 				}
 			},
 
-			selectAllNodes(flag) { //debugger
-				this.isSelected = flag || !this.isSelected;
-				this.setNodeSelected(this.$refs.tree.store.root, this.isSelected);
-			},
-
 			//改变节点的勾选状态
-			setNodeSelected(node, flag) {
+			setNodeChecked(node, flag) {
 				node.checked = flag;
 				for(let i = 0; i < node.childNodes.length; i++ ) {
 					//改变节点的自身checked状态
 					node.childNodes[i].checked = flag;
 					//看看他孩子的长度，有的话就调用自己往下找
 					if(node.childNodes[i].childNodes.length > 0) {
-						this.setNodeSelected(node.childNodes[i], flag);
+						this.setNodeChecked(node.childNodes[i], flag);
 					}
 				}
 			},
+
+			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
+			/* 提示：用户可自行扩充这些方法！！！ */
+
+			getNativeTree() {
+				return this.$refs.tree
+			},
+
+			setTreeData(data) {
+				this.widget.options.treeData = data;
+				this.currentKey = data[0].id;
+			},
+
+			getTreeData() {
+				return this.widget.options.treeData;
+			},
+
+			expandAllNodes(flag) {
+				this.isExpanded = flag || !this.isExpanded;
+				this.setNodeExpanded(this.$refs.tree.store.root, this.isExpanded);
+			},
+
+			checkAllNodes(flag) { //debugger
+				this.isChecked = flag || !this.isChecked;
+				this.setNodeChecked(this.$refs.tree.store.root, this.isChecked);
+			},
+
+			setCheckedNodes(nodes) {
+				this.$refs.tree.setCheckedNodes(nodes)
+			},
+
+			getCheckedNodes(leafOnly, includeHalfChecked) {
+				this.$refs.tree.getCheckedNodes(leafOnly, includeHalfChecked)
+			}
 
 			//--------------------- 以上为组件支持外部调用的API方法 end ------------------//
     }

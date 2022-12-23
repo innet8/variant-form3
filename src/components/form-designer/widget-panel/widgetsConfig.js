@@ -322,7 +322,7 @@ export const containers = [
 			treeDataEdit:true,// 编辑树节点数据
 			nodeEdit:true,// 节点编辑
 			columnWidth: '200px',
-			size: 'small',
+			size: 'default',
 			disabled: false,
 			hidden: false,
 			//-------------------
@@ -331,6 +331,7 @@ export const containers = [
 			onNodeClick:'',
 			onNodeCheck:'',
 			onNodeContextmenu:'',
+      onCheckChange: '',
 			treeData:[
 				{
 					label: '一级 1',

@@ -461,7 +461,7 @@ export default {
 			defaultExpandAllNode:'默认展开所有节点',
 			expandRetractAllNode:'展开/收缩',
 			selectClearAllNode:'选中/取消选中',
-			nodeEdit:"节点编辑",
+			nodeEdit:"允许添加删除节点",
 			expandAllNode:'展开所有',
 			retractAllNode:'收缩所有',
 			selectAllNode:'选择所有',

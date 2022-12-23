@@ -58,12 +58,12 @@ const COMMON_PROPERTIES = {
   'customClass'       :            'customClass-editor',
 	// tree
   'showCheckBox':            				'show-checkbox-editor',
-	'nodeEdit':            						'tree-nodeEdit-editor',
 	'filter':            							'show-filter-editor',
 	'defaultExpandAllNode':            'show-defaultExpandAllNode-editor',
 	'expandRetractAllNode':           'tree-expandRetractAllNode-editor',
 	'selectClearAllNode':            	'tree-selectClearAllNode-editor',
 	'expandOnClickNode':            	'show-expandOnClickNode-editor',
+  'nodeEdit':            						'tree-nodeEdit-editor',
   'draggable':            					'show-draggable-editor',
 	'lazy':            								'tree-lazy-editor',
 	'treeDataEdit':            				'treeData-editor',
@@ -182,6 +182,7 @@ const EVENT_PROPERTIES = {
 	'onNodeClick' 				:						  'onNodeCheck-editor',
 	'onNodeCheck' 				:							'onNodeClick-editor',
 	'onNodeContextmenu' 	:							'onNodeContextmenu-editor',
+  'onCheckChange' 	    :							'onCheckChange-editor',
 }
 
 /**
