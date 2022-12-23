@@ -5,42 +5,43 @@
 	     :class="{'selected': selected}" @click.stop="selectWidget(widget)">
 			<el-container>
 				<el-main style="align-items: baseline;">
-					<el-input v-if="widget.options.filter" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
+					<el-input v-if="widget.options.filter" :size="widget.options.size" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
 					<el-button-group>
-							<el-button type="primary" plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
+							<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.expandRetractAllNode" @click="expandAllNodes()">
 								{{i18nt('designer.setting.expandRetractAllNode')}}
 							</el-button>
-							<el-button type="primary" plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
+							<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="checkAllNodes()">
 								{{i18nt('designer.setting.selectClearAllNode')}}
 							</el-button>
 					</el-button-group>
-						
+
 					<el-tree :data="widget.options.treeData" :props="defaultProps" ref="tree" border
-						:lazy="widget.options.lazy" 
+						:lazy="widget.options.lazy"
 						node-key="id"
 						highlight-current
-						:current-node-key="curren"
-						:show-checkbox="widget.options.showCheckBox" 
-						:accordion="widget.options.accordion"
-						:default-expanded-keys="widget.options.defaultEK"
-						:default-checked-keys="widget.options.defaultCK"
+						:current-node-key="currentKey"
+						:show-checkbox="widget.options.showCheckBox"
 						:expand-on-click-node="widget.options.expandOnClickNode"
-						:default-expand-all="widget.options.defultExpandAll"
+						:default-expand-all="widget.options.defaultExpandAllNode"
 						:draggable="widget.options.draggable"
 						:filter-node-method="filterNode">
 						<template #default="{ node, data }">
 							<span class="custom-tree-node">
 								<span>{{ node.label }}</span>
 								<span v-if="widget.options.nodeEdit">
-									<a > {{i18nt('designer.setting.add')}} </a>
-									<a style="margin-left: 8px"> {{i18nt('designer.setting.delete')}} </a>
+									<el-button type="primary" link :size="widget.options.size">
+										{{i18nt('designer.setting.add')}}
+									</el-button>
+									<el-button type="primary" link :size="widget.options.size">
+										{{i18nt('designer.setting.delete')}}
+									</el-button>
 								</span>
 							</span>
 						</template>
 					</el-tree>
 				</el-main>
 			</el-container>
-		</div> 
+		</div>
 	</container-wrapper>
 </template>
 
@@ -50,7 +51,7 @@
   import ContainerWrapper from "@/components/form-designer/form-widget/container-widget/container-wrapper"
   import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
   import refMixinDesign from "@/components/form-designer/refMixinDesign"
-	
+
 	let id = 1000;
   export default {
     name: "TreeWidget",
@@ -78,9 +79,9 @@
 		},
 		data() {
 			return {
-				isexpand:true,
-				isSelected:false,
-				curren:'',
+				isExpanded:true,
+				isChecked:false,
+				currentKey:'',
 				filterText: '',
 				defaultProps: {
 					children: 'children',
@@ -97,29 +98,25 @@
 			this.initRefList()
     },
     methods: {
-			setDataSource(data){
-				this.widget.options.treeData=data;
-				this.curren=data[0].id;
-			},
 			// 给当前节点添加下级节点
 			append(data) {
-				this.$prompt(this.i18nt('designer.setting.inputNodeName'), 
+				this.$prompt(this.i18nt('designer.setting.inputNodeName'),
 				this.i18nt('designer.setting.tips'), {
 					confirmButtonText: this.i18nt('designer.hint.confirm'),
 					cancelButtonText: this.i18nt('designer.hint.cancel'),
 				}).then(({ value }) => {
 					const newChild = { id: id++, label: value, children: [] };
 					if (!data.children) {
-						this.$set(data, 'children', []);
+						data.children = []
 					}
 					data.children.push(newChild);
-				}).catch(() => {
-					return;     
+				}).catch((err) => {
+					console.error(err)
 				});
 			},
 			// 删除节点
 			remove(node, data) {
-				this.$confirm(this.i18nt('designer.setting.deleteNode'), 
+				this.$confirm(this.i18nt('designer.setting.deleteNode'),
 					this.i18nt('designer.setting.tips'), {
 					confirmButtonText: this.i18nt('designer.hint.confirm'),
 					cancelButtonText: this.i18nt('designer.hint.cancel'),
@@ -133,46 +130,69 @@
 						type: 'success',
 						message: '删除成功!'
 					});
-				}).catch(() => {
-					         
+				}).catch((err) => {
+					console.error(err)
 				});
 			},
-			expandAllNode(){
-				this.isexpand = !this.isexpand;
-				this.changeTreeNodeExpaned(this.$refs.tree.store.root);
-			},
-			//改变节点的展开/收缩状态
-			changeTreeNodeExpaned(node) {
-				node.expanded = this.isexpand;
-				for(let i = 0; i < node.childNodes.length; i++ ) {
-				 //改变节点的自身expanded状态
-					node.childNodes[i].expanded = this.isexpand;
-				 //看看他孩子的长度，有的话就调用自己往下找
-					if(node.childNodes[i].childNodes.length > 0) {
-						this.changeTreeNodeExpaned(node.childNodes[i]);
-					}
-				}
-			},
-			selectAllNode(){ 
-				this.isSelected = !this.isSelected;
-				this.changeTreeNodeSelected(this.$refs.tree.store.root);
-			},
-			//改变节点的勾选状态
-			changeTreeNodeSelected(node) {
-				node.checked = this.isSelected;
-				for(let i = 0; i < node.childNodes.length; i++ ) {
-				 //改变节点的自身checked状态
-					node.childNodes[i].checked = this.isSelected;
-				 //看看他孩子的长度，有的话就调用自己往下找
-					if(node.childNodes[i].childNodes.length > 0) {
-						this.changeTreeNodeSelected(node.childNodes[i]);
-					}
-				}
-			},
+
 			filterNode(value, data) {
 				if (!value) return true;
 				return data.label.indexOf(value) !== -1;
 			},
+
+			//改变节点的展开/收缩状态
+			setNodeExpanded(node, flag) {
+				node.expanded = flag;
+				for(let i = 0; i < node.childNodes.length; i++ ) {
+					//改变节点的自身expanded状态
+					node.childNodes[i].expanded = flag;
+					//看看他孩子的长度，有的话就调用自己往下找
+					if(node.childNodes[i].childNodes.length > 0) {
+						this.setNodeExpanded(node.childNodes[i], flag);
+					}
+				}
+			},
+
+			//改变节点的勾选状态
+			setNodeChecked(node, flag) {
+				node.checked = flag;
+				for(let i = 0; i < node.childNodes.length; i++ ) {
+					//改变节点的自身checked状态
+					node.childNodes[i].checked = flag;
+					//看看他孩子的长度，有的话就调用自己往下找
+					if(node.childNodes[i].childNodes.length > 0) {
+						this.setNodeChecked(node.childNodes[i], flag);
+					}
+				}
+			},
+
+			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
+			/* 提示：用户可自行扩充这些方法！！！ */
+
+			getNativeTree() {
+				return this.$refs.tree
+			},
+
+			setTreeData(data) {
+				this.widget.options.treeData = data;
+				this.currentKey = data[0].id;
+			},
+
+			getTreeData() {
+				return this.widget.options.treeData;
+			},
+
+			expandAllNodes(flag) {
+				this.isExpanded = flag || !this.isExpanded;
+				this.setNodeExpanded(this.$refs.tree.store.root, this.isExpanded);
+			},
+
+			checkAllNodes(flag) {
+				this.isChecked = flag || !this.isChecked;
+				this.setNodeChecked(this.$refs.tree.store.root, this.isChecked);
+			},
+
+			//--------------------- 以上为组件支持外部调用的API方法 end ------------------//
     }
   }
 </script>
@@ -186,7 +206,7 @@
 	.tree-container {
 	  //padding: 5px;
 	  margin: 2px;
-	
+
 	  .form-widget-list {
 	    min-height: 28px;
 	  }

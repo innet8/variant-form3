@@ -1,5 +1,5 @@
 <template>
-  <el-form-item :label="i18nt('designer.setting.showCheckBox')">
+  <el-form-item :label="i18nt('designer.setting.showTreeCheckBox')">
     <el-switch v-model="optionModel.showCheckBox"></el-switch>
   </el-form-item>
 </template>

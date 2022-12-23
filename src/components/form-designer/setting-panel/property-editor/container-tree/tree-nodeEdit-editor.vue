@@ -1,4 +1,3 @@
-
 <template>
   <el-form-item :label="i18nt('designer.setting.nodeEdit')">
     <el-switch v-model="optionModel.nodeEdit"></el-switch>

@@ -33,6 +33,7 @@ export default {
       'table-cell':     'TableCell',
       'tab-pane':       'TabPane',
       'data-table':     'DataTable',
+      tree:             'Tree',
       'vf-dialog':      'Dialog',
       'vf-drawer':      'Drawer',
 
@@ -60,7 +61,7 @@ export default {
       'rich-editor':    'Rich Editor',
       cascader:         'Cascader',
       slot:             'Slot',
-			tree:             'tree',
+
       custom:           'Custom Component',
     },
 
@@ -452,38 +453,33 @@ export default {
       dsRequestBooleanTypeError: 'Boolean value error',
       dsValidationError: 'Datasource check failure.',
       dsDuplicatedNameError: 'Duplicate datasource name.',
-			
-			// tree
-			accordion: 'Accordion',
-			showCheckBox:'show CheckBox',
-			lazy:'Lazy',
-			defaultEK:'default EK',
-			defaultCK:'default CK',
-			treeDataEdit:'TreeData Edit',
-			defultExpandAll:'Defult ExpandAll',
-			expandRetractAllNode:'ExpandRetractAllNode',
-			selectClearAllNode:'SelectClearAllNode',
-			
-			expandAllNode:'ExpandAllNode',
-			retractAllNode:'RetractAllNode',
-			selectAllNode:'SelectAllNode',
-			selectAllNodeRemark:'SelectAllNodeRemark',
-			clearAllNode:'ClearAllNode',
-			clearAllNodeRemark:'ClearAllNodeRemark',
-			
-			draggable:'Draggable',
-			filter:'Filter',
-			expandOnClickNode:'ExpandOnClickNode',
-			nodeEdit:'NodeEdit',
-			inputNodeName:'InputNodeName',
-			deleteNode:'DeleteNode?',
-			tips:'Tips',
-			onNodeCheckRemark:'onNodeCheck',
-			onNodeClickRemark:'onNodeClick',
-			onNodeContextmenuRemark:'onNodeContextmenu',
-			enterForQuery:'EnterForQuery',
-			add:'Add',
-			delete:'Delete',
+
+      // tree
+      showTreeCheckBox:'Show CheckBox',
+      lazy:'Lazy',
+      treeDataEdit:'Tree Data Edit',
+      defaultExpandAllNode:'Default Expand All',
+      expandRetractAllNode:'Expand/Retract All',
+      selectClearAllNode:'Check/Uncheck All',
+			nodeEdit:"Show Node Action",
+      expandAllNode:'Expand All',
+      retractAllNode:'Retract All',
+      selectAllNode:'Check All',
+      clearAllNode:'Uncheck All',
+
+      draggable:'Node Draggable',
+      filter:'Filter',
+      expandOnClickNode:'Expand On Click',
+      inputNodeName:'Input Name Of Node',
+      deleteNode:'Delete this node?',
+			nodeDeleted:'Node deleted',
+      tips:'Tips',
+      onNodeCheckRemark:'On Node Check',
+      onNodeClickRemark:'On Node Click',
+      onNodeContextmenuRemark:'ON Node Contextmenu',
+      enterForQuery:'Enter For Query',
+      add:'Add',
+      delete:'Delete',
     }
 
   }
