@@ -20,6 +20,7 @@
 					:expand-on-click-node="widget.options.expandOnClickNode"
 					:default-expand-all="widget.options.defaultExpandAllNode"
 					:draggable="widget.options.draggable"
+				  v-loading="loadingFlag"
 					@node-click="handleTreeNodeClick"
 					@node-contextmenu="handleTreeNodeContextmenu"
 					@check="handleTreeNodeCheck"
@@ -50,8 +51,10 @@
 	import FieldComponents from '@/components/form-designer/form-widget/field-widget/index'
 	import refMixin from "@/components/form-render/refMixin"
 	import containerItemMixin from "@/components/form-render/container-item/containerItemMixin"
+	import {getDSByName, overwriteObj, runDataSourceRequest} from "@/utils/util";
 
 	let id = 1000;
+
   export default {
     name: "TreeItem",
 		componentName: 'ContainerItem',  //必须固定为ContainerItem，用于接收父级组件的broadcast事件
@@ -67,46 +70,17 @@
 				isChecked:false,
 				currentKey:'',
 				filterText: '',
-				data: [{
-					label: '一级 1',
-					children: [{
-						label: '二级 1-1',
-						children: [{
-							label: '三级 1-1-1'
-						}]
-					}]
-				}, {
-					label: '一级 2',
-					children: [{
-						label: '二级 2-1',
-						children: [{
-							label: '三级 2-1-1'
-						}]
-					}, {
-						label: '二级 2-2',
-						children: [{
-							label: '三级 2-2-1'
-						}]
-					}]
-				}, {
-					label: '一级 3',
-					children: [{
-						label: '二级 3-1',
-						children: [{
-							label: '三级 3-1-1'
-						}]
-					}, {
-						label: '二级 3-2',
-						children: [{
-							label: '三级 3-2-1'
-						}]
-					}]
-				}],
+				loadingFlag: false,
 				defaultProps: {
 					children: 'children',
 					label: 'label'
 				}
 			};
+		},
+		computed: {
+			formConfig() {
+				return this.getFormConfig()
+			},
 		},
 		watch:{
       filterText(val) {
@@ -133,9 +107,16 @@
     },
     created() {
 			this.initRefList()
+			this.handleOnCreated()
     },
 		mounted() {
+			if (!!this.widget.options.dsEnabled) {
+				this.loadDataFromDS({})
+			}
 
+			this.$nextTick(() => {
+				this.handleOnMounted()
+			})
 		},
     beforeDestroy() {
       this.unregisterFromRefList()
@@ -181,6 +162,20 @@
 			filterNode(value, data) {
 				if (!value) return true;
 				return data.label.indexOf(value) !== -1;
+			},
+
+			handleOnCreated() {
+				if (!!this.widget.options.onCreated) {
+					let customFunc = new Function(this.widget.options.onCreated)
+					customFunc.call(this)
+				}
+			},
+
+			handleOnMounted() {
+				if (!!this.widget.options.onMounted) {
+					let customFunc = new Function(this.widget.options.onMounted)
+					customFunc.call(this)
+				}
 			},
 
 			/** 树节点点击事件
@@ -284,7 +279,37 @@
 
 			getCheckedNodes(leafOnly, includeHalfChecked) {
 				this.$refs.tree.getCheckedNodes(leafOnly, includeHalfChecked)
-			}
+			},
+
+			/**
+			 * 从数据源加载数据
+			 * @param localDsv 本地数据源变量DSV
+			 * @param dsName 数据源名称，不传此值，则使用dsName属性绑定的数据源
+			 */
+			loadDataFromDS(localDsv = {}, dsName = '') {
+				let curDSName = dsName || this.widget.options.dsName
+				let curDSetName = this.widget.options.dataSetName
+				let curDS = getDSByName(this.formConfig, curDSName)
+				if (!!curDS) {
+					let gDsv = this.getGlobalDsv() || {}
+					let newDsv = new Object({})
+					overwriteObj(newDsv, gDsv)
+					overwriteObj(newDsv, localDsv)
+					newDsv.widgetName = this.widget.options.name
+					this.loadingFlag = true
+					runDataSourceRequest(curDS, newDsv, this.getFormRef(), false, this.$message).then(res => {
+						if (!!curDSetName && res.hasOwnProperty(curDSetName)) {
+							this.setTreeData(res[curDSetName])
+						} else {
+							this.setTreeData(res)
+						}
+						this.loadingFlag = false
+					}).catch(err => {
+						this.$message.error(err.message)
+						this.loadingFlag = false
+					})
+				}
+			},
 
 			//--------------------- 以上为组件支持外部调用的API方法 end ------------------//
     }

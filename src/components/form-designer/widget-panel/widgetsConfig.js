@@ -321,13 +321,17 @@ export const containers = [
 			lazy:false,// 懒加载
 			treeDataEdit:true,// 编辑树节点数据
 			nodeEdit:true,// 节点编辑
-			columnWidth: '200px',
 			size: 'default',
 			disabled: false,
 			hidden: false,
+      dsEnabled: false, //是否使用数据源数据
+      dsName: '',  //数据源名称
+      dataSetName: '',  //数据集名称
 			//-------------------
 			customClass: '',  //自定义css类名
 			//-------------------
+      onCreated: '',
+      onMounted: '',
 			onNodeClick:'',
 			onNodeCheck:'',
 			onNodeContextmenu:'',
