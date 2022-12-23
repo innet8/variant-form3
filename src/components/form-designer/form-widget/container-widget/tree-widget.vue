@@ -7,10 +7,10 @@
 				<el-main style="align-items: baseline;">
 					<el-input v-if="widget.options.filter" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
 					<el-button-group>
-							<el-button type="primary" round plain v-if="widget.options.expandRetractAllNode" @click="expandAllNode()">
+							<el-button type="primary" round plain v-if="widget.options.expandRetractAllNode" @click="expandAllNodes()">
 								{{i18nt('designer.setting.expandRetractAllNode')}}
 							</el-button>
-							<el-button type="primary" round plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNode()">
+							<el-button type="primary" round plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNodes()">
 								{{i18nt('designer.setting.selectClearAllNode')}}
 							</el-button>
 					</el-button-group>
@@ -21,8 +21,6 @@
 						highlight-current
 						:current-node-key="currentKey"
 						:show-checkbox="widget.options.showCheckBox"
-						:default-expanded-keys="widget.options.defaultEK"
-						:default-checked-keys="widget.options.defaultCK"
 						:expand-on-click-node="widget.options.expandOnClickNode"
 						:default-expand-all="widget.options.defaultExpandAllNode"
 						:draggable="widget.options.draggable"
@@ -73,7 +71,7 @@
 		},
 		data() {
 			return {
-				isExpand:true,
+				isExpanded:true,
 				isSelected:false,
 				currentKey:'',
 				filterText: '',
@@ -92,10 +90,6 @@
 			this.initRefList()
     },
     methods: {
-			setDataSource(data){
-				this.widget.options.treeData=data;
-				this.currentKey=data[0].id;
-			},
 			// 给当前节点添加下级节点
 			append(data) {
 				this.$prompt(this.i18nt('designer.setting.inputNodeName'),
@@ -105,11 +99,11 @@
 				}).then(({ value }) => {
 					const newChild = { id: id++, label: value, children: [] };
 					if (!data.children) {
-						this.$set(data, 'children', []);
+						data.children = []
 					}
 					data.children.push(newChild);
-				}).catch(() => {
-					return;
+				}).catch((err) => {
+					console.error(err)
 				});
 			},
 			// 删除节点
@@ -128,46 +122,64 @@
 						type: 'success',
 						message: '删除成功!'
 					});
-				}).catch(() => {
-
+				}).catch((err) => {
+					console.error(err)
 				});
 			},
-			expandAllNode(){
-				this.isExpand = !this.isExpand;
-				this.changeTreeNodeExpaned(this.$refs.tree.store.root);
-			},
-			//改变节点的展开/收缩状态
-			changeTreeNodeExpaned(node) {
-				node.expanded = this.isExpand;
-				for(let i = 0; i < node.childNodes.length; i++ ) {
-				 //改变节点的自身expanded状态
-					node.childNodes[i].expanded = this.isExpand;
-				 //看看他孩子的长度，有的话就调用自己往下找
-					if(node.childNodes[i].childNodes.length > 0) {
-						this.changeTreeNodeExpaned(node.childNodes[i]);
-					}
-				}
-			},
-			selectAllNode(){
-				this.isSelected = !this.isSelected;
-				this.changeTreeNodeSelected(this.$refs.tree.store.root);
-			},
-			//改变节点的勾选状态
-			changeTreeNodeSelected(node) {
-				node.checked = this.isSelected;
-				for(let i = 0; i < node.childNodes.length; i++ ) {
-				 //改变节点的自身checked状态
-					node.childNodes[i].checked = this.isSelected;
-				 //看看他孩子的长度，有的话就调用自己往下找
-					if(node.childNodes[i].childNodes.length > 0) {
-						this.changeTreeNodeSelected(node.childNodes[i]);
-					}
-				}
-			},
+
 			filterNode(value, data) {
 				if (!value) return true;
 				return data.label.indexOf(value) !== -1;
 			},
+
+			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//
+			/* 提示：用户可自行扩充这些方法！！！ */
+			setTreeData(data) {
+				this.widget.options.treeData = data;
+				this.currentKey = data[0].id;
+			},
+
+			getTreeData() {
+				return this.widget.options.treeData;
+			},
+
+			expandAllNodes(flag) {
+				this.isExpanded = flag || !this.isExpanded;
+				this.setNodeExpanded(this.$refs.tree.store.root, this.isExpanded);
+			},
+
+			//改变节点的展开/收缩状态
+			setNodeExpanded(node, flag) {
+				node.expanded = flag;
+				for(let i = 0; i < node.childNodes.length; i++ ) {
+					//改变节点的自身expanded状态
+					node.childNodes[i].expanded = flag;
+					//看看他孩子的长度，有的话就调用自己往下找
+					if(node.childNodes[i].childNodes.length > 0) {
+						this.setNodeExpanded(node.childNodes[i], flag);
+					}
+				}
+			},
+
+			selectAllNodes(flag) {
+				this.isSelected = flag || !this.isSelected;
+				this.setNodeSelected(this.$refs.tree.store.root, this.isSelected);
+			},
+
+			//改变节点的勾选状态
+			setNodeSelected(node, flag) {
+				node.checked = flag;
+				for(let i = 0; i < node.childNodes.length; i++ ) {
+					//改变节点的自身checked状态
+					node.childNodes[i].checked = flag;
+					//看看他孩子的长度，有的话就调用自己往下找
+					if(node.childNodes[i].childNodes.length > 0) {
+						this.setNodeSelected(node.childNodes[i], flag);
+					}
+				}
+			},
+
+			//--------------------- 以上为组件支持外部调用的API方法 end ------------------//
     }
   }
 </script>

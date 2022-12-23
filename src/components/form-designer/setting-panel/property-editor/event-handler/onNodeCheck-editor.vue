@@ -19,7 +19,7 @@
     },
     data() {
       return {
-        eventParams: ['checkedNode','checkNodePlus'],
+        eventParams: ['data', 'treeState'],
       }
     }
   }
