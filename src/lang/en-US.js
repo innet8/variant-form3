@@ -472,6 +472,7 @@ export default {
       expandOnClickNode:'Expand On Click',
       inputNodeName:'Input Name Of Node',
       deleteNode:'Delete this node?',
+			nodeDeleted:'Node deleted',
       tips:'Tips',
       onNodeCheckRemark:'On Node Check',
       onNodeClickRemark:'On Node Click',

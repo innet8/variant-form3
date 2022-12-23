@@ -472,6 +472,7 @@ export default {
 			expandOnClickNode:'点击节点可收缩',
 			inputNodeName:'请输入节点名',
 			deleteNode:'确定删除节点?',
+			nodeDeleted:'节点已删除',
 			tips:'提示',
 			onNodeCheckRemark:'树节点选择事件',
 			onNodeClickRemark:'树节点点击事件',

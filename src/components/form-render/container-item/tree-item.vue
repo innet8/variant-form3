@@ -34,8 +34,6 @@
 								<el-button type="primary" link :size="widget.options.size" @click="remove(node, data)">
 									{{i18nt('designer.setting.delete')}}
 								</el-button>
-								<!-- <a @click="append(data)"> {{i18nt('designer.setting.add')}} </a> -->
-								<!-- <a style="margin-left: 8px" @click="remove(node, data)"> {{i18nt('designer.setting.delete')}} </a> -->
 							</span>
 						</span>
 					</template>
@@ -172,7 +170,7 @@
 					children.splice(index, 1);
 					this.$message({
 						type: 'success',
-						message: '删除成功!'
+						message: this.i18nt('designer.setting.nodeDeleted'),
 					});
 				}).catch((err) => {
 					console.error(err)
