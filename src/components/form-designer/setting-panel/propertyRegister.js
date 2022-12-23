@@ -58,6 +58,7 @@ const COMMON_PROPERTIES = {
   'customClass'       :            'customClass-editor',
 	// tree
   'showCheckBox':            				'show-checkbox-editor',
+	'nodeEdit':            						'tree-nodeEdit-editor',
 	'filter':            							'show-filter-editor',
 	'defaultExpandAllNode':            'show-defaultExpandAllNode-editor',
 	'expandRetractAllNode':           'tree-expandRetractAllNode-editor',

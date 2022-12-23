@@ -5,12 +5,12 @@
 	     :class="{'selected': selected}" @click.stop="selectWidget(widget)">
 			<el-container>
 				<el-main style="align-items: baseline;">
-					<el-input v-if="widget.options.filter" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
+					<el-input v-if="widget.options.filter" :size="widget.options.size" :placeholder="i18nt('designer.setting.enterForQuery')" v-model="filterText"></el-input>
 					<el-button-group>
-							<el-button type="primary" round plain v-if="widget.options.expandRetractAllNode" @click="expandAllNodes()">
+							<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.expandRetractAllNode" @click="expandAllNodes()">
 								{{i18nt('designer.setting.expandRetractAllNode')}}
 							</el-button>
-							<el-button type="primary" round plain v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNodes()">
+							<el-button type="primary" round plain :size="widget.options.size" v-if="widget.options.selectClearAllNode && widget.options.showCheckBox" @click="selectAllNodes()">
 								{{i18nt('designer.setting.selectClearAllNode')}}
 							</el-button>
 					</el-button-group>
@@ -28,6 +28,14 @@
 						<template #default="{ node, data }">
 							<span class="custom-tree-node">
 								<span>{{ node.label }}</span>
+								<span v-if="widget.options.nodeEdit">
+									<el-button type="primary" link :size="widget.options.size">
+										{{i18nt('designer.setting.add')}}
+									</el-button>
+									<el-button type="primary" link :size="widget.options.size">
+										{{i18nt('designer.setting.delete')}}
+									</el-button>
+								</span>
 							</span>
 						</template>
 					</el-tree>

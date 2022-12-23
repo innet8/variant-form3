@@ -320,6 +320,7 @@ export const containers = [
 			expandOnClickNode:true,// 点击节点收缩
 			lazy:false,// 懒加载
 			treeDataEdit:true,// 编辑树节点数据
+			nodeEdit:true,// 节点编辑
 			columnWidth: '200px',
 			size: 'small',
 			disabled: false,

@@ -461,7 +461,7 @@ export default {
       defaultExpandAllNode:'Default Expand All',
       expandRetractAllNode:'Expand/Retract All',
       selectClearAllNode:'Check/Uncheck All',
-
+			nodeEdit:"Node Edit",
       expandAllNode:'Expand All',
       retractAllNode:'Retract All',
       selectAllNode:'Check All',
