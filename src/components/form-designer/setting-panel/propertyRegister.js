@@ -179,8 +179,8 @@ const EVENT_PROPERTIES = {
   'onDrawerOpened'            :            'onDrawerOpened-editor',
   'onDrawerBeforeClose'       :            'onDrawerBeforeClose-editor',
 	//tree
-	'onNodeClick' 				:						  'onNodeCheck-editor',
-	'onNodeCheck' 				:							'onNodeClick-editor',
+	'onNodeClick' 				:						  'onNodeClick-editor',
+	'onNodeCheck' 				:							'onNodeCheck-editor',
 	'onNodeContextmenu' 	:							'onNodeContextmenu-editor',
   'onCheckChange' 	    :							'onCheckChange-editor',
 }

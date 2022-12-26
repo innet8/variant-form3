@@ -859,7 +859,7 @@
        * @param dsName
        * @param localDsv
        */
-      async executeDataSource(dsName, localDsv) {
+      async executeDataSource(dsName, localDsv = {}) {
         let ds = getDSByName(this.formJsonObj.formConfig, dsName)
         let newDsv = new Object({})
         overwriteObj(newDsv, this.globalDsv)
