@@ -100,6 +100,10 @@ export default {
         }
       }
       const cwHandler = (cw) => {
+        if (cw.id === this.widget.id) {  //避免死循环！！！
+          return
+        }
+
         const cwName = cw.options.name
         const cwRef = this.getWidgetRef(cwName)
         if (!!cwRef && !!cwRef.setDisabled) {
