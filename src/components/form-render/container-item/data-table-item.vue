@@ -701,6 +701,14 @@
 				}
 			},
 
+			getPagination() {
+				return {
+					currentPage: this.widget.options.pagination.currentPage,
+					pageSize: this.widget.options.pagination.pageSize,
+					total: this.widget.options.pagination.total
+				}
+			},
+
 			/**
 			 * 获取选中行数据，格式为对象数组
 			 * @returns {[]}
