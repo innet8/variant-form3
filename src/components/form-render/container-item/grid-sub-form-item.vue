@@ -375,6 +375,19 @@
         }, 800)
       },
 
+      /**
+       * 单独为子表单某行的字段组件赋值
+       * @param fieldName
+       * @param fieldValue
+       * @param rowIndex
+       */
+      setSubFormFieldValue(fieldName, fieldValue, rowIndex) {
+        const subFormData = this.globalModel.formModel[this.widget.options.name]
+        subFormData[rowIndex][fieldName] = fieldValue
+
+        this.handleSubFormRowChange(subFormData)
+      },
+
     },
   }
 </script>

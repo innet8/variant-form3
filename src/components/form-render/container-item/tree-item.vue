@@ -278,7 +278,7 @@
 			},
 
 			getCheckedNodes(leafOnly, includeHalfChecked) {
-				this.$refs.tree.getCheckedNodes(leafOnly, includeHalfChecked)
+				return this.$refs.tree.getCheckedNodes(leafOnly, includeHalfChecked)
 			},
 
 			/**
