@@ -40,7 +40,7 @@
   <el-drawer :title="i18nt('designer.setting.dataSourceSetting')" direction="rtl" v-model="showDataSourceDialogFlag"
              :modal="true" :size="820"
              :destroy-on-close="true" :append-to-body="true" :close-on-click-modal="false" :close-on-press-escape="false"
-             custom-class="ds-setting-drawer header-small-mb">
+             class="ds-setting-drawer header-small-mb">
     <template #default>
       <el-form :model="dsModel" :rules="formRules" ref="dsForm"
                label-width="160px" label-position="left" class="ds-form">

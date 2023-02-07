@@ -2,7 +2,7 @@
 
 	<container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
 		:index-of-parent-list="indexOfParentList">
-		<div :key="widget.id" class="collapse-container data-table-container"
+		<div class="collapse-container data-table-container"
 			:class="{'selected': selected}" @click.stop="selectWidget(widget)">
 
 			<el-table ref="dataTable" :data="widget.options.tableData" :class="[customClass]"
@@ -40,7 +40,9 @@
 													 :width="widget.options.buttonsColumnWidth">
 						<template #default="scope">
 							<template v-for="(ob, idx) in widget.options.operationButtons">
-								<el-button v-if="!ob.hidden" :type="ob.type" :size="ob.size" :round="ob.round" :disabled="ob.disabled"
+								<el-button v-if="!ob.hidden"
+													 :type="getOperationButtonType(ob)" :link="isLinkOperationButton(ob)"
+													 :size="ob.size" :round="ob.round" :disabled="ob.disabled"
 													 :class="['data-table-' + ob.name + '-button']">
 									{{ob.label}}</el-button>
 							</template>
@@ -271,6 +273,18 @@
 			handleAllSelect(selection) {
 				this.selectAllFlag = !this.selectAllFlag
 				this.setSelectedFlag(this.widget.options.tableData, this.selectAllFlag)
+			},
+
+			getOperationButtonType(operationButton) {
+				if (operationButton.type !== 'text') {
+					return operationButton.type
+				} else {
+					return "primary"
+				}
+			},
+
+			isLinkOperationButton(operationButton) {
+				return operationButton.type === 'text'
 			},
 
     }

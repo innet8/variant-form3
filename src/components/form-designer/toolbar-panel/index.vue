@@ -19,7 +19,7 @@
 
     <el-drawer :title="i18nt('designer.toolbar.nodeTreeTitle')" direction="ltr" v-model="showNodeTreeDrawerFlag"
                :modal="true" :size="280" append-to-body
-               :destroy-on-close="true" custom-class="node-tree-drawer">
+               :destroy-on-close="true" class="node-tree-drawer">
       <el-tree ref="nodeTree" :data="nodeTreeData" node-key="id" default-expand-all highlight-current class="node-tree"
                icon-class="el-icon-arrow-right" @node-click="onNodeTreeClick"></el-tree>
     </el-drawer>
@@ -224,6 +224,7 @@
     inject: ['getDesignerConfig'],
     data() {
       return {
+        formJson: {},
         designerConfig: this.getDesignerConfig(),
 
         toolbarWidth: 450,
@@ -275,16 +276,6 @@
       }
     },
     computed: {
-      formJson() {
-        return {
-          // widgetList: this.designer.widgetList,
-          // formConfig: this.designer.formConfig
-
-          widgetList: deepClone(this.designer.widgetList),
-          formConfig: deepClone(this.designer.formConfig)
-        }
-      },
-
       undoDisabled() {
         return !this.designer.undoEnabled()
       },
@@ -445,6 +436,9 @@
       },
 
       previewForm() {
+        this.formJson.widgetList = deepClone(this.designer.widgetList)
+        this.formJson.formConfig = deepClone(this.designer.formConfig)
+
         this.showPreviewDialogFlag = true
       },
 

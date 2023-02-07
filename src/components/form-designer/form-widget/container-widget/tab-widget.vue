@@ -12,7 +12,7 @@
   <container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
                      :index-of-parent-list="indexOfParentList">
 
-    <div :key="widget.id" class="tab-container"
+    <div class="tab-container"
          :class="{'selected': selected}" @click.stop="selectWidget(widget)">
       <el-tabs :type="widget.displayType" v-model="activeTab" @tab-click="onTabClick">
 

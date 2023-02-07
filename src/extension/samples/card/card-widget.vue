@@ -1,7 +1,7 @@
 <template>
   <container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
                      :index-of-parent-list="indexOfParentList">
-    <el-card :key="widget.id" class="card-container" @click.stop="selectWidget(widget)"
+    <el-card class="card-container" @click.stop="selectWidget(widget)"
              :shadow="widget.options.shadow" :style="{width: widget.options.cardWidth + '!important' || ''}"
              :class="[selected ? 'selected' : '', !!widget.options.folded ? 'folded' : '', customClass]">
       <template #header>

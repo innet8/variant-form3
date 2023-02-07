@@ -1,7 +1,7 @@
 <template>
   <container-item-wrapper :widget="widget">
 
-    <div :key="widget.id" class="tab-container"
+    <div class="tab-container"
          v-show="!widget.options.hidden">
       <el-tabs v-model="activeTabName" :type="widget.displayType" :ref="widget.id" :class="[customClass]"
                @tab-click="handleTabClick">

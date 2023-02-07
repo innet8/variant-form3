@@ -1,7 +1,7 @@
 <template>
   <el-col v-if="widget.type === 'grid-col'" class="grid-cell" v-bind="layoutProps"
           :class="[selected ? 'selected' : '', customClass]" :style="colHeightStyle"
-          :key="widget.id" @click.stop="selectWidget(widget)">
+          @click.stop="selectWidget(widget)">
     <draggable :list="widget.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 200}"
                tag="transition-group" :component-data="{name: 'fade'}"
                handle=".drag-handler" @end="(evt) => onGridDragEnd(evt, widget.widgetList)"

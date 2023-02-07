@@ -1,7 +1,7 @@
 <template>
   <container-item-wrapper :widget="widget">
 
-    <div :key="widget.id" class="table-container"
+    <div class="table-container"
          v-show="!widget.options.hidden">
       <table :ref="widget.id" class="table-layout" :class="[customClass]">
         <tbody>

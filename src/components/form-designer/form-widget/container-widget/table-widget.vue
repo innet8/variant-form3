@@ -12,7 +12,7 @@
   <container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
                      :index-of-parent-list="indexOfParentList">
 
-    <div :key="widget.id" class="table-container"
+    <div class="table-container"
          :class="[selected ? 'selected' : '', customClass]" @click.stop="selectWidget(widget)">
       <table class="table-layout">
         <tbody>

@@ -46,15 +46,7 @@ export default {
 
   },
   methods: {
-    submitForm() {
-      this.$refs.vFormRef.getFormData().then(formData => {
-        // Form Validation OK
-        alert( JSON.stringify(formData) )
-      }).catch(error => {
-        // Form Validation failed
-        this.$message.error(error)
-      })
-    }
+
   }
 }
 </script>

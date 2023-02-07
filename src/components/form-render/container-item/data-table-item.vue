@@ -63,7 +63,8 @@
 						<template #default="scope">
 							<template v-for="(ob) in widget.options.operationButtons">
 								<el-button v-show="showOperationButton(ob, scope.$index, scope.row)"
-													 :type="ob.type" :size="ob.size" :round="ob.round"
+													 :type="getOperationButtonType(ob)" :link="isLinkOperationButton(ob)"
+													 :size="ob.size" :round="ob.round"
 													 :disabled="disableOperationButton(ob, scope.$index, scope.row)"
 													 @click="handleOperationButtonClick(ob.name, scope.$index, scope.row)"
 													 :class="['data-table-' + ob.name + '-button']">{{getOperationButtonLabel(ob, scope.$index, scope.row)}}</el-button>
@@ -553,6 +554,18 @@
 				this.$nextTick(() => {
 					this.handleSelectionChange(selection)
 				})
+			},
+
+			getOperationButtonType(operationButton) {
+				if (operationButton.type !== 'text') {
+					return operationButton.type
+				} else {
+					return "primary"
+				}
+			},
+
+			isLinkOperationButton(operationButton) {
+				return operationButton.type === 'text'
 			},
 
 			//--------------------- 以下为组件支持外部调用的API方法 begin ------------------//

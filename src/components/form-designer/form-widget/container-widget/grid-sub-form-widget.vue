@@ -12,7 +12,7 @@
   <container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
                      :index-of-parent-list="indexOfParentList">
 
-    <div :key="widget.id" class="sub-form-container"
+    <div class="sub-form-container"
          :class="{'selected': selected}" @click.stop="selectWidget(widget)">
       <div class="grid-sub-form">
         <draggable :list="widget.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 200}"

@@ -52,6 +52,7 @@ export const containers = [
       showRowNumber: true,
       labelAlign: 'label-center-align',
       hidden: false,
+      disabled: false,
       actionColumnPosition: 'left',  //操作按钮列位置
       customClass: '',  //自定义css类名
       onSubFormRowAdd: '',
@@ -71,6 +72,7 @@ export const containers = [
       showBlankRow: true,
       showRowNumber: true,
       hidden: false,
+      disabled: false,
       actionColumnPosition: 'left',  //操作按钮列位置
       customClass: '',  //自定义css类名
       onSubFormRowAdd: '',

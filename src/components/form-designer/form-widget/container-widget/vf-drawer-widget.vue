@@ -3,7 +3,7 @@
                      :index-of-parent-list="indexOfParentList">
 
     <div class="drawer-container" :class="[selected ? 'selected' : '', customClass]"
-         :key="widget.id" @click.stop="selectWidget(widget)">
+         @click.stop="selectWidget(widget)">
       <draggable :list="widget.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 200}"
                  handle=".drag-handler" @end="(evt) => onDrawerDragEnd(evt, widget.widgetList)"
                  @add="(evt) => onDrawerDragAdd(evt, widget.widgetList)"

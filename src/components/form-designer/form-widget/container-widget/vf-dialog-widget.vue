@@ -3,7 +3,7 @@
                      :index-of-parent-list="indexOfParentList">
 
     <div class="dialog-container" :class="[selected ? 'selected' : '', customClass]"
-         :key="widget.id" @click.stop="selectWidget(widget)">
+         @click.stop="selectWidget(widget)">
       <draggable :list="widget.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 200}"
                  handle=".drag-handler" @end="(evt) => onDialogDragEnd(evt, widget.widgetList)"
                  @add="(evt) => onDialogDragAdd(evt, widget.widgetList)"

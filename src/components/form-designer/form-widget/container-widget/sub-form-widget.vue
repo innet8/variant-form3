@@ -12,7 +12,7 @@
   <container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
                      :index-of-parent-list="indexOfParentList">
 
-    <div :key="widget.id" class="sub-form-container"
+    <div class="sub-form-container"
          :class="{'selected': selected}" @click.stop="selectWidget(widget)">
       <el-form label-position="top">
         <div class="sub-form-table">

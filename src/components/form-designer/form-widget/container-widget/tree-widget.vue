@@ -1,7 +1,7 @@
 <template>
 	<container-wrapper :designer="designer" :widget="widget" :parent-widget="parentWidget" :parent-list="parentList"
 	  :index-of-parent-list="indexOfParentList">
-		<div :key="widget.id" class="tree-container"
+		<div class="tree-container"
 	     :class="{'selected': selected}" @click.stop="selectWidget(widget)">
 			<el-container>
 				<el-main style="align-items: baseline;">

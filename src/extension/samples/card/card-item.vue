@@ -1,6 +1,6 @@
 <template>
   <container-item-wrapper :widget="widget">
-    <el-card :key="widget.id" class="card-container" :class="[!!widget.options.folded ? 'folded' : '', customClass]"
+    <el-card class="card-container" :class="[!!widget.options.folded ? 'folded' : '', customClass]"
              :shadow="widget.options.shadow" :style="{width: widget.options.cardWidth + '!important' || ''}"
              :ref="widget.id" v-show="!widget.options.hidden">
       <template #header>

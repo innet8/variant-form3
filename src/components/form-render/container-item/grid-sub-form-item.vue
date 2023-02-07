@@ -1,12 +1,12 @@
 <template>
   <container-item-wrapper :widget="widget">
 
-    <div :key="widget.id" class="sub-form-container"
+    <div class="sub-form-container"
          v-show="!widget.options.hidden">
       <el-row class="header-row">
         <div class="action-header-column">
           <span class="action-label">{{i18nt('render.hint.subFormAction')}}</span>
-          <el-button v-if="!isReadMode" :disabled="actionDisabled || insertDisabled"
+          <el-button v-if="!isReadMode" :disabled="widgetDisabled || actionDisabled || insertDisabled"
                      round type="primary" size="small" class="action-button"
                      @click="addSubFormRow" :title="i18nt('render.hint.subFormAddActionHint')">
             {{i18nt('render.hint.subFormAddAction')}}<i class="el-icon-plus el-icon-right"></i></el-button>
@@ -15,10 +15,10 @@
       <div v-for="(subFormRowId, sfrIdx) in rowIdData" class="sub-form-row" :key="subFormRowId">
         <div v-if="leftActionColumn" class="sub-form-action-column hide-label">
           <div class="action-button-column">
-            <el-button :disabled="actionDisabled || insertDisabled"
+            <el-button :disabled="widgetDisabled || actionDisabled || insertDisabled"
                        circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"></el-button>
-            <el-button :disabled="actionDisabled || deleteDisabled"
+            <el-button :disabled="widgetDisabled || actionDisabled || deleteDisabled"
                        circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"></el-button>
             <span v-if="widget.options.showRowNumber" class="row-number-span">#{{sfrIdx+1}}</span>
@@ -39,10 +39,10 @@
         </div>
         <div v-if="!leftActionColumn" class="sub-form-action-column hide-label">
           <div class="action-button-column">
-            <el-button :disabled="actionDisabled || insertDisabled"
+            <el-button :disabled="widgetDisabled || actionDisabled || insertDisabled"
                        circle type="" icon="el-icon-circle-plus-outline" @click="insertSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.insertSubFormRow')"></el-button>
-            <el-button :disabled="actionDisabled || deleteDisabled"
+            <el-button :disabled="widgetDisabled || actionDisabled || deleteDisabled"
                        circle type="" icon="el-icon-delete" @click="deleteSubFormRow(sfrIdx)"
                        v-show="!isReadMode" :title="i18nt('render.hint.deleteSubFormRow')"></el-button>
           </div>
@@ -98,6 +98,10 @@
 
       leftActionColumn() {
         return (this.widget.options.actionColumnPosition || 'left') === 'left'
+      },
+
+      widgetDisabled() {
+        return !!this.widget.options.disabled
       },
 
     },
@@ -243,6 +247,10 @@
           this.$nextTick(() => {
             this.handleSubFormRowAdd(oldSubFormData, this.rowIdData[0])
             this.handleSubFormRowChange(oldSubFormData)
+
+            if (!!this.widget.options.disabled) {
+              this.disableSubForm()
+            }
           })
         }
       },
@@ -337,6 +345,7 @@
       },
 
       setDisabled(flag) {
+        this.widget.options.disabled = flag
         if (!!flag) {
           this.disableGridSubForm()
         } else {

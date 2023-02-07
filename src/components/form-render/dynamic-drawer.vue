@@ -1,5 +1,5 @@
 <template>
-  <el-drawer ref="drawerRef" :title="options.title" v-model="drawerVisible" custom-class="dynamic-drawer" append-to-body destroy-on-close
+  <el-drawer ref="drawerRef" :title="options.title" v-model="drawerVisible" class="dynamic-drawer" append-to-body destroy-on-close
              :size="options.size" :modal="options.showModal" :direction="options.direction"
              :show-close="options.showClose" :close-on-click-modal="options.closeOnClickModal"
              :close-on-press-escape="options.closeOnPressEscape"
