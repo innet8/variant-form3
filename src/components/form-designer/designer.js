@@ -726,6 +726,19 @@ export function createDesigner(vueInstance) {
       }
     },
 
+    cloneFieldWidget(fieldWidget, parentWidget) {
+      let newField = deepClone(fieldWidget)
+      const tempId = generateId()
+      newField.id = newField.type.replace(/-/g, '') + tempId
+      newField.options.name = newField.id
+
+      if (!!parentWidget) {
+        parentWidget.widgetList.push(newField)
+      } else {
+        this.widgetList.push(newField)
+      }
+    },
+
     moveUpWidget(parentList, indexOfParentList) {
       if (!!parentList) {
         if (indexOfParentList === 0) {
