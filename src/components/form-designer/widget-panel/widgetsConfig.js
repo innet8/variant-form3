@@ -116,6 +116,7 @@ export const containers = [
       cellHeight: '',
       colspan: 1,
       rowspan: 1,
+      wordBreak: false,  //是否自动换行
       customClass: '',  //自定义css类名
     }
   },
@@ -452,6 +453,7 @@ export const basicFields = [
       size: '',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       readonly: false,
       disabled: false,
       hidden: false,
@@ -501,6 +503,7 @@ export const basicFields = [
       size: '',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       readonly: false,
       disabled: false,
       hidden: false,
@@ -541,6 +544,7 @@ export const basicFields = [
       size: '',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       required: false,
@@ -583,6 +587,7 @@ export const basicFields = [
       border: false,
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       dsEnabled: false, // 是否使用数据源数据
@@ -628,6 +633,7 @@ export const basicFields = [
       border: false,
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       dsEnabled: false, // 是否使用数据源数据
@@ -671,6 +677,7 @@ export const basicFields = [
       size: '',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       clearable: true,
@@ -725,6 +732,7 @@ export const basicFields = [
       autoFullWidth: true,
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       readonly: false,
       disabled: false,
       hidden: false,
@@ -766,6 +774,7 @@ export const basicFields = [
       autoFullWidth: true,
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       readonly: false,
       disabled: false,
       hidden: false,
@@ -807,6 +816,7 @@ export const basicFields = [
       autoFullWidth: true,
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       readonly: false,
       disabled: false,
       hidden: false,
@@ -850,6 +860,7 @@ export const basicFields = [
       autoFullWidth: true,
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       readonly: false,
       disabled: false,
       hidden: false,
@@ -888,6 +899,7 @@ export const basicFields = [
       columnWidth: '200px',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       //-------------------
@@ -920,6 +932,7 @@ export const basicFields = [
       columnWidth: '200px',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       required: false,
@@ -958,6 +971,7 @@ export const basicFields = [
       size: '',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       required: false,
@@ -990,6 +1004,7 @@ export const basicFields = [
       size: '',
       labelWidth: null,
       labelHidden: false,
+      labelWrap: false,  //标签超长换行
       disabled: false,
       hidden: false,
       required: false,
@@ -1024,6 +1039,8 @@ export const basicFields = [
       columnWidth: '200px',
       hidden: false,
       textContent: 'static text',
+      fontSize: '13px',
+      preWrap: false,  //是否自动换行
       //-------------------
       customClass: '',  //自定义css类名
       //-------------------

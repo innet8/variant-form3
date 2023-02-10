@@ -15,7 +15,7 @@
                   :title="field.options.labelTooltip"
                   :size="field.options.size"
                   :rules="rules" :prop="getPropName()"
-                  :class="[selected ? 'selected' : '', labelAlign, customClass, field.options.required ? 'required' : '']"
+                  :class="[selected ? 'selected' : '', labelAlign, customClass, field.options.required ? 'required' : '', !!field.options.labelWrap ? 'label-wrap' : '']"
                   @click.stop="selectField(field)">
 
       <template #label>
@@ -320,6 +320,14 @@
     /* 隐藏Firefox浏览器中el-input数字输入框右侧的上下调整小箭头 */
     :deep(.hide-spin-button) input[type="number"] {
       -moz-appearance: textfield;
+    }
+  }
+
+  .label-wrap {
+    :deep(.el-form-item__label) {
+      word-break: break-all;
+      white-space: pre-wrap !important;
+      line-height: 16px;
     }
   }
 
