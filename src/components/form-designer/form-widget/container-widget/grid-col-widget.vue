@@ -279,6 +279,7 @@
 
     .form-widget-list {
       min-height: 28px;
+      display: inline;
     }
 
     .grid-col-action{

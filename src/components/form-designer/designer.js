@@ -687,6 +687,17 @@ export function createDesigner(vueInstance) {
       newGridCol.id = 'grid-col-' + tmpId
       newGridCol.options.name = 'gridCol' + tmpId
 
+      if (widget.widgetList.length === 1) {
+        const firstChildWidget = widget.widgetList[0]
+        if (!firstChildWidget.category) { //非容器组件
+          let newField = deepClone(firstChildWidget)
+          const tempId = generateId()
+          newField.id = newField.type.replace(/-/g, '') + tempId
+          newField.options.name = newField.id
+          newGridCol.widgetList.push(newField)
+        }
+      }
+
       parentWidget.cols.push(newGridCol)
     },
 
