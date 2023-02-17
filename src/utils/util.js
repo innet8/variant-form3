@@ -446,7 +446,7 @@ export function getDefaultFormConfig() {
     size: '',
     labelAlign: 'label-left-align',
     cssCode: '',
-    customClass: '',
+    customClass: [],
     functions: '',  //全局函数
     layoutType: 'PC',
     jsonVersion: 3,
