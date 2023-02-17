@@ -110,7 +110,22 @@
           let customFn = new Function('tab', this.widget.options.onTabClick)
           customFn.call(this, tab)
         }
-      }
+      },
+
+      /**
+       * 获取当前激活的页签索引，从0开始计数
+       * @return {number}
+       */
+      getActiveTabIndex() {
+        let foundIndex = -1
+        this.widget.tabs.forEach((tp, idx) => {
+          if (tp.options.name === this.activeTabName) {
+            foundIndex = idx
+          }
+        })
+
+        return foundIndex
+      },
 
     },
   }

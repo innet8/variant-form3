@@ -727,7 +727,19 @@ export function createDesigner(vueInstance) {
           newRow.cols.forEach(col => {
             col.id = 'table-cell-' + generateId()
             col.options.name = col.id
-            col.widgetList = []  //清空组件列表
+
+            if (col.widgetList.length === 1) {
+              const firstChildWidget = col.widgetList[0]
+              if (!firstChildWidget.category) { //非容器组件
+                const tempId = generateId()
+                firstChildWidget.id = firstChildWidget.type.replace(/-/g, '') + tempId
+                firstChildWidget.options.name = firstChildWidget.id
+              } else {
+                col.widgetList = []  //清空组件列表
+              }
+            } else {
+              col.widgetList = []  //清空组件列表
+            }
           })
           newTable.rows.push(newRow)
         })
