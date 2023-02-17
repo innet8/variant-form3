@@ -20,6 +20,7 @@
 					:expand-on-click-node="widget.options.expandOnClickNode"
 					:default-expand-all="widget.options.defaultExpandAllNode"
 					:draggable="widget.options.draggable"
+				  :check-strictly="widget.options.checkStrictly"
 				  v-loading="loadingFlag"
 					@node-click="handleTreeNodeClick"
 					@node-contextmenu="handleTreeNodeContextmenu"

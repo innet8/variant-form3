@@ -24,6 +24,7 @@
 						:expand-on-click-node="widget.options.expandOnClickNode"
 						:default-expand-all="widget.options.defaultExpandAllNode"
 						:draggable="widget.options.draggable"
+					  :check-strictly="widget.options.checkStrictly"
 						:filter-node-method="filterNode">
 						<template #default="{ node, data }">
 							<span class="custom-tree-node">

@@ -474,6 +474,7 @@ export default {
 			draggable:'允许拖拽节点',
 			filter:'显示过滤框',
 			expandOnClickNode:'点击节点可收缩',
+      treeNodeCheckStrictly: '禁止父子节点联动',
 			inputNodeName:'请输入节点名',
 			deleteNode:'确定删除节点?',
 			nodeDeleted:'节点已删除',

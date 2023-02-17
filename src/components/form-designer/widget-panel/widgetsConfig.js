@@ -323,6 +323,7 @@ export const containers = [
 			expandOnClickNode:true,// 点击节点收缩
 			lazy:false,// 懒加载
 			treeDataEdit:true,// 编辑树节点数据
+      checkStrictly: false,  //禁止父子节点选择联动
 			nodeEdit:true,// 节点编辑
 			size: 'default',
 			disabled: false,

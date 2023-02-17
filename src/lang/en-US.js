@@ -474,6 +474,7 @@ export default {
       draggable:'Node Draggable',
       filter:'Filter',
       expandOnClickNode:'Expand On Click',
+      treeNodeCheckStrictly: 'Check Node Strictly',
       inputNodeName:'Input Name Of Node',
       deleteNode:'Delete this node?',
 			nodeDeleted:'Node deleted',
