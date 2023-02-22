@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar class="side-scroll-bar" :style="{height: scrollerHeight}">
+  <el-scrollbar class="side-scroll-bar" >
     <div class="panel-container">
 
     <el-tabs v-model="firstTab" class="no-bottom-margin indent-left-margin">
@@ -123,8 +123,6 @@
 
         firstTab: 'componentLib',
 
-        scrollerHeight: 0,
-
         activeNames: ['1', '2', '3', '4'],
 
         containers: [],
@@ -153,14 +151,6 @@
     },
     mounted() {
       //this.loadWidgets()
-
-      this.scrollerHeight = window.innerHeight - 56 + 'px'
-      addWindowResizeHandler(() => {
-        this.$nextTick(() => {
-          this.scrollerHeight = window.innerHeight - 56 + 'px'
-          //console.log(this.scrollerHeight)
-        })
-      })
     },
     methods: {
       getWidgetLabel(widget) {

@@ -24,7 +24,7 @@
                icon-class="el-icon-arrow-right" @node-click="onNodeTreeClick"></el-tree>
     </el-drawer>
 
-    <div class="right-toolbar" :style="{width: toolbarWidth + 'px'}">
+    <div class="right-toolbar">
       <div class="right-toolbar-con">
         <el-button v-if="showToolButton('clearDesignerButton')" link type="primary" @click="clearFormWidget">
           <svg-icon icon-class="el-delete" />{{i18nt('designer.toolbar.clear')}}</el-button>
@@ -304,16 +304,7 @@
 
     },
     mounted() {
-      let maxTBWidth = this.designerConfig.toolbarMaxWidth || 450
-      let minTBWidth = this.designerConfig.toolbarMinWidth || 300
-      let newTBWidth = window.innerWidth - 260 - 300 - 320 - 80
-      this.toolbarWidth = newTBWidth >= maxTBWidth ? maxTBWidth : (newTBWidth <= minTBWidth ? minTBWidth : newTBWidth)
-      addWindowResizeHandler(() => {
-        this.$nextTick(() => {
-          let newTBWidth2 = window.innerWidth - 260 - 300 - 320 - 80
-          this.toolbarWidth = newTBWidth2 >= maxTBWidth ? maxTBWidth : (newTBWidth2 <= minTBWidth ? minTBWidth : newTBWidth2)
-        })
-      })
+     
     },
     methods: {
       showToolButton(configName) {
@@ -743,15 +734,13 @@
   }
 
   .right-toolbar {
-    display: flex;
-    float: right;
     line-height: 42px;
     text-align: right;
     overflow: hidden;
 
     .right-toolbar-con {
+      display:inline-block;
       text-align: left;
-      width: 600px;
     }
 
     :deep(.el-button) {

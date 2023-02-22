@@ -35,7 +35,7 @@
       </div>
     </el-header>
 
-    <el-container>
+    <el-container class="main-content">
       <el-aside class="side-panel">
         <widget-panel :designer="designer" />
       </el-aside>
@@ -49,14 +49,13 @@
           </toolbar-panel>
         </el-header>
         <el-main class="form-widget-main">
-          <el-scrollbar class="container-scroll-bar" :style="{height: scrollerHeight}">
+          <el-scrollbar class="container-scroll-bar">
             <v-form-widget :designer="designer" :form-config="designer.formConfig" :global-dsv="globalDsv" ref="formRef">
             </v-form-widget>
           </el-scrollbar>
         </el-main>
       </el-container>
-
-      <el-aside>
+      <el-aside class="setting-pannel">
         <setting-panel :designer="designer" :selected-widget="designer.selectedWidget" :global-dsv="globalDsv"
                        :form-config="designer.formConfig" @edit-event-handler="testEEH" />
       </el-aside>
@@ -158,8 +157,6 @@
         chatUrl: 'https://www.vform666.com/chat-group.html',
         subScribeUrl: 'https://www.vform666.com/subscribe.html',
 
-        scrollerHeight: 0,
-
         designer: createDesigner(this),
 
         fieldList: [],
@@ -192,14 +189,6 @@
     },
     mounted() {
       this.initLocale()
-
-      let logoHeaderHeight = (this.designerConfig.logoHeader !== false) ? 48 : 0
-      this.scrollerHeight = window.innerHeight - logoHeaderHeight - 42 + 'px'
-      addWindowResizeHandler(() => {
-        this.$nextTick(() => {
-          this.scrollerHeight = window.innerHeight - logoHeaderHeight - 42 + 'px'
-        })
-      })
 
       this.loadCase()
       this.loadFieldListFromServer()
@@ -503,6 +492,83 @@
 </script>
 
 <style lang="scss" scoped>
+
+  .el-container.main-container{
+    .el-container.main-content{
+      height: calc(100% - 48px);
+    }
+
+    .el-aside.side-panel{
+      height:100%;
+    }
+    .el-aside.setting-pannel{
+      height:100%;
+      overflow-y:hidden;
+
+      :deep(.panel-container){
+        height:100%;
+        padding:0px;
+          
+        .el-tabs__header{
+          padding:0 8px;
+        }
+        .el-tabs__content{
+          height: calc(100% - 55px);
+        }
+        .el-tab-pane{
+          height: 100%;
+          .el-scrollbar__wrap{
+            padding-left:8px;
+            padding-right:12px;
+          }
+        }
+      }
+    }
+  }
+
+  .el-container.main-container.flex{
+    &.full-height{
+      display: flex;
+    }
+
+    .el-container.main-content{
+      display:inline-flex;
+      height:100%;
+      width:100%;
+      flex-direction:row;
+      flex-shrink:1;
+      overflow:hidden;
+
+      .el-aside.side-panel{
+        height:100%;
+      }
+
+      .el-aside.setting-pannel{
+        height:100%;
+        overflow-y:hidden;
+        display: flex;
+        flex-basis: auto;
+
+        :deep(.panel-container){
+          padding:0px;
+          
+          .el-tabs__header{
+            padding:0 8px;
+          }
+          .el-tabs__content,.el-tab-pane{
+            height:100%;
+          }
+          .el-scrollbar__wrap{
+            padding-left:8px;
+            padding-right:12px;
+          }
+        }
+      }
+    }
+
+  }
+
+
   .el-container.main-container {
     background: #fff;
 
