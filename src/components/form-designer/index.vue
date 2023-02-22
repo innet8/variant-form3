@@ -492,41 +492,7 @@
 </script>
 
 <style lang="scss" scoped>
-
   .el-container.main-container{
-    .el-container.main-content{
-      height: calc(100% - 48px);
-    }
-
-    .el-aside.side-panel{
-      height:100%;
-    }
-    .el-aside.setting-pannel{
-      height:100%;
-      overflow-y:hidden;
-
-      :deep(.panel-container){
-        height:100%;
-        padding:0px;
-          
-        .el-tabs__header{
-          padding:0 8px;
-        }
-        .el-tabs__content{
-          height: calc(100% - 55px);
-        }
-        .el-tab-pane{
-          height: 100%;
-          .el-scrollbar__wrap{
-            padding-left:8px;
-            padding-right:12px;
-          }
-        }
-      }
-    }
-  }
-
-  .el-container.main-container.flex{
     &.full-height{
       display: flex;
     }
@@ -542,6 +508,24 @@
       .el-aside.side-panel{
         height:100%;
       }
+      
+      .el-main.form-widget-main{
+        :deep(.el-scrollbar){
+          .el-scrollbar__view{
+            height:100%;
+          }
+        }
+        :deep(.form-widget-container){
+          overflow-y: hidden;
+          height: 100%;
+          box-sizing: border-box;
+
+          .el-form.full-height-width{
+            box-sizing: border-box;
+            overflow-y: auto;
+          }
+        }
+      }
 
       .el-aside.setting-pannel{
         height:100%;
@@ -551,12 +535,17 @@
 
         :deep(.panel-container){
           padding:0px;
-          
+
+          .el-tabs{
+            display:flex;
+            flex-direction: column;
+          }        
           .el-tabs__header{
             padding:0 8px;
           }
           .el-tabs__content,.el-tab-pane{
             height:100%;
+            flex-grow:1;
           }
           .el-scrollbar__wrap{
             padding-left:8px;
@@ -565,7 +554,6 @@
         }
       }
     }
-
   }
 
 
