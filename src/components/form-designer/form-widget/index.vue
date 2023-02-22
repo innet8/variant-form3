@@ -8,7 +8,7 @@
         <div class="no-widget-hint">{{i18nt('designer.noWidgetHint')}}</div>
       </template>
 
-      <div class="form-widget-canvas" :style="{minHeight: canvasMinHeight}">
+      <div class="form-widget-canvas">
         <draggable :list="designer.widgetList" item-key="id" v-bind="{group:'dragGroup', ghostClass: 'ghost',animation: 300}"
                    tag="transition-group" :component-data="{name: 'fade'}"
                    handle=".drag-handler" @end="onDragEnd" @add="onDragAdd" @update="onDragUpdate" :move="checkMove">
@@ -104,11 +104,6 @@
       layoutType() {
         return this.designer.getLayoutType()
       },
-
-      canvasMinHeight() {
-        return (this.getDesignerConfig().logoHeader !== false) ? 'calc(100vh - 56px - 68px)' : 'calc(100vh - 56px - 68px + 48px)'
-      }
-
     },
     watch: {
       'designer.widgetList': {
