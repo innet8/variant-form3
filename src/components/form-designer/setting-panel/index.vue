@@ -2,7 +2,7 @@
   <el-container class="panel-container">
     <el-tabs v-model="activeTab" style="height: 100%;width: 100%;overflow: hidden">
       <el-tab-pane :label="i18nt('designer.hint.widgetSetting')" name="1">
-        <el-scrollbar class="setting-scrollbar" :style="{height: scrollerHeight}">
+        <el-scrollbar class="setting-scrollbar">
 
           <template v-if="!!designer.selectedWidget && !designer.selectedWidget.category">
             <el-form :model="optionModel" size="small" label-position="left" label-width="120px" class="setting-form"
@@ -71,13 +71,13 @@
       </el-tab-pane>
 
       <el-tab-pane v-if="!!designer" :label="i18nt('designer.hint.formSetting')" name="2">
-        <el-scrollbar class="setting-scrollbar" :style="{height: scrollerHeight}">
+        <el-scrollbar class="setting-scrollbar">
           <form-setting :designer="designer" :form-config="formConfig"></form-setting>
         </el-scrollbar>
       </el-tab-pane>
 
       <el-tab-pane :label="i18nt('designer.setting.dataSource')" name="3">
-        <el-scrollbar class="ds-setting-scrollbar" :style="{height: scrollerHeight}">
+        <el-scrollbar class="ds-setting-scrollbar">
           <data-source-setting :designer="designer" :form-config="formConfig">
           </data-source-setting>
         </el-scrollbar>
@@ -149,8 +149,6 @@
     data() {
       return {
         designerConfig: this.getDesignerConfig(),
-
-        scrollerHeight: 0,
 
         activeTab: "2",
         widgetActiveCollapseNames: ['1', '3'], //['1', '2', '3'],
@@ -224,14 +222,6 @@
       } else {
         this.activeTab = "1"
       }
-
-      this.scrollerHeight = window.innerHeight - 56 - 48 + 'px'
-      addWindowResizeHandler(() => {
-        this.$nextTick(() => {
-          this.scrollerHeight = window.innerHeight - 56 - 48 + 'px'
-          //console.log(this.scrollerHeight)
-        })
-      })
     },
     methods: {
       getEventHandled(eventName) {
@@ -335,6 +325,7 @@
   }
 
   .setting-scrollbar {
+    hegith:100%;
     :deep(.el-scrollbar__wrap) {
       overflow-x: hidden; /* IE浏览器隐藏水平滚动条箭头！！ */
     }
