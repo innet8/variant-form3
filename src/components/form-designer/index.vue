@@ -524,6 +524,10 @@
             box-sizing: border-box;
             overflow-y: auto;
           }
+          .form-widget-canvas{
+            height: 100%;
+            box-sizing:border-box;
+          }
         }
       }
 
