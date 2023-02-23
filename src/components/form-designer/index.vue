@@ -55,7 +55,7 @@
           </el-scrollbar>
         </el-main>
       </el-container>
-      <el-aside class="setting-pannel">
+      <el-aside class="setting-panel">
         <setting-panel :designer="designer" :selected-widget="designer.selectedWidget" :global-dsv="globalDsv"
                        :form-config="designer.formConfig" @edit-event-handler="testEEH" />
       </el-aside>
@@ -71,7 +71,7 @@
   import VFormWidget from './form-widget/index'
   import {createDesigner} from "@/components/form-designer/designer"
   import {
-    addWindowResizeHandler, deepClone, getQueryParam, getAllContainerWidgets,
+    deepClone, getQueryParam, getAllContainerWidgets,
     getAllFieldWidgets, traverseAllWidgets, traverseFieldWidgetsOfContainer
   } from "@/utils/util"
   import {MOCK_CASE_URL, VARIANT_FORM_VERSION} from "@/utils/config"
@@ -492,68 +492,68 @@
 </script>
 
 <style lang="scss" scoped>
-  .el-container.main-container{
-    &.full-height{
+  .el-container.main-container {
+    &.full-height {
       display: flex;
     }
 
-    .el-container.main-content{
-      display:inline-flex;
-      height:100%;
-      width:100%;
-      flex-direction:row;
-      flex-shrink:1;
-      overflow:hidden;
+    .el-container.main-content {
+      display: inline-flex;
+      height: 100%;
+      width: 100%;
+      flex-direction: row;
+      flex-shrink: 1;
+      overflow: hidden;
 
-      .el-aside.side-panel{
-        height:100%;
+      .el-aside.side-panel {
+        height: 100%;
       }
-      
-      .el-main.form-widget-main{
-        :deep(.el-scrollbar){
-          .el-scrollbar__view{
-            height:100%;
+
+      .el-main.form-widget-main {
+        :deep(.el-scrollbar) {
+          .el-scrollbar__view {
+            height: 100%;
           }
         }
-        :deep(.form-widget-container){
+        :deep(.form-widget-container) {
           overflow-y: hidden;
           height: 100%;
           box-sizing: border-box;
 
-          .el-form.full-height-width{
+          .el-form.full-height-width {
             box-sizing: border-box;
             overflow-y: auto;
           }
-          .form-widget-canvas{
+          .form-widget-canvas {
             height: 100%;
-            box-sizing:border-box;
+            box-sizing: border-box;
           }
         }
       }
 
-      .el-aside.setting-pannel{
-        height:100%;
-        overflow-y:hidden;
+      .el-aside.setting-panel {
+        height: 100%;
+        overflow-y: hidden;
         display: flex;
         flex-basis: auto;
 
-        :deep(.panel-container){
-          padding:0px;
+        :deep(.panel-container) {
+          padding: 0;
 
-          .el-tabs{
-            display:flex;
+          .el-tabs {
+            display: flex;
             flex-direction: column;
-          }        
-          .el-tabs__header{
-            padding:0 8px;
           }
-          .el-tabs__content,.el-tab-pane{
-            height:100%;
-            flex-grow:1;
+          .el-tabs__header {
+            padding: 0 8px;
           }
-          .el-scrollbar__wrap{
-            padding-left:8px;
-            padding-right:12px;
+          .el-tabs__content,.el-tab-pane {
+            height: 100%;
+            flex-grow: 1;
+          }
+          .el-scrollbar__wrap {
+            padding-left: 8px;
+            padding-right: 12px;
           }
         }
       }

@@ -35,6 +35,7 @@ const COMMON_PROPERTIES = {
   'editable'          :            'editable-editor',
   'showPassword'      :            'showPassword-editor',
   'textContent'       :            'textContent-editor',
+  'textAlign'         :            'textAlign-editor',
   'fontSize'          :            'fontSize-editor',
   'preWrap'           :            'preWrap-editor',
   'htmlContent'       :            'htmlContent-editor',

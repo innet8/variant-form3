@@ -1040,6 +1040,7 @@ export const basicFields = [
       columnWidth: '200px',
       hidden: false,
       textContent: 'static text',
+      textAlign: 'left',
       fontSize: '13px',
       preWrap: false,  //是否自动换行
       //-------------------

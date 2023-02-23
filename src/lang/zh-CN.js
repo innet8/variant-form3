@@ -187,6 +187,7 @@ export default {
       widgetColumnWidth: '组件列宽',
       widgetSize: '组件大小',
       fontSize: '字体大小',
+      textAlign: '文字对齐',
       autoFullWidth: '自动拉伸宽度',
       showStops: '显示间断点',
       displayStyle: '显示样式',

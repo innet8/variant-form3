@@ -325,7 +325,7 @@
   }
 
   .setting-scrollbar {
-    hegith:100%;
+    height: 100%;
     :deep(.el-scrollbar__wrap) {
       overflow-x: hidden; /* IE浏览器隐藏水平滚动条箭头！！ */
     }

@@ -187,6 +187,7 @@ export default {
       widgetColumnWidth: 'Width',
       widgetSize: 'Size',
       fontSize: 'Font Size',
+      textAlign: 'Text Align',
       autoFullWidth: 'Auto Full Width',
       showStops: 'Show Stops',
       displayStyle: 'Display Style',

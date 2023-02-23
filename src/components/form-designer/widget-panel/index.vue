@@ -150,7 +150,7 @@
       this.loadWidgets()
     },
     mounted() {
-      //this.loadWidgets()
+      //
     },
     methods: {
       getWidgetLabel(widget) {
