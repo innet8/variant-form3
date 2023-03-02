@@ -282,6 +282,14 @@
 				return this.$refs.tree.getCheckedNodes(leafOnly, includeHalfChecked)
 			},
 
+			getCurrentNode() {
+				return this.$refs.tree.getCurrentNode()
+			},
+
+			setCurrentNode(node) {
+				return this.$refs.tree.setCurrentNode(node)
+			},
+
 			/**
 			 * 从数据源加载数据
 			 * @param localDsv 本地数据源变量DSV

@@ -32,6 +32,12 @@ export const overwriteObj = function(obj1, obj2) {  /* 浅拷贝对象属性，o
   })
 }
 
+/* 用Function对象实现eval函数功能 */
+export const evalFn = function (fn, DSV, VFR) {
+  let f = new Function('DSV', 'VFR', 'return ' + fn);
+  return f(DSV, VFR);
+};
+
 export const addWindowResizeHandler = function (handler) {
   let oldHandler = window.onresize
   if (typeof window.onresize != 'function') {
@@ -527,7 +533,7 @@ export function assembleAxiosConfig(arrayObj, DSV, VFR) {
         result[ai.name] = null
       }
     } else if (ai.type === 'Variable') {
-      result[ai.name] = eval(ai.value)
+      result[ai.name] = evalFn(ai.value)
     }
   })
 
@@ -545,7 +551,7 @@ function buildRequestConfig(dataSource, DSV, VFR, isSandbox) {
   if (dataSource.requestURLType === 'String') {
     config.url = dataSource.requestURL
   } else {
-    config.url = eval(dataSource.requestURL)
+    config.url = evalFn(dataSource.requestURL)
   }
   config.method = dataSource.requestMethod
 

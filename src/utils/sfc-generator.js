@@ -382,7 +382,7 @@ ${ctn.cols.map(col => {
         if (item.formatS === "render" && !!item.render) {
           html.push(`<template ${vue3Flag?`#default="scope">`:`slot-scope="scope">`}`);
           html.push(`自定义render`);
-          html.push(`</el-table-column>`);
+          html.push(`</template>`);
         } else if (!!item.formatS) {
           html.push(`<template ${vue3Flag?`#default="scope">`:`slot-scope="scope">`}`);
           html.push(

@@ -38,7 +38,7 @@
   import FormItemWrapper from './form-item-wrapper'
   import emitter from '@/utils/emitter'
   import i18n, {translate} from "@/utils/i18n";
-  import {deepClone} from "@/utils/util";
+  import {deepClone, evalFn} from "@/utils/util";
   import fieldMixin from "@/components/form-designer/form-widget/field-widget/fieldMixin";
   import SvgIcon from "@/components/svg-icon/index";
 
@@ -105,7 +105,7 @@
         if (!!uploadURL && ((uploadURL.indexOf('DSV.') > -1) || (uploadURL.indexOf('DSV[') > -1))) {
           let DSV = this.getGlobalDsv()
           console.log('test DSV: ', DSV)  //防止DSV被打包工具优化！！！
-          return eval(this.field.options.uploadURL)
+          return evalFn(this.field.options.uploadURL)
         }
 
         return this.field.options.uploadURL

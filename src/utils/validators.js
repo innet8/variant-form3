@@ -1,4 +1,4 @@
-import {isEmptyStr, isNull} from "./util";
+import {evalFn, isNull} from "./util";
 
 export const getRegExp = function (validatorName) {
   const commonRegExp = {
@@ -23,7 +23,7 @@ const validateFn = function (validatorName, rule, value, callback, defaultErrorM
     return
   }
 
-  const reg = eval(getRegExp(validatorName))
+  const reg = evalFn(getRegExp(validatorName))
 
   if (!reg.test(value)) {
     let errTxt = rule.errorMsg || defaultErrorMsg
@@ -113,7 +113,14 @@ const FormValidators = {
       return
     }
 
-    const pattern = eval(rule.regExp)
+    if (rule.regExp.length > 0 && rule.regExp[0] !== '/') {
+      rule.regExp = '/' + rule.regExp
+    }
+    if (rule.regExp.length > 0 && rule.regExp[rule.regExp.length - 1] !== '/') {
+      rule.regExp = rule.regExp + '/'
+    }
+
+    const pattern = evalFn(rule.regExp)
     if (!pattern.test(value)) {
       let errTxt = rule.errorMsg || '[' + rule.label + ']invalid value'
       callback(new Error(errTxt))
