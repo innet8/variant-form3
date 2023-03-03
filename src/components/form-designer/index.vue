@@ -78,6 +78,11 @@
   import i18n, { changeLocale } from "@/utils/i18n"
   import axios from 'axios'
   import SvgIcon from "@/components/svg-icon/index"
+  import {
+    addFormTemplate,
+    clearFormTemplates,
+    getAllFormTemplates
+  } from "@/components/form-designer/widget-panel/templatesConfig";
 
   export default {
     name: "VFormDesigner",
@@ -142,6 +147,12 @@
         default: () => ({})
       },
 
+      /* 外部传入的表单模板数组，会覆盖内置表单模板！！ */
+      formTemplates: {
+        type: Array,
+        default: null
+      }
+
     },
     data() {
       return {
@@ -189,6 +200,7 @@
     },
     mounted() {
       this.initLocale()
+      this.initFormTemplates()
 
       this.loadCase()
       this.loadFieldListFromServer()
@@ -262,6 +274,15 @@
         }
         this.curLangName = this.i18nt('application.' + this.curLocale)
         this.changeLanguage(this.curLocale)
+      },
+
+      initFormTemplates() {
+        if (!!this.formTemplates && (this.formTemplates.length > 0)) {
+          clearFormTemplates()
+          this.formTemplates.forEach(fm => {
+            addFormTemplate(fm)
+          })
+        }
       },
 
       loadFieldListFromServer() {
@@ -484,6 +505,48 @@
 
         return dataSchema
       },
+
+      /**
+       * 获取设计器当前加载的全部表单模板
+       */
+      getFormTemplates() {
+        return getAllFormTemplates()
+      },
+
+      /*
+       清空全部表单模板
+       */
+      clearFormTemplates() {
+        clearFormTemplates()
+      },
+
+      /**
+       * 追加新的表单模板
+       * @param newFormTemplate
+       *
+       * 表单模板格式：
+       * {
+       *   title: '表单模板名称',
+       *   imgUrl: '模板缩略图URL',
+       *   jsonStr: '表单模板json字符串',  //优先级高于jsonUrl
+       *   jsonUrl: '表单模板对象读取URL'  //优先级低于jsonStr
+       *   description: ‘表单模板描述文字’,
+       *   i18n: {  //优先级高于title和description
+       *      'zh-CN': {
+       *        title: '中文title',
+       *        description: ‘中文描述文字’,
+       *      },
+       *      'en-US': {
+       *        title: '英文title',
+       *        description: ‘英文描述文字’,
+       *      }
+       *   }
+       * }
+       *
+       */
+      addFormTemplate(newFormTemplate) {
+        addFormTemplate(newFormTemplate)
+      }
 
       //TODO: 增加更多方法！！
 

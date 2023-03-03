@@ -56,3 +56,15 @@ export const formTemplates = [
   },
 
 ]
+
+export function clearFormTemplates() {
+  formTemplates.splice(0, formTemplates.length)
+}
+
+export function addFormTemplate(newFormTemplate) {
+  formTemplates.push(newFormTemplate)
+}
+
+export function getAllFormTemplates() {
+  return formTemplates
+}

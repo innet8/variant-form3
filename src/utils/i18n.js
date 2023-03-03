@@ -44,6 +44,10 @@ export const changeLocale = function(langName) {
   localStorage.setItem('v_form_locale', langName)
 }
 
+export const getLocale = function () {
+  return localStorage.getItem('v_form_locale')
+}
+
 export const translate = function(key) {
   return i18n.$st(key)
 }

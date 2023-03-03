@@ -1000,6 +1000,26 @@
         return this.previewState
       },
 
+      /**
+       * 一次性设置formJson、formData和禁用表单
+       * @param formJson
+       * @param formData
+       * @param disabledFlag
+       */
+      setFormJsonAndData(formJson, formData, disabledFlag = null) {
+        this.setFormJson(formJson)
+        this.$nextTick(() => {
+          if (!!formData) {
+            this.setFormData(formData)
+            this.$nextTick(() => {
+              if (!!disabledFlag) {
+                this.disableForm()
+              }
+            })
+          }
+        })
+      },
+
       //--------------------- 以上为组件支持外部调用的API方法 end ------------------//
 
     },

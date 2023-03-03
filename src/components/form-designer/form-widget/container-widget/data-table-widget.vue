@@ -287,7 +287,12 @@
 				return operationButton.type === 'text'
 			},
 
-    }
+			getNativeTable() {
+				return this.$refs.dataTable
+			},
+
+
+		}
   }
 </script>
 

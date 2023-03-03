@@ -71,13 +71,13 @@
           <el-card :bord-style="{ padding: '0' }" shadow="hover" class="ft-card">
             <el-popover placement="right" trigger="hover">
               <template #reference>
-                <img :src="ftImages[idx].imgUrl" style="width: 200px">
+                <img :src="ft.imgUrl" style="width: 200px">
               </template>
-              <img :src="ftImages[idx].imgUrl" style="height: 600px;width: 720px">
+              <img :src="ft.imgUrl" style="height: 600px;width: 720px">
             </el-popover>
             <div class="bottom clear-fix">
-              <span class="ft-title">#{{idx+1}} {{ft.title}}</span>
-              <el-button link type="primary" class="right-button" @click="loadFormTemplate(ft.jsonUrl)">
+              <span class="ft-title">#{{idx+1}} {{getFTTitle(ft)}}</span>
+              <el-button link type="primary" class="right-button" @click="loadFormTemplate(ft.jsonUrl, ft.jsonStr)">
                 {{i18nt('designer.hint.loadFormTemplate')}}</el-button>
             </div>
           </el-card>
@@ -95,17 +95,17 @@
   import {containers as CONS, basicFields as BFS, advancedFields as AFS, customFields as CFS} from "./widgetsConfig"
   import {formTemplates} from './templatesConfig'
   import {addWindowResizeHandler, generateId} from "@/utils/util"
-  import i18n from "@/utils/i18n"
+  import i18n, {getLocale} from "@/utils/i18n"
   import axios from 'axios'
 
-  import ftImg1 from '@/assets/ft-images/t1.png'
-  import ftImg2 from '@/assets/ft-images/t2.png'
-  import ftImg3 from '@/assets/ft-images/t3.png'
-  import ftImg4 from '@/assets/ft-images/t4.png'
-  import ftImg5 from '@/assets/ft-images/t5.png'
-  import ftImg6 from '@/assets/ft-images/t6.png'
-  import ftImg7 from '@/assets/ft-images/t7.png'
-  import ftImg8 from '@/assets/ft-images/t8.png'
+  // import ftImg1 from '@/assets/ft-images/t1.png'
+  // import ftImg2 from '@/assets/ft-images/t2.png'
+  // import ftImg3 from '@/assets/ft-images/t3.png'
+  // import ftImg4 from '@/assets/ft-images/t4.png'
+  // import ftImg5 from '@/assets/ft-images/t5.png'
+  // import ftImg6 from '@/assets/ft-images/t6.png'
+  // import ftImg7 from '@/assets/ft-images/t7.png'
+  // import ftImg8 from '@/assets/ft-images/t8.png'
 
   export default {
     name: "FieldPanel",
@@ -131,16 +131,16 @@
         customFields: [],
 
         formTemplates: formTemplates,
-        ftImages: [
-          {imgUrl: ftImg1},
-          {imgUrl: ftImg2},
-          {imgUrl: ftImg3},
-          {imgUrl: ftImg4},
-          {imgUrl: ftImg5},
-          {imgUrl: ftImg6},
-          {imgUrl: ftImg7},
-          {imgUrl: ftImg8},
-        ]
+        // ftImages: [
+        //   {imgUrl: ftImg1},
+        //   {imgUrl: ftImg2},
+        //   {imgUrl: ftImg3},
+        //   {imgUrl: ftImg4},
+        //   {imgUrl: ftImg5},
+        //   {imgUrl: ftImg6},
+        //   {imgUrl: ftImg7},
+        //   {imgUrl: ftImg8},
+        // ]
       }
     },
     computed: {
@@ -171,6 +171,15 @@
         }
 
         return !!this.designerConfig['formTemplates']
+      },
+
+      getFTTitle(ft) {
+        const langName = getLocale()
+        if (!!ft.i18n && !!ft.i18n[langName]) {
+          return ft.i18n[langName].title || ft.title
+        } else {
+          return ft.title
+        }
       },
 
       loadWidgets() {
@@ -246,11 +255,17 @@
         this.designer.addFieldByDbClick(widget)
       },
 
-      loadFormTemplate(jsonUrl) {
+      loadFormTemplate(jsonUrl, jsonStr) {
         this.$confirm(this.i18nt('designer.hint.loadFormTemplateHint'), this.i18nt('render.hint.prompt'), {
           confirmButtonText: this.i18nt('render.hint.confirm'),
           cancelButtonText: this.i18nt('render.hint.cancel')
         }).then(() => {
+          if (!!jsonStr) {
+            this.designer.loadFormJson( JSON.parse(jsonStr) )
+            this.$message.success(this.i18nt('designer.hint.loadFormTemplateSuccess'))
+            return
+          }
+
           axios.get(jsonUrl).then(res => {
             let modifiedFlag = false
             if (typeof res.data === 'string') {

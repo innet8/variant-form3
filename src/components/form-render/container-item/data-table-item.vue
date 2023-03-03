@@ -739,6 +739,10 @@
 				return this.selectedIndices
 			},
 
+			getNativeTable() {
+				return this.$refs.dataTable
+			},
+
 			//--------------------- 以上为组件支持外部调用的API方法 end ------------------//
 
     }
