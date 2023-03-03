@@ -99,7 +99,7 @@
         if (!!uploadURL && ((uploadURL.indexOf('DSV.') > -1) || (uploadURL.indexOf('DSV[') > -1))) {
           let DSV = this.getGlobalDsv()
           console.log('test DSV: ', DSV)  //防止DSV被打包工具优化！！！
-          return evalFn(this.field.options.uploadURL)
+          return evalFn(this.field.options.uploadURL, DSV)
         }
 
         return this.field.options.uploadURL
