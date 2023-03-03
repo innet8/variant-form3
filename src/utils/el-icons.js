@@ -3,6 +3,10 @@ import {
   ArrowDown, ArrowUp, Bottom, Top, Back, Right, BottomLeft, TopRight,
 } from '@element-plus/icons-vue'
 
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
+export const eleIcons = []
+
 export function registerIcon(app) {
   app.component('el-icon-edit', Edit)
   app.component('el-icon-minus', Minus)
@@ -19,4 +23,10 @@ export function registerIcon(app) {
   app.component('el-icon-right', Right)
   app.component('el-icon-bottom-left', BottomLeft)
   app.component('el-icon-top-right', TopRight)
+
+  //全部注册，供图标选择器组件使用
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    eleIcons.push(key)
+    app.component(key, component)
+  }
 }

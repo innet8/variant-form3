@@ -1,14 +1,16 @@
 <template>
   <el-form-item :label="i18nt('designer.setting.prefixIcon')">
-    <el-input type="text" v-model="optionModel.prefixIcon"></el-input>
+    <icon-picker v-model="optionModel.prefixIcon"></icon-picker>
   </el-form-item>
 </template>
 
 <script>
   import i18n from "@/utils/i18n";
+  import IconPicker from "@/components/icon-picker/index";
 
   export default {
     name: "prefixIcon-editor",
+    components: {IconPicker},
     mixins: [i18n],
     props: {
       designer: Object,

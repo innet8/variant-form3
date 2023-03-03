@@ -16,7 +16,7 @@
               @change="handleChangeEvent">
       <template #append v-if="field.options.appendButton">
         <el-button :disabled="field.options.disabled || field.options.appendButtonDisabled"
-                   @click="emitAppendButtonClick"><svg-icon :icon-class="field.options.buttonIcon" /></el-button>
+                   @click="emitAppendButtonClick"><el-icon><component :is="field.options.buttonIcon" /></el-icon></el-button>
       </template>
     </el-input>
     <template v-if="isReadMode">

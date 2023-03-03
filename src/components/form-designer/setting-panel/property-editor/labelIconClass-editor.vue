@@ -4,16 +4,18 @@
       <el-divider class="custom-divider">{{i18nt('designer.setting.customLabelIcon')}}</el-divider>
     </el-form-item>
     <el-form-item :label="i18nt('designer.setting.labelIconClass')">
-      <el-input type="text" v-model="optionModel.labelIconClass"></el-input>
+      <icon-picker v-model="optionModel.labelIconClass"></icon-picker>
     </el-form-item>
   </div>
 </template>
 
 <script>
   import i18n from "@/utils/i18n"
+  import IconPicker from "@/components/icon-picker/index";
 
   export default {
     name: "labelIconClass-editor",
+    components: {IconPicker},
     mixins: [i18n],
     props: {
       designer: Object,
